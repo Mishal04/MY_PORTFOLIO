@@ -90,7 +90,7 @@ const AbstractTechVisual = () => {
 
 const About = () => {
   return (
-    <section id="about" className="h-[100dvh] flex items-center justify-center relative overflow-hidden bg-transparent pt-12 md:pt-0">
+    <section id="about" className="min-h-[80vh] md:min-h-[75vh] py-16 flex items-center justify-center relative overflow-hidden bg-transparent">
       <div className="w-full max-w-6xl mx-auto px-6 md:px-12 lg:px-16 flex flex-col lg:flex-row items-center gap-4 sm:gap-6 md:gap-12 lg:gap-16">
         {/* Text Content */}
         <div className="w-full lg:w-1/2 text-center lg:text-left z-10">
@@ -103,11 +103,11 @@ const About = () => {
             <h2 className="text-xs sm:text-sm font-semibold uppercase tracking-[0.2em] text-indigo-400 mb-2 sm:mb-4">
               Expertise
             </h2>
-            <h3 className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-bold text-white mb-3 sm:mb-6 leading-[1.1] tracking-tight z-20 relative">
+            <h3 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-bold text-white mb-4 sm:mb-8 leading-[1.1] tracking-tight z-20 relative">
               I code with passion <br className="hidden lg:block" />
               <span className="text-indigo-400 drop-shadow-md">& deliver excellence.</span>
             </h3>
-            <p className="text-gray-400 text-sm sm:text-base md:text-lg lg:text-lg leading-relaxed mb-4 sm:mb-8 max-w-xl mx-auto lg:mx-0 font-light">
+            <p className="text-gray-400 text-base sm:text-lg md:text-xl lg:text-xl leading-relaxed mb-6 sm:mb-10 max-w-2xl mx-auto lg:mx-0 font-light">
               I am Mishal, a full-stack web developer. I build responsive, scalable, and modern web applications that combine clean design with efficient backend functionality.
             </p>
             
@@ -125,7 +125,7 @@ const About = () => {
         </div>
 
         {/* Eye-catching Visual Content */}
-        <div className="w-full lg:w-1/2 flex justify-center items-center relative h-[200px] sm:h-[250px] md:h-[350px] lg:h-[450px]">
+        <div className="w-full lg:w-1/2 flex justify-center items-center relative h-[250px] sm:h-[300px] md:h-[450px] lg:h-[600px]">
           <div className="w-full h-full absolute inset-0 cursor-crosshair lg:translate-x-8">
             <Canvas 
                camera={{ position: [0, 0, 10], fov: 45 }} 

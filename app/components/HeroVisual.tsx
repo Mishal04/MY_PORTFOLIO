@@ -111,7 +111,7 @@ const GirlyCartoonCharacter = () => {
 
 export default function HeroVisual() {
   return (
-    <div className="w-full h-[200px] sm:h-[250px] md:h-[350px] lg:h-[450px] relative pointer-events-none mb-0 flex-shrink-0">
+    <div className="w-full h-[250px] sm:h-[300px] md:h-[450px] lg:h-[550px] relative pointer-events-none mb-0 flex-shrink-0">
       <Canvas 
         camera={{ position: [0, 0, 10], fov: 45 }} 
         gl={{ 

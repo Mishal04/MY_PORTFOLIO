@@ -50,7 +50,7 @@ const Contact = () => {
                     viewport={{ once: true }}
                     className="text-center mb-8 md:mb-10"
                 >
-                    <h2 className="text-2xl md:text-3xl lg:text-4xl font-bold text-white mb-3 tracking-tight leading-tight">
+                    <h2 className="text-3xl md:text-5xl lg:text-6xl font-extrabold text-white mb-3 md:mb-5 tracking-tight leading-tight">
                         Let's build <span className="text-indigo-400">something together.</span>
                     </h2>
                     <p className="text-gray-400 text-sm md:text-base lg:text-lg max-w-2xl mx-auto font-light">

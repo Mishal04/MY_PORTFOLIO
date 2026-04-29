@@ -87,7 +87,7 @@ export default function Skills() {
           className="text-center mb-8 md:mb-12"
         >
           <span className="text-xs font-bold text-indigo-400 uppercase tracking-[0.3em] mb-2 block">Capabilities</span>
-          <h2 className="text-2xl md:text-3xl lg:text-4xl font-extrabold text-white mb-3 tracking-tight">
+          <h2 className="text-3xl md:text-5xl lg:text-6xl font-extrabold text-white mb-3 md:mb-5 tracking-tight">
             Technical Expertise<span className="text-indigo-500">.</span>
           </h2>
           <div className="w-12 h-1 bg-indigo-600 mx-auto rounded-full" />

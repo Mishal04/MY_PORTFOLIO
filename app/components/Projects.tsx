@@ -21,7 +21,7 @@ export default function Projects() {
           viewport={{ once: true, margin: "-100px" }}
           className="mb-8 md:mb-12 flex flex-col items-center text-center w-full max-w-3xl"
         >
-          <h2 className="text-2xl md:text-3xl lg:text-4xl font-extrabold text-white mb-3 tracking-tight">
+          <h2 className="text-3xl md:text-5xl lg:text-6xl font-extrabold text-white mb-3 md:mb-5 tracking-tight">
             Featured <span className="text-indigo-400">Projects</span>
           </h2>
           <p className="text-gray-300 text-sm md:text-base leading-relaxed">

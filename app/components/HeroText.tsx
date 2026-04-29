@@ -23,7 +23,7 @@ export default function HeroText() {
         initial={{ opacity: 0, y: 30 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.8, delay: 0.4 }}
-        className="text-3xl sm:text-4xl md:text-6xl lg:text-7xl font-black text-transparent bg-clip-text bg-gradient-to-r from-white via-indigo-100 to-indigo-400 leading-[1.1] mb-2 md:mb-4 tracking-tight whitespace-nowrap"
+        className="text-4xl sm:text-5xl md:text-7xl lg:text-[6rem] font-black text-transparent bg-clip-text bg-gradient-to-r from-white via-indigo-100 to-indigo-400 leading-[1.1] mb-2 md:mb-4 tracking-tight whitespace-nowrap"
       >
         Mishal Ashfaq
       </motion.h1>
@@ -32,7 +32,7 @@ export default function HeroText() {
         initial={{ opacity: 0, y: 30 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.8, delay: 0.6 }}
-        className="text-gray-400 text-xs sm:text-sm md:text-base lg:text-lg max-w-lg lg:max-w-lg mx-auto lg:mx-0 mb-4 md:mb-6 leading-relaxed"
+        className="text-gray-400 text-sm sm:text-base md:text-lg lg:text-xl max-w-lg lg:max-w-xl mx-auto lg:mx-0 mb-6 md:mb-8 leading-relaxed"
       >
         Building modern, scalable web applications with clean design and robust backend functionality.
       </motion.p>
