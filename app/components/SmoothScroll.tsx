@@ -13,9 +13,9 @@ export default function SmoothScroll({ children }: { children: React.ReactNode }
       duration: 1.2, // Reduced duration for more responsive scroll
       easing: (t: number) => Math.min(1, 1.001 - Math.pow(2, -10 * t)),
       smoothWheel: true,
-      syncTouch: true,
+      syncTouch: false, // Fallback to native smooth touch scroll
       wheelMultiplier: 1.1, // More responsive wheel feel
-      touchMultiplier: 2,
+      touchMultiplier: 1,
     } as any);
 
     lenisRef.current = lenis;
