@@ -24,7 +24,7 @@ export default function AboutDetails() {
           viewport={{ once: true, margin: "-100px" }}
           className="lg:w-[calc(50%-20px)] w-full flex flex-col h-full"
         >
-          <div className="relative w-full h-full rounded-3xl overflow-hidden shadow-[0_0_50px_rgba(79,70,229,0.15)] border border-white/10 group">
+          <div className="relative w-full h-full min-h-[400px] sm:min-h-[450px] lg:min-h-0 rounded-3xl overflow-hidden shadow-[0_0_50px_rgba(79,70,229,0.15)] border border-white/10 group">
             <Image 
               src="/projects/mishal_portrait.jpg"
               alt="Mishal Ashfaq"
