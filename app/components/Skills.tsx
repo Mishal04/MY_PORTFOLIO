@@ -11,7 +11,7 @@ const skillGroups = [
   { 
     category: "Back-end", 
     percentage: 85,
-    skills: ["Node.js", "Express", "Firebase", "MongoDB", "PostgreSQL", "REST APIs"] 
+    skills: ["Node.js", "Express", "MongoDB", "PostgreSQL", "REST APIs", "Authentication"] 
   },
   { 
     category: "Other Tools", 

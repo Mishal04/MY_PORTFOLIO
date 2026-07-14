@@ -26,17 +26,16 @@ const Contact = () => {
 
     const onSubmit = async (data: ContactFormData) => {
         try {
-            const { db } = await import("@/lib/firebase");
-            const { collection, addDoc } = await import("firebase/firestore");
+            // Send email via mailto link (user's default email client)
+            const subject = "Portfolio Contact: New Message from " + data.name;
+            const body = `Name: ${data.name}\nEmail: ${data.email}\n\nMessage:\n${data.message}`;
+            window.location.href = `mailto:exoticmishaal9@gmail.com?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`;
             
-            // Save to Firestore (Free Plan)
-            await addDoc(collection(db, "messages"), data);
-
-            alert("Message received! I'll see it in my dashboard database.");
+            alert("Opening your email client. Please send the message!");
             reset();
         } catch (error) {
-            console.error("Error sending message:", error);
-            alert("Could not send message. Please try again.");
+            console.error("Error processing message:", error);
+            alert("Could not process. Please try again.");
         }
     };
 
