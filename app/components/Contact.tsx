@@ -79,7 +79,7 @@ const Contact = () => {
                         </div>
                         <div className="flex gap-3 pt-2">
                             <a href="https://www.linkedin.com/in/mishal-ashfaq-503237332/" target="_blank" rel="noopener noreferrer" className="w-10 h-10 rounded-full bg-white/5 border border-white/10 flex items-center justify-center text-white hover:bg-indigo-600 transition-all cursor-pointer"><FaLinkedin size={18} /></a>
-                            <a href="https://www.instagram.com/_mishal1/" target="_blank" rel="noopener noreferrer" className="w-10 h-10 rounded-full bg-white/5 border border-white/10 flex items-center justify-center text-white hover:bg-purple-600 transition-all cursor-pointer"><FaInstagram size={18} /></a>
+                            <a href="https://www.instagram.com/_.mishal1/" target="_blank" rel="noopener noreferrer" className="w-10 h-10 rounded-full bg-white/5 border border-white/10 flex items-center justify-center text-white hover:bg-purple-600 transition-all cursor-pointer"><FaInstagram size={18} /></a>
                         </div>
                     </div>
 

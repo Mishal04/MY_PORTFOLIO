@@ -3,7 +3,7 @@
 import { motion } from "framer-motion";
 import Image from "next/image";
 import { FaGraduationCap, FaBriefcase, FaLinkedin, FaInstagram, FaEnvelope } from "react-icons/fa";
-import { TbBrandAdobePhotoshop, TbBrandAdobeIllustrator, TbBrandAdobePremier, TbBrandAdobeAfterEffect } from "react-icons/tb";
+import { TbBrandAdobePhotoshop, TbBrandAdobeIllustrator, TbBrandAdobePremiere, TbBrandAdobeAfterEffect } from "react-icons/tb";
 
 export default function AboutDetails() {
   return (
@@ -36,7 +36,7 @@ export default function AboutDetails() {
             {/* Social Icons inside portrait bottom */}
             <div className="absolute bottom-7 left-0 right-0 flex justify-center gap-4 sm:gap-6 z-10">
               <a href="https://www.linkedin.com/in/mishal-ashfaq-503237332/" target="_blank" rel="noopener noreferrer" aria-label="LinkedIn" className="w-12 h-12 flex items-center justify-center rounded-full bg-white/5 backdrop-blur-md border border-white/10 text-white/70 hover:text-indigo-400 hover:bg-white/10 transition-all hover:scale-110 transform"><FaLinkedin size={20} /></a>
-              <a href="https://www.instagram.com/_mishal1/" target="_blank" rel="noopener noreferrer" aria-label="Instagram" className="w-12 h-12 flex items-center justify-center rounded-full bg-white/5 backdrop-blur-md border border-white/10 text-white/70 hover:text-purple-400 hover:bg-white/10 transition-all hover:scale-110 transform"><FaInstagram size={20} /></a>
+              <a href="https://www.instagram.com/_.mishal1/" target="_blank" rel="noopener noreferrer" aria-label="Instagram" className="w-12 h-12 flex items-center justify-center rounded-full bg-white/5 backdrop-blur-md border border-white/10 text-white/70 hover:text-purple-400 hover:bg-white/10 transition-all hover:scale-110 transform"><FaInstagram size={20} /></a>
               <a href="mailto:exoticmishaal9@gmail.com" aria-label="Email" className="w-12 h-12 flex items-center justify-center rounded-full bg-white/5 backdrop-blur-md border border-white/10 text-white/70 hover:text-pink-400 hover:bg-white/10 transition-all hover:scale-110 transform"><FaEnvelope size={20} /></a>
             </div>
           </div>

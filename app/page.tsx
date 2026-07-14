@@ -1,38 +1,28 @@
 "use client";
 
-import dynamic from "next/dynamic";
 import SmoothScroll from "./components/SmoothScroll";
 import HeroText from "./components/HeroText";
-import Navbar from "./components/Navbar";
 import About from "./components/About";
 import AboutDetails from "./components/AboutDetails";
 import Projects from "./components/Projects";
 import Skills from "./components/Skills";
 import Contact from "./components/Contact";
-import PreLoader from "./components/PreLoader";
-import CustomCursor from "./components/CustomCursor";
-
-const ParticleBackground = dynamic(
-  () => import("./components/ParticleBackground"),
-  { ssr: false }
-);
-
+import TechMarquee from "./components/TechMarquee";
+import GitHubStats from "./components/GitHubStats";
+import Footer from "./components/Footer";
 import HeroVisual from "./components/HeroVisual";
+import Experience from "./components/Experience";
 
 export default function Home() {
   return (
-    <>
-      <PreLoader />
-      <CustomCursor />
-      
-      <Navbar />
-      <ParticleBackground />
-      
-      <SmoothScroll>
-        <main className="relative z-10 overflow-x-hidden bg-transparent w-full flex flex-col pb-0">
+    <SmoothScroll>
+      <main className="relative z-10 overflow-x-hidden bg-transparent w-full flex flex-col pb-0">
 
-        {/* Hero Section */}
-        <section id="hero" className="relative h-[100dvh] pt-16 lg:pt-20 pb-0 px-6 md:px-12 lg:px-24 flex items-center overflow-hidden mb-16 md:mb-24">
+        {/* ── Hero ─────────────────────────────────────── */}
+        <section
+          id="hero"
+          className="relative h-[100dvh] pt-16 lg:pt-20 pb-0 px-6 md:px-12 lg:px-24 flex items-center overflow-hidden mb-16 md:mb-24"
+        >
           <div className="w-full max-w-7xl mx-auto flex flex-col lg:flex-row items-center justify-center gap-4 lg:gap-8">
             <div className="w-full lg:w-1/2">
               <HeroText />
@@ -43,14 +33,32 @@ export default function Home() {
           </div>
         </section>
 
-        {/* Other Sections */}
+        {/* ── Tech Marquee ─────────────────────────────── */}
+        <TechMarquee />
+
+        {/* ── About ────────────────────────────────────── */}
         <About />
         <AboutDetails />
+
+        {/* ── Experience ───────────────────────────────── */}
+        <Experience />
+
+        {/* ── Projects ─────────────────────────────────── */}
         <Projects />
+
+        {/* ── Skills ───────────────────────────────────── */}
         <Skills />
+
+        {/* ── GitHub Stats ─────────────────────────────── */}
+        <GitHubStats />
+
+        {/* ── Contact ──────────────────────────────────── */}
         <Contact />
-        </main>
-      </SmoothScroll>
-    </>
+
+        {/* ── Footer ───────────────────────────────────── */}
+        <Footer />
+
+      </main>
+    </SmoothScroll>
   );
 }

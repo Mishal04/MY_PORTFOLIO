@@ -52,7 +52,7 @@ export default function CustomCursor() {
       }}
       animate={{
         scale: isClicking ? 0.8 : (isHovering ? 1.5 : 1),
-        backgroundColor: isHovering ? 'rgba(99, 102, 241, 0.1)' : 'transparent',
+        backgroundColor: isHovering ? 'rgba(99, 102, 241, 0.1)' : 'rgba(99, 102, 241, 0)',
       }}
       className="fixed top-0 left-0 w-8 h-8 rounded-full pointer-events-none z-[9999] hidden md:flex items-center justify-center border border-indigo-400/30"
     >
