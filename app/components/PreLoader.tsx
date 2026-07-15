@@ -1,179 +1,164 @@
 "use client";
 
-import { useEffect, useState } from "react";
-import { motion, AnimatePresence, useAnimation } from "framer-motion";
+import { useEffect, useRef, useState } from "react";
+import { animate, motion, AnimatePresence } from "framer-motion";
 
 const NAME    = "MISHAL";
 const TAGLINE = "FULL · STACK · DEVELOPER";
 
-// Silky custom ease — gentle overshoot, no bounce
-const SMOOTH: [number, number, number, number] = [0.25, 0.46, 0.45, 0.94];
-const EXPO:   [number, number, number, number] = [0.16, 1,    0.3,  1   ];
-const EXIT:   [number, number, number, number] = [0.76, 0,    0.24, 1   ];
-
 export default function PreLoader() {
-  const [fontsReady, setFonts]  = useState(false);
-  const [visible,    setVisible] = useState(true);
-  const [exiting,    setExiting] = useState(false);
+  const [visible, setVisible] = useState(true);
+  const hasRun = useRef(false);
 
   useEffect(() => {
-    document.fonts.ready.then(() => setFonts(true));
+    if (hasRun.current) return;
+    hasRun.current = true;
+
+    const run = async () => {
+      await document.fonts.ready;
+
+      // ── Entrance ──────────────────────────────────────────
+      // corner brackets
+      animate("#pl-tl-x", { scaleX: [0, 1] }, { duration: 0.45, ease: [0.16, 1, 0.3, 1] });
+      animate("#pl-tl-y", { scaleY: [0, 1] }, { duration: 0.45, ease: [0.16, 1, 0.3, 1] });
+      animate("#pl-br-x", { scaleX: [0, 1] }, { duration: 0.45, ease: [0.16, 1, 0.3, 1] });
+      animate("#pl-br-y", { scaleY: [0, 1] }, { duration: 0.45, ease: [0.16, 1, 0.3, 1] });
+
+      // glow
+      animate("#pl-glow", { opacity: [0, 1], scale: [0.7, 1] }, { duration: 1.1, ease: [0.25, 0.46, 0.45, 0.94] });
+
+      // letters — staggered, each from clip
+      NAME.split("").forEach((_, i) => {
+        animate(
+          `#pl-letter-${i}`,
+          { y: ["105%", "0%"], opacity: [0, 1] },
+          { duration: 0.7, delay: i * 0.055, ease: [0.16, 1, 0.3, 1] }
+        );
+      });
+
+      // dot
+      animate(
+        "#pl-dot",
+        { y: ["105%", "0%"], opacity: [0, 1] },
+        { duration: 0.7, delay: NAME.length * 0.055, ease: [0.16, 1, 0.3, 1] }
+      );
+
+      // line, tagline, labels
+      const afterLetters = NAME.length * 0.055 + 0.15;
+      animate("#pl-line",    { scaleX: [0, 1], opacity: [0, 1] }, { duration: 0.8, delay: afterLetters,        ease: [0.25, 0.46, 0.45, 0.94] });
+      animate("#pl-tagline", { opacity: [0, 1], y: [8, 0]      }, { duration: 0.7, delay: afterLetters + 0.12, ease: [0.25, 0.46, 0.45, 0.94] });
+      animate("#pl-labels",  { opacity: [0, 1], y: [6, 0]      }, { duration: 0.7, delay: afterLetters + 0.2,  ease: [0.25, 0.46, 0.45, 0.94] });
+
+      // ── Hold then exit ─────────────────────────────────────
+      const holdMs = 900;
+      const totalEntranceMs = (afterLetters + 0.9) * 1000;
+      await new Promise(r => setTimeout(r, totalEntranceMs + holdMs));
+
+      await animate(
+        "#pl-root",
+        { y: ["0%", "-100%"] },
+        { duration: 1.0, ease: [0.76, 0, 0.24, 1] }
+      ).then(() => setVisible(false));
+    };
+
+    run();
   }, []);
 
-  useEffect(() => {
-    if (!fontsReady) return;
-    // letters finish at ~(NAME.length * 60ms + 600ms) ≈ 960ms
-    // hold for ~800ms then exit
-    const t1 = setTimeout(() => setExiting(true),   1900);
-    const t2 = setTimeout(() => setVisible(false),   2950);
-    return () => { clearTimeout(t1); clearTimeout(t2); };
-  }, [fontsReady]);
+  if (!visible) return null;
 
   return (
-    <AnimatePresence>
-      {visible && (
-        <motion.div
-          key="preloader"
-          initial={{ y: "0%"   }}
-          animate={{ y: exiting ? "-100%" : "0%" }}
-          transition={{ duration: 1.05, ease: EXIT }}
-          className="fixed inset-0 z-[9999] flex flex-col items-center justify-center bg-[#0a0a0a] overflow-hidden will-change-transform"
-        >
+    <div
+      id="pl-root"
+      className="fixed inset-0 z-[9999] flex flex-col items-center justify-center bg-[#0a0a0a] overflow-hidden will-change-transform"
+    >
+      {/* Grid */}
+      <div
+        className="absolute inset-0 pointer-events-none"
+        style={{
+          backgroundImage:
+            "linear-gradient(rgba(99,102,241,0.05) 1px,transparent 1px)," +
+            "linear-gradient(90deg,rgba(99,102,241,0.05) 1px,transparent 1px)",
+          backgroundSize: "60px 60px",
+        }}
+      />
 
-          {/* Grid overlay */}
-          <div
-            className="absolute inset-0 pointer-events-none"
-            style={{
-              backgroundImage:
-                "linear-gradient(rgba(99,102,241,0.05) 1px,transparent 1px)," +
-                "linear-gradient(90deg,rgba(99,102,241,0.05) 1px,transparent 1px)",
-              backgroundSize: "60px 60px",
-            }}
-          />
+      {/* Glow */}
+      <div
+        id="pl-glow"
+        className="absolute w-[560px] h-[260px] rounded-full pointer-events-none opacity-0"
+        style={{ background: "radial-gradient(ellipse, rgba(99,102,241,0.13) 0%, transparent 70%)" }}
+      />
 
-          {/* Radial glow behind text */}
-          <motion.div
-            initial={{ opacity: 0, scale: 0.6 }}
-            animate={{ opacity: fontsReady ? 1 : 0, scale: fontsReady ? 1 : 0.6 }}
-            transition={{ duration: 1.2, ease: SMOOTH }}
-            className="absolute w-[600px] h-[300px] rounded-full pointer-events-none"
-            style={{ background: "radial-gradient(ellipse, rgba(99,102,241,0.10) 0%, transparent 70%)" }}
-          />
+      {/* Top-left bracket */}
+      <div className="absolute top-8 left-8">
+        <div id="pl-tl-x" className="w-8 h-px bg-indigo-500/50 origin-left" style={{ transform: "scaleX(0)" }} />
+        <div id="pl-tl-y" className="w-px h-8 bg-indigo-500/50 origin-top"  style={{ transform: "scaleY(0)" }} />
+      </div>
 
-          {/* Top-left corner bracket */}
-          <div className="absolute top-8 left-8">
-            <motion.div
-              initial={{ scaleX: 0 }} animate={{ scaleX: fontsReady ? 1 : 0 }}
-              transition={{ duration: 0.5, delay: 0.05, ease: EXPO }}
-              className="w-8 h-px bg-indigo-500/40 origin-left"
-            />
-            <motion.div
-              initial={{ scaleY: 0 }} animate={{ scaleY: fontsReady ? 1 : 0 }}
-              transition={{ duration: 0.5, delay: 0.05, ease: EXPO }}
-              className="w-px h-8 bg-indigo-500/40 origin-top"
-            />
-          </div>
+      {/* Bottom-right bracket */}
+      <div className="absolute bottom-8 right-8 flex flex-col items-end">
+        <div id="pl-br-x" className="w-8 h-px bg-indigo-500/50 origin-right"  style={{ transform: "scaleX(0)" }} />
+        <div id="pl-br-y" className="w-px h-8 bg-indigo-500/50 origin-bottom" style={{ transform: "scaleY(0)" }} />
+      </div>
 
-          {/* Bottom-right corner bracket */}
-          <div className="absolute bottom-8 right-8 flex flex-col items-end">
-            <motion.div
-              initial={{ scaleX: 0 }} animate={{ scaleX: fontsReady ? 1 : 0 }}
-              transition={{ duration: 0.5, delay: 0.05, ease: EXPO }}
-              className="w-8 h-px bg-indigo-500/40 origin-right"
-            />
-            <motion.div
-              initial={{ scaleY: 0 }} animate={{ scaleY: fontsReady ? 1 : 0 }}
-              transition={{ duration: 0.5, delay: 0.05, ease: EXPO }}
-              className="w-px h-8 bg-indigo-500/40 origin-bottom"
-            />
-          </div>
+      {/* Content */}
+      <div className="relative flex flex-col items-center gap-5 select-none">
 
-          {/* ── Main content ── */}
-          <div className="relative flex flex-col items-center gap-6 select-none">
-
-            {/* Name — each letter slides up from its own clip */}
-            <div className="flex items-baseline gap-0">
-              {NAME.split("").map((char, i) => (
-                <div key={i} className="overflow-hidden leading-none">
-                  <motion.span
-                    initial={{ y: "105%", opacity: 0 }}
-                    animate={{
-                      y:       fontsReady ? "0%"  : "105%",
-                      opacity: fontsReady ? 1      : 0,
-                    }}
-                    transition={{
-                      y:       { duration: 0.75, delay: i * 0.06, ease: EXPO   },
-                      opacity: { duration: 0.4,  delay: i * 0.06, ease: SMOOTH },
-                    }}
-                    className="inline-block text-[clamp(3.5rem,13vw,8.5rem)] font-black leading-[1] tracking-[-0.03em] text-white"
-                  >
-                    {char}
-                  </motion.span>
-                </div>
-              ))}
-
-              {/* Dot — pops in with spring */}
-              <div className="overflow-hidden leading-none">
-                <motion.span
-                  initial={{ y: "105%", opacity: 0 }}
-                  animate={{
-                    y:       fontsReady ? "0%"  : "105%",
-                    opacity: fontsReady ? 1      : 0,
-                  }}
-                  transition={{
-                    y:       { duration: 0.75, delay: NAME.length * 0.06 + 0.04, ease: EXPO   },
-                    opacity: { duration: 0.4,  delay: NAME.length * 0.06 + 0.04, ease: SMOOTH },
-                  }}
-                  className="inline-block text-[clamp(3.5rem,13vw,8.5rem)] font-black leading-[1] text-indigo-400"
-                >
-                  .
-                </motion.span>
+        {/* Letters */}
+        <div className="flex items-baseline gap-0">
+          {NAME.split("").map((char, i) => (
+            <div key={i} className="overflow-hidden leading-none">
+              <div
+                id={`pl-letter-${i}`}
+                className="inline-block text-[clamp(3.5rem,13vw,8.5rem)] font-black leading-[1.05] tracking-[-0.03em] text-white opacity-0"
+                style={{ transform: "translateY(105%)" }}
+              >
+                {char}
               </div>
             </div>
+          ))}
 
-            {/* Thin line */}
-            <motion.div
-              initial={{ scaleX: 0, opacity: 0 }}
-              animate={{
-                scaleX:  fontsReady ? 1 : 0,
-                opacity: fontsReady ? 1 : 0,
-              }}
-              transition={{ duration: 0.9, delay: NAME.length * 0.06 + 0.18, ease: SMOOTH }}
-              className="w-48 md:w-64 h-px origin-center"
-              style={{ background: "linear-gradient(90deg, transparent, rgba(99,102,241,0.6), transparent)" }}
-            />
-
-            {/* Tagline — character by character opacity */}
-            <motion.p
-              initial={{ opacity: 0, letterSpacing: "0.2em" }}
-              animate={{
-                opacity:       fontsReady ? 1      : 0,
-                letterSpacing: fontsReady ? "0.4em" : "0.2em",
-              }}
-              transition={{ duration: 0.9, delay: NAME.length * 0.06 + 0.3, ease: SMOOTH }}
-              className="text-[9px] md:text-[11px] font-semibold text-gray-500 uppercase"
+          {/* Dot */}
+          <div className="overflow-hidden leading-none">
+            <div
+              id="pl-dot"
+              className="inline-block text-[clamp(3.5rem,13vw,8.5rem)] font-black leading-[1.05] text-indigo-400 opacity-0"
+              style={{ transform: "translateY(105%)" }}
             >
-              {TAGLINE}
-            </motion.p>
+              .
+            </div>
           </div>
+        </div>
 
-          {/* Bottom labels */}
-          <motion.div
-            initial={{ opacity: 0, y: 6 }}
-            animate={{ opacity: fontsReady ? 1 : 0, y: fontsReady ? 0 : 6 }}
-            transition={{ duration: 0.7, delay: 0.6, ease: SMOOTH }}
-            className="absolute bottom-8 left-0 right-0 flex justify-between px-10 md:px-14"
-          >
-            <span className="text-[9px] text-gray-700 font-mono tracking-[0.18em] uppercase">
-              Portfolio · 2025
-            </span>
-            <span className="text-[9px] text-gray-700 font-mono tracking-[0.18em]">
-              v2.0
-            </span>
-          </motion.div>
+        {/* Line */}
+        <div
+          id="pl-line"
+          className="w-48 md:w-64 h-px origin-center opacity-0"
+          style={{
+            transform: "scaleX(0)",
+            background: "linear-gradient(90deg, transparent, rgba(99,102,241,0.55), transparent)",
+          }}
+        />
 
-        </motion.div>
-      )}
-    </AnimatePresence>
+        {/* Tagline */}
+        <p
+          id="pl-tagline"
+          className="text-[9px] md:text-[11px] font-semibold tracking-[0.4em] text-gray-500 uppercase opacity-0"
+          style={{ transform: "translateY(8px)" }}
+        >
+          {TAGLINE}
+        </p>
+      </div>
+
+      {/* Bottom labels */}
+      <div
+        id="pl-labels"
+        className="absolute bottom-8 left-0 right-0 flex justify-between px-10 md:px-14 opacity-0"
+        style={{ transform: "translateY(6px)" }}
+      >
+        <span className="text-[9px] text-gray-700 font-mono tracking-[0.18em] uppercase">Portfolio · 2025</span>
+        <span className="text-[9px] text-gray-700 font-mono tracking-[0.18em]">v2.0</span>
+      </div>
+    </div>
   );
 }
