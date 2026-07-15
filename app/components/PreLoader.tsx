@@ -18,11 +18,11 @@ export default function PreLoader() {
       const root = document.getElementById("pl-root");
       if (root) root.classList.add("pl-ready");
 
-      // exit after all animations finish
-      const exitDelay = 2800;
+      // exit at ~2s total (letters ~0.8s + hold ~0.5s = 1.3s, slide = 0.7s)
+      const exitDelay = 1300;
       setTimeout(() => {
         if (root) root.classList.add("pl-exit");
-        setTimeout(() => setVisible(false), 1050);
+        setTimeout(() => setVisible(false), 700);
       }, exitDelay);
     });
   }, []);
@@ -111,7 +111,7 @@ export default function PreLoader() {
 
         /* ── exit slide up ── */
         .pl-exit {
-          animation: pl-slide-up 1.0s cubic-bezier(0.76,0,0.24,1) 0s both !important;
+          animation: pl-slide-up 0.7s cubic-bezier(0.76,0,0.24,1) 0s both !important;
         }
         @keyframes pl-slide-up {
           from { transform: translateY(0%);    }
