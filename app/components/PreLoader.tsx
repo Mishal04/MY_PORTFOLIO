@@ -1,28 +1,31 @@
 "use client";
 
-import { useEffect, useRef, useState } from "react";
-import { motion, AnimatePresence } from "framer-motion";
+import { useEffect, useState } from "react";
+import { motion, AnimatePresence, useAnimation } from "framer-motion";
 
 const NAME    = "MISHAL";
-const TAGLINE = "FULL-STACK DEVELOPER";
+const TAGLINE = "FULL · STACK · DEVELOPER";
+
+// Silky custom ease — gentle overshoot, no bounce
+const SMOOTH: [number, number, number, number] = [0.25, 0.46, 0.45, 0.94];
+const EXPO:   [number, number, number, number] = [0.16, 1,    0.3,  1   ];
+const EXIT:   [number, number, number, number] = [0.76, 0,    0.24, 1   ];
 
 export default function PreLoader() {
-  const [visible, setVisible]   = useState(true);
-  const [exit, setExit]         = useState(false);
   const [fontsReady, setFonts]  = useState(false);
+  const [visible,    setVisible] = useState(true);
+  const [exiting,    setExiting] = useState(false);
 
-  // Wait for fonts so letters render at equal size from frame 1
   useEffect(() => {
-    document.fonts.ready.then(() => {
-      setFonts(true);
-    });
+    document.fonts.ready.then(() => setFonts(true));
   }, []);
 
-  // Start exit sequence after fonts + animation completes
   useEffect(() => {
     if (!fontsReady) return;
-    const t1 = setTimeout(() => setExit(true),    2200);
-    const t2 = setTimeout(() => setVisible(false), 3100);
+    // letters finish at ~(NAME.length * 60ms + 600ms) ≈ 960ms
+    // hold for ~800ms then exit
+    const t1 = setTimeout(() => setExiting(true),   1900);
+    const t2 = setTimeout(() => setVisible(false),   2950);
     return () => { clearTimeout(t1); clearTimeout(t2); };
   }, [fontsReady]);
 
@@ -31,148 +34,144 @@ export default function PreLoader() {
       {visible && (
         <motion.div
           key="preloader"
-          initial={{ y: "0%" }}
-          animate={{ y: exit ? "-100%" : "0%" }}
-          transition={{ duration: 0.9, ease: [0.76, 0, 0.24, 1] }}
-          className="fixed inset-0 z-[9999] flex flex-col items-center justify-center bg-[#0a0a0a] overflow-hidden"
+          initial={{ y: "0%"   }}
+          animate={{ y: exiting ? "-100%" : "0%" }}
+          transition={{ duration: 1.05, ease: EXIT }}
+          className="fixed inset-0 z-[9999] flex flex-col items-center justify-center bg-[#0a0a0a] overflow-hidden will-change-transform"
         >
-          {/* Subtle grid */}
+
+          {/* Grid overlay */}
           <div
             className="absolute inset-0 pointer-events-none"
             style={{
               backgroundImage:
-                "linear-gradient(rgba(99,102,241,0.07) 1px, transparent 1px), linear-gradient(90deg, rgba(99,102,241,0.07) 1px, transparent 1px)",
+                "linear-gradient(rgba(99,102,241,0.05) 1px,transparent 1px)," +
+                "linear-gradient(90deg,rgba(99,102,241,0.05) 1px,transparent 1px)",
               backgroundSize: "60px 60px",
             }}
           />
 
-          {/* Top-left bracket */}
+          {/* Radial glow behind text */}
           <motion.div
-            initial={{ opacity: 0 }}
-            animate={{ opacity: fontsReady ? 1 : 0 }}
-            transition={{ duration: 0.4, delay: 0.1 }}
-            className="absolute top-8 left-8"
-          >
-            <motion.div
-              initial={{ scaleX: 0 }}
-              animate={{ scaleX: fontsReady ? 1 : 0 }}
-              transition={{ duration: 0.4, delay: 0.15, ease: "easeOut" }}
-              className="w-10 h-px bg-indigo-500/60 origin-left"
-            />
-            <motion.div
-              initial={{ scaleY: 0 }}
-              animate={{ scaleY: fontsReady ? 1 : 0 }}
-              transition={{ duration: 0.4, delay: 0.15, ease: "easeOut" }}
-              className="w-px h-10 bg-indigo-500/60 origin-top"
-            />
-          </motion.div>
+            initial={{ opacity: 0, scale: 0.6 }}
+            animate={{ opacity: fontsReady ? 1 : 0, scale: fontsReady ? 1 : 0.6 }}
+            transition={{ duration: 1.2, ease: SMOOTH }}
+            className="absolute w-[600px] h-[300px] rounded-full pointer-events-none"
+            style={{ background: "radial-gradient(ellipse, rgba(99,102,241,0.10) 0%, transparent 70%)" }}
+          />
 
-          {/* Bottom-right bracket */}
-          <motion.div
-            initial={{ opacity: 0 }}
-            animate={{ opacity: fontsReady ? 1 : 0 }}
-            transition={{ duration: 0.4, delay: 0.1 }}
-            className="absolute bottom-8 right-8 flex flex-col items-end"
-          >
+          {/* Top-left corner bracket */}
+          <div className="absolute top-8 left-8">
             <motion.div
-              initial={{ scaleX: 0 }}
-              animate={{ scaleX: fontsReady ? 1 : 0 }}
-              transition={{ duration: 0.4, delay: 0.15, ease: "easeOut" }}
-              className="w-10 h-px bg-indigo-500/60 origin-right"
+              initial={{ scaleX: 0 }} animate={{ scaleX: fontsReady ? 1 : 0 }}
+              transition={{ duration: 0.5, delay: 0.05, ease: EXPO }}
+              className="w-8 h-px bg-indigo-500/40 origin-left"
             />
             <motion.div
-              initial={{ scaleY: 0 }}
-              animate={{ scaleY: fontsReady ? 1 : 0 }}
-              transition={{ duration: 0.4, delay: 0.15, ease: "easeOut" }}
-              className="w-px h-10 bg-indigo-500/60 origin-bottom"
+              initial={{ scaleY: 0 }} animate={{ scaleY: fontsReady ? 1 : 0 }}
+              transition={{ duration: 0.5, delay: 0.05, ease: EXPO }}
+              className="w-px h-8 bg-indigo-500/40 origin-top"
             />
-          </motion.div>
+          </div>
 
-          {/* Center content */}
-          <div className="flex flex-col items-center gap-5 select-none">
+          {/* Bottom-right corner bracket */}
+          <div className="absolute bottom-8 right-8 flex flex-col items-end">
+            <motion.div
+              initial={{ scaleX: 0 }} animate={{ scaleX: fontsReady ? 1 : 0 }}
+              transition={{ duration: 0.5, delay: 0.05, ease: EXPO }}
+              className="w-8 h-px bg-indigo-500/40 origin-right"
+            />
+            <motion.div
+              initial={{ scaleY: 0 }} animate={{ scaleY: fontsReady ? 1 : 0 }}
+              transition={{ duration: 0.5, delay: 0.05, ease: EXPO }}
+              className="w-px h-8 bg-indigo-500/40 origin-bottom"
+            />
+          </div>
 
-            {/* Name row */}
-            <div className="flex items-baseline overflow-hidden">
-              {fontsReady && NAME.split("").map((char, i) => (
-                <motion.span
-                  key={i}
-                  initial={{ y: "100%", opacity: 0 }}
-                  animate={{ y: "0%", opacity: 1 }}
-                  transition={{
-                    duration: 0.6,
-                    delay: i * 0.07,
-                    ease: [0.22, 1, 0.36, 1],
-                  }}
-                  className="inline-block text-[clamp(3.5rem,12vw,8rem)] font-black leading-none tracking-[-0.02em] text-white"
-                >
-                  {char}
-                </motion.span>
+          {/* ── Main content ── */}
+          <div className="relative flex flex-col items-center gap-6 select-none">
+
+            {/* Name — each letter slides up from its own clip */}
+            <div className="flex items-baseline gap-0">
+              {NAME.split("").map((char, i) => (
+                <div key={i} className="overflow-hidden leading-none">
+                  <motion.span
+                    initial={{ y: "105%", opacity: 0 }}
+                    animate={{
+                      y:       fontsReady ? "0%"  : "105%",
+                      opacity: fontsReady ? 1      : 0,
+                    }}
+                    transition={{
+                      y:       { duration: 0.75, delay: i * 0.06, ease: EXPO   },
+                      opacity: { duration: 0.4,  delay: i * 0.06, ease: SMOOTH },
+                    }}
+                    className="inline-block text-[clamp(3.5rem,13vw,8.5rem)] font-black leading-[1] tracking-[-0.03em] text-white"
+                  >
+                    {char}
+                  </motion.span>
+                </div>
               ))}
 
-              {/* Dot */}
-              {fontsReady && (
+              {/* Dot — pops in with spring */}
+              <div className="overflow-hidden leading-none">
                 <motion.span
-                  initial={{ scale: 0, opacity: 0 }}
-                  animate={{ scale: 1, opacity: 1 }}
-                  transition={{
-                    duration: 0.4,
-                    delay: NAME.length * 0.07 + 0.05,
-                    ease: [0.34, 1.56, 0.64, 1],
+                  initial={{ y: "105%", opacity: 0 }}
+                  animate={{
+                    y:       fontsReady ? "0%"  : "105%",
+                    opacity: fontsReady ? 1      : 0,
                   }}
-                  className="inline-block text-[clamp(3.5rem,12vw,8rem)] font-black leading-none text-indigo-400 ml-0.5"
+                  transition={{
+                    y:       { duration: 0.75, delay: NAME.length * 0.06 + 0.04, ease: EXPO   },
+                    opacity: { duration: 0.4,  delay: NAME.length * 0.06 + 0.04, ease: SMOOTH },
+                  }}
+                  className="inline-block text-[clamp(3.5rem,13vw,8.5rem)] font-black leading-[1] text-indigo-400"
                 >
                   .
                 </motion.span>
-              )}
+              </div>
             </div>
 
-            {/* Divider line */}
-            {fontsReady && (
-              <motion.div
-                initial={{ scaleX: 0, opacity: 0 }}
-                animate={{ scaleX: 1, opacity: 1 }}
-                transition={{
-                  duration: 0.7,
-                  delay: NAME.length * 0.07 + 0.2,
-                  ease: "easeInOut",
-                }}
-                className="w-full h-px bg-gradient-to-r from-transparent via-indigo-500/50 to-transparent origin-center"
-              />
-            )}
+            {/* Thin line */}
+            <motion.div
+              initial={{ scaleX: 0, opacity: 0 }}
+              animate={{
+                scaleX:  fontsReady ? 1 : 0,
+                opacity: fontsReady ? 1 : 0,
+              }}
+              transition={{ duration: 0.9, delay: NAME.length * 0.06 + 0.18, ease: SMOOTH }}
+              className="w-48 md:w-64 h-px origin-center"
+              style={{ background: "linear-gradient(90deg, transparent, rgba(99,102,241,0.6), transparent)" }}
+            />
 
-            {/* Tagline */}
-            {fontsReady && (
-              <motion.p
-                initial={{ opacity: 0, y: 6 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{
-                  duration: 0.5,
-                  delay: NAME.length * 0.07 + 0.35,
-                  ease: "easeOut",
-                }}
-                className="text-[10px] md:text-xs font-semibold tracking-[0.4em] text-gray-500 uppercase"
-              >
-                {TAGLINE}
-              </motion.p>
-            )}
+            {/* Tagline — character by character opacity */}
+            <motion.p
+              initial={{ opacity: 0, letterSpacing: "0.2em" }}
+              animate={{
+                opacity:       fontsReady ? 1      : 0,
+                letterSpacing: fontsReady ? "0.4em" : "0.2em",
+              }}
+              transition={{ duration: 0.9, delay: NAME.length * 0.06 + 0.3, ease: SMOOTH }}
+              className="text-[9px] md:text-[11px] font-semibold text-gray-500 uppercase"
+            >
+              {TAGLINE}
+            </motion.p>
           </div>
 
           {/* Bottom labels */}
-          {fontsReady && (
-            <motion.div
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 1 }}
-              transition={{ delay: 0.5, duration: 0.5 }}
-              className="absolute bottom-8 left-0 right-0 flex justify-between px-8 md:px-12"
-            >
-              <span className="text-[9px] text-gray-700 font-mono tracking-[0.2em] uppercase">
-                Portfolio 2025
-              </span>
-              <span className="text-[9px] text-gray-700 font-mono tracking-[0.2em]">
-                v2.0
-              </span>
-            </motion.div>
-          )}
+          <motion.div
+            initial={{ opacity: 0, y: 6 }}
+            animate={{ opacity: fontsReady ? 1 : 0, y: fontsReady ? 0 : 6 }}
+            transition={{ duration: 0.7, delay: 0.6, ease: SMOOTH }}
+            className="absolute bottom-8 left-0 right-0 flex justify-between px-10 md:px-14"
+          >
+            <span className="text-[9px] text-gray-700 font-mono tracking-[0.18em] uppercase">
+              Portfolio · 2025
+            </span>
+            <span className="text-[9px] text-gray-700 font-mono tracking-[0.18em]">
+              v2.0
+            </span>
+          </motion.div>
+
         </motion.div>
       )}
     </AnimatePresence>
