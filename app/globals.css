@@ -58,3 +58,29 @@ html.lenis body {
 ::-webkit-scrollbar-thumb:hover {
   background: rgba(99, 102, 241, 0.3);
 }
+
+/* ── Marquee animation ──────────────────────────────────────────────────── */
+@keyframes marquee {
+  0%   { transform: translateX(0); }
+  100% { transform: translateX(-50%); }
+}
+
+/* ── Reduced motion ─────────────────────────────────────────────────────── */
+/* Disable all CSS animations/transitions for users who prefer reduced motion */
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+
+  /* Keep the preloader visible briefly then remove instantly */
+  .pl-exit {
+    animation: none !important;
+    opacity: 0 !important;
+    pointer-events: none !important;
+  }
+}

@@ -9,6 +9,7 @@ import {
 } from 'react-icons/si';
 import { TbApi } from 'react-icons/tb';
 import { MdSpeed } from 'react-icons/md';
+import { useReducedMotion } from '@/app/hooks/useReducedMotion';
 
 const skillGroups = [
   {
@@ -71,11 +72,20 @@ const cardVariants = {
 };
 
 export default function Skills() {
+  const prefersReducedMotion = useReducedMotion();
+
+  const reducedCardVariants = {
+    hidden: { opacity: 1, y: 0, scale: 1 },
+    visible: { opacity: 1, y: 0, scale: 1, transition: { duration: 0 } },
+  };
+
+  const activeCardVariants = prefersReducedMotion ? reducedCardVariants : cardVariants;
+
   return (
-    <section id="skills" className="py-16 md:py-24 relative overflow-hidden bg-transparent">
+    <section id="skills" aria-labelledby="skills-heading" className="py-16 md:py-24 relative overflow-hidden bg-transparent">
 
       {/* Ambient glows */}
-      <div className="absolute inset-0 pointer-events-none overflow-hidden">
+      <div className="absolute inset-0 pointer-events-none overflow-hidden" aria-hidden="true">
         <div className="absolute top-0 right-0 w-[40rem] h-[40rem] bg-indigo-600/5 rounded-full blur-[130px]" />
         <div className="absolute bottom-0 left-0 w-[40rem] h-[40rem] bg-violet-600/5 rounded-full blur-[130px]" />
       </div>
@@ -84,16 +94,14 @@ export default function Skills() {
 
         {/* Header */}
         <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          whileInView={{ opacity: 1, y: 0 }}
+          {...(prefersReducedMotion ? {} : { initial: { opacity: 0, y: 20 }, whileInView: { opacity: 1, y: 0 }, viewport: { once: true } })}
           transition={{ duration: 0.6 }}
-          viewport={{ once: true }}
           className="text-center"
         >
           <span className="text-xs font-bold text-indigo-400 uppercase tracking-[0.3em] mb-3 block">
             Capabilities
           </span>
-          <h2 className="text-3xl md:text-5xl lg:text-6xl font-extrabold text-white tracking-tight mb-4">
+          <h2 id="skills-heading" className="text-3xl md:text-5xl lg:text-6xl font-extrabold text-white tracking-tight mb-4">
             Technical <span className="text-indigo-400">Expertise</span>
           </h2>
           <p className="text-gray-400 text-sm md:text-base max-w-xl mx-auto">
@@ -107,10 +115,8 @@ export default function Skills() {
           {skillGroups.map((group, gi) => (
             <motion.div
               key={group.category}
-              initial={{ opacity: 0, y: 30 }}
-              whileInView={{ opacity: 1, y: 0 }}
+              {...(prefersReducedMotion ? {} : { initial: { opacity: 0, y: 30 }, whileInView: { opacity: 1, y: 0 }, viewport: { once: true, margin: '-80px' } })}
               transition={{ duration: 0.6, delay: gi * 0.1 }}
-              viewport={{ once: true, margin: '-80px' }}
               className="flex flex-col gap-6"
             >
               {/* Group header */}
@@ -118,6 +124,7 @@ export default function Skills() {
                 <span
                   className="text-5xl md:text-6xl font-black leading-none select-none opacity-10"
                   style={{ color: group.color }}
+                  aria-hidden="true"
                 >
                   {group.number}
                 </span>
@@ -136,24 +143,28 @@ export default function Skills() {
 
               {/* Icon cards grid */}
               <motion.div
-                variants={containerVariants}
-                initial="hidden"
-                whileInView="visible"
+                variants={prefersReducedMotion ? {} : containerVariants}
+                initial={prefersReducedMotion ? false : "hidden"}
+                whileInView={prefersReducedMotion ? undefined : "visible"}
                 viewport={{ once: true, margin: '-60px' }}
                 className="grid grid-cols-3 sm:grid-cols-4 md:grid-cols-6 lg:grid-cols-8 gap-3"
+                role="list"
+                aria-label={`${group.category} skills`}
               >
                 {group.skills.map((skill) => {
                   const Icon = skill.icon;
                   return (
                     <motion.div
                       key={skill.name}
-                      variants={cardVariants}
-                      whileHover={{ y: -4, scale: 1.05 }}
+                      variants={prefersReducedMotion ? {} : activeCardVariants}
+                      whileHover={prefersReducedMotion ? {} : { y: -4, scale: 1.05 }}
+                      role="listitem"
                       className="group flex flex-col items-center gap-2 p-3 md:p-4 rounded-xl bg-white/[0.03] border border-white/[0.07] hover:bg-white/[0.07] hover:border-white/[0.14] transition-colors duration-300 cursor-default"
                     >
                       <Icon
                         size={26}
                         style={{ color: skill.color }}
+                        aria-hidden="true"
                         className="opacity-75 group-hover:opacity-100 transition-opacity duration-300 shrink-0"
                       />
                       <span className="text-[10px] md:text-xs text-gray-500 group-hover:text-gray-300 font-medium text-center transition-colors duration-300 leading-tight">
@@ -169,17 +180,15 @@ export default function Skills() {
 
         {/* Bottom bar */}
         <motion.div
-          initial={{ opacity: 0 }}
-          whileInView={{ opacity: 1 }}
+          {...(prefersReducedMotion ? {} : { initial: { opacity: 0 }, whileInView: { opacity: 1 }, viewport: { once: true } })}
           transition={{ duration: 0.6 }}
-          viewport={{ once: true }}
           className="w-full pt-6 border-t border-white/[0.05] flex flex-col sm:flex-row items-center justify-between gap-3"
         >
           <p className="text-gray-600 text-xs font-medium tracking-widest uppercase">
             Always learning · Always shipping
           </p>
           <div className="flex items-center gap-2">
-            <span className="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-pulse" />
+            <span className="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-pulse" aria-hidden="true" />
             <span className="text-gray-500 text-xs">Open to new projects</span>
           </div>
         </motion.div>

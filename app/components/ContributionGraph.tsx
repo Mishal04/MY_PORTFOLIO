@@ -2,6 +2,7 @@
 
 import { useEffect, useState } from "react";
 import { motion } from "framer-motion";
+import { useReducedMotion } from "@/app/hooks/useReducedMotion";
 
 interface ContribDay {
   date: string;
@@ -9,36 +10,30 @@ interface ContribDay {
   level: 0 | 1 | 2 | 3 | 4;
 }
 
-// indigo-themed level colours matching the portfolio palette
 const LEVEL_COLORS = [
-  "bg-white/[0.04]",   // 0 — empty
-  "bg-indigo-900/60",  // 1 — low
-  "bg-indigo-700/70",  // 2 — medium
-  "bg-indigo-500",     // 3 — high
-  "bg-indigo-400",     // 4 — very high
+  "bg-white/[0.04]",
+  "bg-indigo-900/60",
+  "bg-indigo-700/70",
+  "bg-indigo-500",
+  "bg-indigo-400",
 ];
+
+const LEVEL_LABELS = ["No contributions", "Low", "Medium", "High", "Very high"];
 
 const MONTHS = ["Jan","Feb","Mar","Apr","May","Jun","Jul","Aug","Sep","Oct","Nov","Dec"];
 
-/** Group a flat days array into columns of 7 (Sun→Sat), padding the first column */
 function groupIntoWeeks(days: ContribDay[]): ContribDay[][] {
   if (!days.length) return [];
-
-  // Pad the start so the first day falls on the correct weekday (0=Sun)
   const firstDow = new Date(days[0].date).getDay();
   const padded: (ContribDay | null)[] = [
     ...Array.from({ length: firstDow }, () => null),
     ...days,
   ];
-
   const weeks: ContribDay[][] = [];
   for (let i = 0; i < padded.length; i += 7) {
     const chunk = padded.slice(i, i + 7);
-    // Fill any trailing nulls in the last column
     while (chunk.length < 7) chunk.push(null);
-    weeks.push(
-      chunk.map((d) => d ?? { date: "", count: 0, level: 0 as const })
-    );
+    weeks.push(chunk.map((d) => d ?? { date: "", count: 0, level: 0 as const }));
   }
   return weeks;
 }
@@ -48,9 +43,14 @@ export default function ContributionGraph() {
   const [total, setTotal]     = useState<number>(0);
   const [loading, setLoading] = useState(true);
   const [error, setError]     = useState(false);
+  const prefersReducedMotion  = useReducedMotion();
 
   useEffect(() => {
-    fetch("https://github-contributions-api.jogruber.de/v4/Mishal04?y=last")
+    const controller = new AbortController();
+
+    fetch("https://github-contributions-api.jogruber.de/v4/Mishal04?y=last", {
+      signal: controller.signal,
+    })
       .then((r) => {
         if (!r.ok) throw new Error("fetch failed");
         return r.json();
@@ -60,15 +60,17 @@ export default function ContributionGraph() {
         setTotal(json.total?.lastYear ?? json.total ?? 0);
         setLoading(false);
       })
-      .catch(() => {
+      .catch((err) => {
+        if ((err as Error).name === "AbortError") return;
         setError(true);
         setLoading(false);
       });
+
+    return () => controller.abort();
   }, []);
 
   const weeks = groupIntoWeeks(days);
 
-  // Build month labels — one label per new month found in the first real day of each week column
   const monthLabels: { label: string; index: number }[] = [];
   let lastMonth = -1;
   weeks.forEach((week, wi) => {
@@ -83,10 +85,8 @@ export default function ContributionGraph() {
 
   return (
     <motion.div
-      initial={{ opacity: 0, y: 24 }}
-      whileInView={{ opacity: 1, y: 0 }}
+      {...(prefersReducedMotion ? {} : { initial: { opacity: 0, y: 24 }, whileInView: { opacity: 1, y: 0 }, viewport: { once: true } })}
       transition={{ duration: 0.6 }}
-      viewport={{ once: true }}
       className="w-full p-5 md:p-6 rounded-2xl bg-white/[0.03] border border-white/[0.07] hover:border-white/[0.12] transition-all duration-300 flex flex-col gap-4"
     >
       {/* Header */}
@@ -101,7 +101,7 @@ export default function ContributionGraph() {
 
       {/* Skeleton */}
       {loading && (
-        <div className="flex gap-[3px] overflow-hidden animate-pulse">
+        <div className="flex gap-[3px] overflow-hidden animate-pulse" aria-label="Loading contribution graph" aria-busy="true">
           {Array.from({ length: 52 }).map((_, wi) => (
             <div key={wi} className="flex flex-col gap-[3px]">
               {Array.from({ length: 7 }).map((_, di) => (
@@ -114,14 +114,14 @@ export default function ContributionGraph() {
 
       {/* Error */}
       {error && !loading && (
-        <p className="text-gray-600 text-xs">Could not load contribution data.</p>
+        <p role="alert" className="text-gray-600 text-xs">Could not load contribution data.</p>
       )}
 
       {/* Graph */}
       {!loading && !error && weeks.length > 0 && (
-        <div className="flex flex-col gap-1 overflow-x-auto pb-1">
+        <div className="flex flex-col gap-1 overflow-x-auto pb-1" role="img" aria-label={`GitHub contribution graph — ${total.toLocaleString()} contributions this year`}>
           {/* Month labels */}
-          <div className="flex gap-[3px] mb-0.5">
+          <div className="flex gap-[3px] mb-0.5" aria-hidden="true">
             {weeks.map((_, wi) => {
               const label = monthLabels.find((m) => m.index === wi);
               return (
@@ -136,13 +136,19 @@ export default function ContributionGraph() {
             })}
           </div>
 
-          {/* Day cells — column by column (week by week) */}
+          {/* Day cells */}
           <div className="flex gap-[3px]">
             {weeks.map((week, wi) => (
               <div key={wi} className="flex flex-col gap-[3px] shrink-0">
                 {week.map((day, di) => (
                   <div
                     key={day.date || `pad-${wi}-${di}`}
+                    role={day.date ? "img" : undefined}
+                    aria-label={
+                      day.date
+                        ? `${day.date}: ${day.count} contribution${day.count !== 1 ? "s" : ""}, ${LEVEL_LABELS[day.level]} activity`
+                        : undefined
+                    }
                     title={day.date ? `${day.date}: ${day.count} contribution${day.count !== 1 ? "s" : ""}` : undefined}
                     className={`w-[10px] h-[10px] rounded-sm transition-all duration-150 ${day.date ? "hover:scale-125 cursor-default" : "opacity-0"} ${LEVEL_COLORS[day.level]}`}
                   />
@@ -152,10 +158,15 @@ export default function ContributionGraph() {
           </div>
 
           {/* Legend */}
-          <div className="flex items-center gap-1.5 mt-2 justify-end">
+          <div className="flex items-center gap-1.5 mt-2 justify-end" aria-label="Contribution level legend">
             <span className="text-[9px] text-gray-600">Less</span>
             {LEVEL_COLORS.map((cls, i) => (
-              <div key={i} className={`w-[10px] h-[10px] rounded-sm ${cls}`} />
+              <div
+                key={i}
+                className={`w-[10px] h-[10px] rounded-sm ${cls}`}
+                aria-label={LEVEL_LABELS[i]}
+                title={LEVEL_LABELS[i]}
+              />
             ))}
             <span className="text-[9px] text-gray-600">More</span>
           </div>

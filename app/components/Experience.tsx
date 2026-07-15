@@ -3,6 +3,7 @@
 import { motion } from "framer-motion";
 import { FaBriefcase, FaCode, FaMapMarkerAlt } from "react-icons/fa";
 import { HiSparkles } from "react-icons/hi";
+import { useReducedMotion } from "@/app/hooks/useReducedMotion";
 
 const experiences = [
   {
@@ -71,13 +72,16 @@ const statusConfig = {
 };
 
 export default function Experience() {
+  const prefersReducedMotion = useReducedMotion();
+
   return (
     <section
       id="experience"
+      aria-labelledby="experience-heading"
       className="relative z-10 py-16 md:py-24 overflow-hidden bg-transparent"
     >
       {/* Ambient glows */}
-      <div className="absolute inset-0 pointer-events-none">
+      <div className="absolute inset-0 pointer-events-none" aria-hidden="true">
         <div className="absolute top-0 left-1/4 w-[35rem] h-[35rem] bg-indigo-600/5 rounded-full blur-[130px]" />
         <div className="absolute bottom-0 right-1/4 w-[35rem] h-[35rem] bg-cyan-600/5 rounded-full blur-[130px]" />
       </div>
@@ -86,16 +90,14 @@ export default function Experience() {
 
         {/* Header */}
         <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          whileInView={{ opacity: 1, y: 0 }}
+          {...(prefersReducedMotion ? {} : { initial: { opacity: 0, y: 20 }, whileInView: { opacity: 1, y: 0 }, viewport: { once: true } })}
           transition={{ duration: 0.6 }}
-          viewport={{ once: true }}
           className="text-center"
         >
           <span className="text-xs font-bold text-indigo-400 uppercase tracking-[0.3em] mb-3 block">
             Journey
           </span>
-          <h2 className="text-3xl md:text-5xl lg:text-6xl font-extrabold text-white tracking-tight mb-4">
+          <h2 id="experience-heading" className="text-3xl md:text-5xl lg:text-6xl font-extrabold text-white tracking-tight mb-4">
             Experience &{" "}
             <span className="text-indigo-400">Work</span>
           </h2>
@@ -105,35 +107,42 @@ export default function Experience() {
         </motion.div>
 
         {/* Timeline */}
-        <div className="w-full relative">
+        <ol className="w-full relative list-none p-0 m-0">
 
           {/* Vertical line */}
-          <div className="absolute left-4 md:left-1/2 top-0 bottom-0 w-px bg-gradient-to-b from-transparent via-white/10 to-transparent md:-translate-x-px" />
+          <div className="absolute left-4 md:left-1/2 top-0 bottom-0 w-px bg-gradient-to-b from-transparent via-white/10 to-transparent md:-translate-x-px" aria-hidden="true" />
 
           <div className="flex flex-col gap-10 md:gap-14">
             {experiences.map((exp, i) => {
-              const Icon = exp.icon;
+              const Icon   = exp.icon;
               const status = statusConfig[exp.status as keyof typeof statusConfig];
               const isLeft = i % 2 === 0;
 
               return (
-                <motion.div
-                  key={i}
-                  initial={{ opacity: 0, x: isLeft ? -40 : 40 }}
-                  whileInView={{ opacity: 1, x: 0 }}
-                  transition={{ duration: 0.7, delay: i * 0.1, ease: [0.33, 1, 0.68, 1] }}
-                  viewport={{ once: true, margin: "-80px" }}
+                <li
+                  key={exp.company}
                   className={`relative flex flex-col md:flex-row gap-6 md:gap-10 ${isLeft ? "md:flex-row" : "md:flex-row-reverse"} pl-12 md:pl-0`}
                 >
+                  <motion.div
+                    {...(prefersReducedMotion ? {} : {
+                      initial: { opacity: 0, x: isLeft ? -40 : 40 },
+                      whileInView: { opacity: 1, x: 0 },
+                      viewport: { once: true, margin: "-80px" },
+                    })}
+                    transition={{ duration: 0.7, delay: i * 0.1, ease: [0.33, 1, 0.68, 1] }}
+                    className="contents"
+                  >
                   {/* Timeline dot */}
-                  <div className="absolute left-0 md:left-1/2 top-6 md:-translate-x-1/2 flex items-center justify-center">
+                  <div
+                    className="absolute left-0 md:left-1/2 top-6 md:-translate-x-1/2 flex items-center justify-center"
+                    aria-hidden="true"
+                  >
                     <div
                       className="w-9 h-9 rounded-full border-2 flex items-center justify-center shadow-lg"
                       style={{ borderColor: exp.color, background: `${exp.color}18` }}
                     >
-                      <Icon size={14} style={{ color: exp.color }} />
+                      <Icon size={14} style={{ color: exp.color }} aria-hidden="true" />
                     </div>
-                    {/* Pulse ring for active */}
                     {exp.status === "current" && (
                       <div
                         className="absolute w-9 h-9 rounded-full animate-ping opacity-20"
@@ -142,10 +151,10 @@ export default function Experience() {
                     )}
                   </div>
 
-                  {/* Card — takes half width on desktop, shifts left/right */}
+                  {/* Card */}
                   <div className={`w-full md:w-[calc(50%-3rem)] ${isLeft ? "md:mr-auto md:text-left" : "md:ml-auto md:text-left"}`}>
                     <motion.div
-                      whileHover={{ y: -3 }}
+                      whileHover={prefersReducedMotion ? {} : { y: -3 }}
                       transition={{ duration: 0.2 }}
                       className="group relative p-5 md:p-6 rounded-2xl bg-white/[0.03] border border-white/[0.07] hover:border-white/[0.14] hover:bg-white/[0.05] transition-all duration-300 shadow-xl"
                     >
@@ -153,6 +162,7 @@ export default function Experience() {
                       <div
                         className="absolute inset-0 rounded-2xl opacity-0 group-hover:opacity-100 transition-opacity duration-500 pointer-events-none"
                         style={{ boxShadow: `0 0 40px ${exp.color}12` }}
+                        aria-hidden="true"
                       />
 
                       {/* Top row */}
@@ -165,42 +175,37 @@ export default function Experience() {
                             <span className="font-semibold text-sm" style={{ color: exp.color }}>
                               {exp.company}
                             </span>
-                            <span className="text-gray-600">·</span>
+                            <span className="text-gray-600" aria-hidden="true">·</span>
                             <span className="text-gray-500 text-xs flex items-center gap-1">
-                              <FaMapMarkerAlt size={9} />
+                              <FaMapMarkerAlt size={9} aria-hidden="true" />
                               {exp.location}
                             </span>
                           </div>
                         </div>
 
                         <div className="flex flex-col items-end gap-1.5 shrink-0">
-                          {/* Status badge */}
                           <span className={`inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-full text-[10px] font-semibold border ${status.ring} ${status.text}`}>
-                            <span className={`w-1.5 h-1.5 rounded-full ${status.dot} ${exp.status === "current" ? "animate-pulse" : ""}`} />
+                            <span className={`w-1.5 h-1.5 rounded-full ${status.dot} ${exp.status === "current" ? "animate-pulse" : ""}`} aria-hidden="true" />
                             {status.label}
                           </span>
-                          {/* Period */}
-                          <span className="text-[10px] text-gray-600 font-mono">{exp.period}</span>
+                          <time className="text-[10px] text-gray-600 font-mono">{exp.period}</time>
                         </div>
                       </div>
 
-                      {/* Description */}
                       <p className="text-gray-400 text-xs md:text-sm leading-relaxed mb-4">
                         {exp.description}
                       </p>
 
-                      {/* Highlights */}
                       <ul className="flex flex-col gap-1.5 mb-4">
-                        {exp.highlights.map((point, pi) => (
-                          <li key={pi} className="flex items-start gap-2 text-xs text-gray-400">
-                            <span className="mt-1.5 w-1 h-1 rounded-full shrink-0" style={{ background: exp.color }} />
+                        {exp.highlights.map((point) => (
+                          <li key={point} className="flex items-start gap-2 text-xs text-gray-400">
+                            <span className="mt-1.5 w-1 h-1 rounded-full shrink-0" style={{ background: exp.color }} aria-hidden="true" />
                             {point}
                           </li>
                         ))}
                       </ul>
 
-                      {/* Tags */}
-                      <div className="flex flex-wrap gap-1.5">
+                      <div className="flex flex-wrap gap-1.5" aria-label="Technologies used">
                         {exp.tags.map((tag) => (
                           <span
                             key={tag}
@@ -212,11 +217,12 @@ export default function Experience() {
                       </div>
                     </motion.div>
                   </div>
-                </motion.div>
+                  </motion.div>
+                </li>
               );
             })}
           </div>
-        </div>
+        </ol>
 
       </div>
     </section>

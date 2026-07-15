@@ -14,15 +14,18 @@ export default function PreLoader() {
     ran.current = true;
 
     document.fonts.ready.then(() => {
-      // kick off CSS animations by adding class
+      // Skip all animations if user prefers reduced motion
+      const prefersReduced = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+
       const root = document.getElementById("pl-root");
       if (root) root.classList.add("pl-ready");
 
-      // exit at ~2s total (letters ~0.8s + hold ~0.5s = 1.3s, slide = 0.7s)
-      const exitDelay = 1300;
+      const exitDelay = prefersReduced ? 0 : 1300;
+      const unmountDelay = prefersReduced ? 50 : 2000;
+
       setTimeout(() => {
         if (root) root.classList.add("pl-exit");
-        setTimeout(() => setVisible(false), 700);
+        setTimeout(() => setVisible(false), prefersReduced ? 50 : 700);
       }, exitDelay);
     });
   }, []);
@@ -121,6 +124,8 @@ export default function PreLoader() {
 
       <div
         id="pl-root"
+        role="status"
+        aria-label="Loading portfolio"
         className="fixed inset-0 z-[9999] flex flex-col items-center justify-center bg-[#0a0a0a] overflow-hidden"
       >
         {/* Grid */}

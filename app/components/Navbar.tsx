@@ -4,6 +4,7 @@ import { useEffect, useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
+import { useReducedMotion } from "@/app/hooks/useReducedMotion";
 
 const navLinks = [
   { label: "Home",       href: "/"           },
@@ -19,6 +20,7 @@ export default function Navbar() {
   const [scrolled, setScrolled] = useState(false);
   const [isOpen, setIsOpen]     = useState(false);
   const pathname                = usePathname();
+  const prefersReducedMotion    = useReducedMotion();
 
   useEffect(() => {
     const handleScroll = () => setScrolled(window.scrollY > 50);
@@ -33,9 +35,9 @@ export default function Navbar() {
   return (
     <>
       <motion.nav
-        initial={{ y: -100, opacity: 0 }}
-        animate={{ y: 0, opacity: 1 }}
+        {...(prefersReducedMotion ? {} : { initial: { y: -100, opacity: 0 }, animate: { y: 0, opacity: 1 } })}
         transition={{ duration: 0.8, ease: "easeOut" }}
+        aria-label="Main navigation"
         className={`fixed top-0 left-0 right-0 z-50 flex justify-center transition-all duration-300 w-full ${
           scrolled
             ? "backdrop-blur-xl bg-black/40 border-b border-white/10 shadow-lg shadow-black/20 py-2 md:py-3"
@@ -60,8 +62,7 @@ export default function Navbar() {
               return (
                 <motion.div
                   key={item.href}
-                  initial={{ opacity: 0, y: -10 }}
-                  animate={{ opacity: 1, y: 0 }}
+                  {...(prefersReducedMotion ? {} : { initial: { opacity: 0, y: -10 }, animate: { opacity: 1, y: 0 } })}
                   transition={{ delay: i * 0.1 + 0.2 }}
                 >
                   <Link
@@ -83,8 +84,7 @@ export default function Navbar() {
 
             {/* Hire Me */}
             <motion.div
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 1 }}
+              {...(prefersReducedMotion ? {} : { initial: { opacity: 0 }, animate: { opacity: 1 } })}
               transition={{ delay: 0.7 }}
             >
               <Link
@@ -105,6 +105,8 @@ export default function Navbar() {
             className="md:hidden text-white flex flex-col justify-center items-center w-8 h-8 focus:outline-none focus:ring-2 focus:ring-indigo-500 rounded-sm"
             onClick={() => setIsOpen(!isOpen)}
             aria-label={isOpen ? "Close Menu" : "Open Menu"}
+            aria-expanded={isOpen}
+            aria-controls="mobile-menu"
           >
             <span className={`bg-white h-0.5 w-6 rounded-sm transition-all duration-300 ${isOpen ? "rotate-45 translate-y-1.5" : "-translate-y-1"}`} />
             <span className={`bg-white h-0.5 w-6 rounded-sm transition-all duration-300 ${isOpen ? "opacity-0" : "opacity-100"}`} />
@@ -117,9 +119,14 @@ export default function Navbar() {
       <AnimatePresence>
         {isOpen && (
           <motion.div
-            initial={{ opacity: 0, y: -20 }}
-            animate={{ opacity: 1, y: 0 }}
-            exit={{ opacity: 0, y: -20 }}
+            id="mobile-menu"
+            role="dialog"
+            aria-modal="true"
+            aria-label="Navigation menu"
+            {...(prefersReducedMotion
+              ? {}
+              : { initial: { opacity: 0, y: -20 }, animate: { opacity: 1, y: 0 }, exit: { opacity: 0, y: -20 } }
+            )}
             transition={{ duration: 0.3 }}
             className="fixed inset-0 z-40 bg-black/95 backdrop-blur-3xl flex flex-col items-center justify-center pt-24 pb-10 px-6"
           >

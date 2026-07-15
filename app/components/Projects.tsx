@@ -3,6 +3,7 @@
 import { useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import Image from "next/image";
+import { useReducedMotion } from "@/app/hooks/useReducedMotion";
 
 const projects = [
   {
@@ -50,8 +51,12 @@ const projects = [
 ];
 
 export default function Projects() {
-  const [hovered, setHovered] = useState<number | null>(null);
+  const [hovered, setHovered]       = useState<number | null>(null);
   const [activeFilter, setActiveFilter] = useState("All");
+  const prefersReducedMotion        = useReducedMotion();
+
+  // suppress unused warning — hovered used for future tooltip
+  void hovered;
 
   const filters = ["All", "Full-Stack", "Frontend"];
   const filterMap: Record<string, number[]> = {
@@ -64,10 +69,11 @@ export default function Projects() {
   return (
     <section
       id="projects"
+      aria-labelledby="projects-heading"
       className="relative z-10 pt-16 pb-8 md:pt-24 md:pb-12 w-full"
     >
       {/* Ambient glow */}
-      <div className="absolute inset-0 pointer-events-none overflow-hidden">
+      <div className="absolute inset-0 pointer-events-none overflow-hidden" aria-hidden="true">
         <div className="absolute top-1/3 left-1/2 -translate-x-1/2 w-[700px] h-[400px] bg-indigo-600/5 rounded-full blur-[130px]" />
       </div>
 
@@ -75,16 +81,14 @@ export default function Projects() {
 
         {/* ── Header ── */}
         <motion.div
-          initial={{ opacity: 0, y: 30 }}
-          whileInView={{ opacity: 1, y: 0 }}
+          {...(prefersReducedMotion ? {} : { initial: { opacity: 0, y: 30 }, whileInView: { opacity: 1, y: 0 }, viewport: { once: true, margin: "-100px" } })}
           transition={{ duration: 0.6 }}
-          viewport={{ once: true, margin: "-100px" }}
           className="mb-10 md:mb-14 flex flex-col items-center text-center w-full max-w-3xl"
         >
           <span className="text-xs font-bold text-indigo-400 uppercase tracking-[0.3em] mb-3 block">
             My Work
           </span>
-          <h2 className="text-3xl md:text-5xl lg:text-6xl font-extrabold text-white mb-4 md:mb-5 tracking-tight">
+          <h2 id="projects-heading" className="text-3xl md:text-5xl lg:text-6xl font-extrabold text-white mb-4 md:mb-5 tracking-tight">
             Featured <span className="text-indigo-400">Projects</span>
           </h2>
           <p className="text-gray-400 text-sm md:text-base leading-relaxed max-w-xl mb-8">
@@ -116,9 +120,7 @@ export default function Projects() {
           {visible.includes(0) && (
             <motion.div
               key="featured"
-              initial={{ opacity: 0, y: 30 }}
-              animate={{ opacity: 1, y: 0 }}
-              exit={{ opacity: 0, y: -20 }}
+              {...(prefersReducedMotion ? {} : { initial: { opacity: 0, y: 30 }, animate: { opacity: 1, y: 0 }, exit: { opacity: 0, y: -20 } })}
               transition={{ duration: 0.5 }}
               className="w-full mb-5 lg:mb-7"
             >
@@ -126,6 +128,7 @@ export default function Projects() {
                 href={projects[0].link}
                 target="_blank"
                 rel="noopener noreferrer"
+                aria-label={`${projects[0].title} — open live demo`}
                 onMouseEnter={() => setHovered(0)}
                 onMouseLeave={() => setHovered(null)}
                 className="group relative flex flex-col lg:flex-row overflow-hidden rounded-3xl bg-[#0d0d0d] border border-white/[0.07] hover:border-white/[0.15] transition-all duration-500 hover:shadow-[0_20px_80px_rgba(0,0,0,0.6)] focus:outline-none focus:ring-2 focus:ring-indigo-500"
@@ -215,11 +218,13 @@ export default function Projects() {
                   href={project.link}
                   target="_blank"
                   rel="noopener noreferrer"
-                  initial={{ opacity: 0, y: 30 }}
-                  animate={{ opacity: 1, y: 0 }}
-                  exit={{ opacity: 0, y: -20 }}
+                  aria-label={`${project.title} — open live demo`}
+                  {...(prefersReducedMotion
+                    ? {}
+                    : { initial: { opacity: 0, y: 30 }, animate: { opacity: 1, y: 0 }, exit: { opacity: 0, y: -20 } }
+                  )}
                   transition={{ duration: 0.5, delay: i * 0.1 }}
-                  whileHover={{ y: -4 }}
+                  whileHover={prefersReducedMotion ? {} : { y: -4 }}
                   onMouseEnter={() => setHovered(realIndex)}
                   onMouseLeave={() => setHovered(null)}
                   className="group relative flex flex-col overflow-hidden rounded-2xl bg-[#0d0d0d] border border-white/[0.07] hover:border-white/[0.15] focus:outline-none focus:ring-2 focus:ring-indigo-500 transition-all duration-500 hover:shadow-[0_12px_50px_rgba(0,0,0,0.5)]"
@@ -296,10 +301,8 @@ export default function Projects() {
 
         {/* ── Bottom stats bar ── */}
         <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          whileInView={{ opacity: 1, y: 0 }}
+          {...(prefersReducedMotion ? {} : { initial: { opacity: 0, y: 20 }, whileInView: { opacity: 1, y: 0 }, viewport: { once: true } })}
           transition={{ duration: 0.6, delay: 0.2 }}
-          viewport={{ once: true }}
           className="mt-12 w-full flex flex-col sm:flex-row items-center justify-between gap-6 pt-8 border-t border-white/[0.05]"
         >
           <div className="flex items-center gap-8">

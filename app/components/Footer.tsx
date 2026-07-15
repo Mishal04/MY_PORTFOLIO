@@ -3,6 +3,7 @@
 import { motion } from "framer-motion";
 import { FaLinkedin, FaInstagram, FaGithub } from "react-icons/fa";
 import Link from "next/link";
+import { useReducedMotion } from "@/app/hooks/useReducedMotion";
 
 const navLinks = [
   { label: "About",      href: "/about"      },
@@ -36,20 +37,19 @@ const socials = [
 
 export default function Footer() {
   const year = new Date().getFullYear();
+  const prefersReducedMotion = useReducedMotion();
 
   return (
-    <footer className="relative w-full border-t border-white/[0.07] bg-transparent overflow-hidden">
+    <footer className="relative w-full border-t border-white/[0.07] bg-transparent overflow-hidden" aria-label="Site footer">
 
       {/* Subtle top glow */}
-      <div className="absolute top-0 left-1/2 -translate-x-1/2 w-[500px] h-px bg-gradient-to-r from-transparent via-indigo-500/40 to-transparent pointer-events-none" />
+      <div className="absolute top-0 left-1/2 -translate-x-1/2 w-[500px] h-px bg-gradient-to-r from-transparent via-indigo-500/40 to-transparent pointer-events-none" aria-hidden="true" />
 
       <div className="w-full max-w-6xl mx-auto px-6 md:px-12 lg:px-16 py-10 md:py-12">
 
         <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          whileInView={{ opacity: 1, y: 0 }}
+          {...(prefersReducedMotion ? {} : { initial: { opacity: 0, y: 20 }, whileInView: { opacity: 1, y: 0 }, viewport: { once: true } })}
           transition={{ duration: 0.6 }}
-          viewport={{ once: true }}
           className="flex flex-col md:flex-row items-center justify-between gap-8 md:gap-4"
         >
 
@@ -67,7 +67,7 @@ export default function Footer() {
           </div>
 
           {/* Nav links */}
-          <nav className="flex items-center gap-5 md:gap-7">
+          <nav aria-label="Footer navigation" className="flex items-center gap-5 md:gap-7">
             {navLinks.map((link) => (
               <Link
                 key={link.label}
@@ -80,7 +80,7 @@ export default function Footer() {
           </nav>
 
           {/* Socials */}
-          <div className="flex items-center gap-3">
+          <div className="flex items-center gap-3" aria-label="Social media links">
             {socials.map(({ label, href, icon: Icon, hover }) => (
               <a
                 key={label}
@@ -90,7 +90,7 @@ export default function Footer() {
                 aria-label={label}
                 className={`w-9 h-9 flex items-center justify-center rounded-full border border-white/[0.08] text-gray-500 transition-all duration-300 ${hover}`}
               >
-                <Icon size={15} />
+                <Icon size={15} aria-hidden="true" />
               </a>
             ))}
           </div>
@@ -99,10 +99,8 @@ export default function Footer() {
 
         {/* Bottom bar */}
         <motion.div
-          initial={{ opacity: 0 }}
-          whileInView={{ opacity: 1 }}
+          {...(prefersReducedMotion ? {} : { initial: { opacity: 0 }, whileInView: { opacity: 1 }, viewport: { once: true } })}
           transition={{ duration: 0.6, delay: 0.2 }}
-          viewport={{ once: true }}
           className="mt-8 pt-6 border-t border-white/[0.05] flex flex-col sm:flex-row items-center justify-between gap-3"
         >
           <p className="text-gray-600 text-[11px] text-center sm:text-left">

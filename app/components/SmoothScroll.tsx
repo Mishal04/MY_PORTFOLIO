@@ -5,55 +5,51 @@ import Lenis from '@studio-freight/lenis';
 
 export default function SmoothScroll({ children }: { children: React.ReactNode }) {
   const lenisRef = useRef<Lenis | null>(null);
+  const rafRef   = useRef<number | null>(null);
 
   useEffect(() => {
     if (lenisRef.current) return;
 
-    const lenis = new Lenis({
-      duration: 1.2, // Reduced duration for more responsive scroll
-      easing: (t: number) => Math.min(1, 1.001 - Math.pow(2, -10 * t)),
-      smoothWheel: true,
-      syncTouch: false, // Fallback to native smooth touch scroll
-      wheelMultiplier: 1.1, // More responsive wheel feel
-      touchMultiplier: 1,
-    } as any);
+    // Respect prefers-reduced-motion — disable smooth scroll entirely
+    const prefersReduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 
-    lenisRef.current = lenis;
+    if (!prefersReduced) {
+      const lenis = new Lenis({
+        duration: 1.2,
+        easing: (t: number) => Math.min(1, 1.001 - Math.pow(2, -10 * t)),
+        smoothWheel: true,
+        syncTouch: false,
+        wheelMultiplier: 1.1,
+        touchMultiplier: 1,
+      } as ConstructorParameters<typeof Lenis>[0]);
 
-    function raf(time: number) {
-      if (lenisRef.current) {
-        lenisRef.current.raf(time);
+      lenisRef.current = lenis;
+
+      function raf(time: number) {
+        lenisRef.current?.raf(time);
+        rafRef.current = requestAnimationFrame(raf);
       }
-      requestAnimationFrame(raf);
+      rafRef.current = requestAnimationFrame(raf);
     }
-
-    requestAnimationFrame(raf);
 
     const handleAnchorClick = (e: MouseEvent) => {
       const target = e.target as HTMLElement;
       const anchor = target.closest('a');
       if (!anchor) return;
-      
-      const href = anchor.getAttribute('href');
-      if (href && href.startsWith('#')) {
-        e.preventDefault();
-        if (href === '#') {
-          if (lenisRef.current) {
-            lenisRef.current.scrollTo(0);
-          } else {
-            window.scrollTo({ top: 0, behavior: 'smooth' });
-          }
-          return;
-        }
 
-        const element = document.querySelector(href) as HTMLElement;
-        if (element) {
-          if (lenisRef.current) {
-            lenisRef.current.scrollTo(element);
-          } else {
-            element.scrollIntoView({ behavior: 'smooth' });
-          }
-        }
+      const href = anchor.getAttribute('href');
+      if (!href?.startsWith('#')) return;
+
+      e.preventDefault();
+
+      if (href === '#') {
+        lenisRef.current ? lenisRef.current.scrollTo(0) : window.scrollTo({ top: 0, behavior: 'smooth' });
+        return;
+      }
+
+      const element = document.querySelector(href) as HTMLElement | null;
+      if (element) {
+        lenisRef.current ? lenisRef.current.scrollTo(element) : element.scrollIntoView({ behavior: 'smooth' });
       }
     };
 
@@ -61,10 +57,13 @@ export default function SmoothScroll({ children }: { children: React.ReactNode }
 
     return () => {
       document.documentElement.removeEventListener('click', handleAnchorClick);
-      if (lenisRef.current) {
-        lenisRef.current.destroy();
-        lenisRef.current = null;
+      // Cancel animation frame before destroying to prevent memory leak
+      if (rafRef.current !== null) {
+        cancelAnimationFrame(rafRef.current);
+        rafRef.current = null;
       }
+      lenisRef.current?.destroy();
+      lenisRef.current = null;
     };
   }, []);
 
