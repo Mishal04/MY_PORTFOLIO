@@ -1,6 +1,6 @@
 "use client";
 
-import { motion } from "framer-motion";
+import { LazyMotion, domAnimation, m } from "framer-motion";
 import {
   SiReact, SiNextdotjs, SiTypescript, SiJavascript,
   SiTailwindcss, SiNodedotjs, SiMongodb, SiFirebase,
@@ -35,6 +35,7 @@ export default function TechMarquee() {
   const prefersReducedMotion = useReducedMotion();
 
   return (
+    <LazyMotion features={domAnimation}>
     <section
       className="relative w-full py-10 md:py-14 overflow-hidden"
       aria-label="Technologies I work with"
@@ -49,35 +50,34 @@ export default function TechMarquee() {
       <div className="absolute inset-y-0 right-0 w-24 md:w-40 z-10 bg-gradient-to-l from-[#0a0a0a] to-transparent pointer-events-none" aria-hidden="true" />
 
       {/* Section label */}
-      <motion.p
+      <m.p
         {...(prefersReducedMotion ? {} : { initial: { opacity: 0, y: 10 }, whileInView: { opacity: 1, y: 0 }, viewport: { once: true } })}
         transition={{ duration: 0.6 }}
         className="text-center text-[10px] md:text-xs font-bold tracking-[0.3em] uppercase text-gray-600 mb-6"
         aria-hidden="true"
       >
         Technologies I work with
-      </motion.p>
+      </m.p>
 
       {/* Scrolling track — paused when reduced motion is preferred */}
-      <div
-        className="flex overflow-hidden"
-        role="list"
+      <ul
+        className="flex overflow-hidden list-none m-0 p-0"
         aria-label="Technology list"
       >
-        <div
-          className="flex gap-6 md:gap-10 shrink-0"
+        <li
+          className="flex gap-6 md:gap-10 shrink-0 list-none"
           style={{
             animation: prefersReducedMotion ? "none" : "marquee 35s linear infinite",
             willChange: prefersReducedMotion ? "auto" : "transform",
           }}
+          aria-hidden="true"
         >
           {doubled.map((tech, i) => {
             const Icon = tech.icon;
-            const isAriaVisible = i < techs.length; // only announce first set to screen readers
+            const isAriaVisible = i < techs.length;
             return (
-              <div
-                key={i}
-                role="listitem"
+              <span
+                key={`${tech.name}-${i}`}
                 aria-hidden={!isAriaVisible}
                 className="flex items-center gap-2.5 px-4 py-2 rounded-xl bg-white/[0.03] border border-white/[0.06] hover:bg-white/[0.07] hover:border-white/10 transition-all duration-300 group cursor-default shrink-0"
               >
@@ -90,13 +90,14 @@ export default function TechMarquee() {
                 <span className="text-gray-400 group-hover:text-white text-xs md:text-sm font-medium transition-colors duration-300 whitespace-nowrap">
                   {tech.name}
                 </span>
-              </div>
+              </span>
             );
           })}
-        </div>
-      </div>
+        </li>
+      </ul>
 
       {/* keyframes injected via globals.css — no dangerouslySetInnerHTML */}
     </section>
+    </LazyMotion>
   );
 }

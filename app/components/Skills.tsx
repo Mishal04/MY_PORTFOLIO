@@ -1,6 +1,6 @@
 'use client';
 
-import { motion } from 'framer-motion';
+import { LazyMotion, domAnimation, m } from 'framer-motion';
 import {
   SiReact, SiNextdotjs, SiTypescript, SiJavascript,
   SiTailwindcss, SiHtml5, SiCss,
@@ -71,17 +71,18 @@ const cardVariants = {
   },
 };
 
+// Static reduced-motion variant — no animation
+const reducedCardVariants = {
+  hidden:   { opacity: 1, y: 0, scale: 1 },
+  visible:  { opacity: 1, y: 0, scale: 1, transition: { duration: 0 } },
+};
+
 export default function Skills() {
   const prefersReducedMotion = useReducedMotion();
-
-  const reducedCardVariants = {
-    hidden: { opacity: 1, y: 0, scale: 1 },
-    visible: { opacity: 1, y: 0, scale: 1, transition: { duration: 0 } },
-  };
-
-  const activeCardVariants = prefersReducedMotion ? reducedCardVariants : cardVariants;
+  const activeCardVariants   = prefersReducedMotion ? reducedCardVariants : cardVariants;
 
   return (
+    <LazyMotion features={domAnimation}>
     <section id="skills" aria-labelledby="skills-heading" className="py-16 md:py-24 relative overflow-hidden bg-transparent">
 
       {/* Ambient glows */}
@@ -93,7 +94,7 @@ export default function Skills() {
       <div className="relative z-10 w-full max-w-6xl mx-auto px-6 md:px-12 lg:px-16 flex flex-col items-center gap-14 md:gap-20">
 
         {/* Header */}
-        <motion.div
+        <m.div
           {...(prefersReducedMotion ? {} : { initial: { opacity: 0, y: 20 }, whileInView: { opacity: 1, y: 0 }, viewport: { once: true } })}
           transition={{ duration: 0.6 }}
           className="text-center"
@@ -108,12 +109,12 @@ export default function Skills() {
             A full-stack toolkit — from interactive UIs to scalable APIs and
             production-grade deployments.
           </p>
-        </motion.div>
+        </m.div>
 
         {/* Skill groups */}
         <div className="w-full flex flex-col gap-12 md:gap-16">
           {skillGroups.map((group, gi) => (
-            <motion.div
+            <m.div
               key={group.category}
               {...(prefersReducedMotion ? {} : { initial: { opacity: 0, y: 30 }, whileInView: { opacity: 1, y: 0 }, viewport: { once: true, margin: '-80px' } })}
               transition={{ duration: 0.6, delay: gi * 0.1 }}
@@ -142,7 +143,7 @@ export default function Skills() {
               </div>
 
               {/* Icon cards grid */}
-              <motion.div
+              <m.div
                 variants={prefersReducedMotion ? {} : containerVariants}
                 initial={prefersReducedMotion ? false : "hidden"}
                 whileInView={prefersReducedMotion ? undefined : "visible"}
@@ -154,7 +155,7 @@ export default function Skills() {
                 {group.skills.map((skill) => {
                   const Icon = skill.icon;
                   return (
-                    <motion.div
+                    <m.div
                       key={skill.name}
                       variants={prefersReducedMotion ? {} : activeCardVariants}
                       whileHover={prefersReducedMotion ? {} : { y: -4, scale: 1.05 }}
@@ -170,16 +171,16 @@ export default function Skills() {
                       <span className="text-[10px] md:text-xs text-gray-500 group-hover:text-gray-300 font-medium text-center transition-colors duration-300 leading-tight">
                         {skill.name}
                       </span>
-                    </motion.div>
+                    </m.div>
                   );
                 })}
-              </motion.div>
-            </motion.div>
+              </m.div>
+            </m.div>
           ))}
         </div>
 
         {/* Bottom bar */}
-        <motion.div
+        <m.div
           {...(prefersReducedMotion ? {} : { initial: { opacity: 0 }, whileInView: { opacity: 1 }, viewport: { once: true } })}
           transition={{ duration: 0.6 }}
           className="w-full pt-6 border-t border-white/[0.05] flex flex-col sm:flex-row items-center justify-between gap-3"
@@ -191,9 +192,10 @@ export default function Skills() {
             <span className="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-pulse" aria-hidden="true" />
             <span className="text-gray-500 text-xs">Open to new projects</span>
           </div>
-        </motion.div>
+        </m.div>
 
       </div>
     </section>
+    </LazyMotion>
   );
 }

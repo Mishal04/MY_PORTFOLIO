@@ -1,6 +1,6 @@
 'use client';
 
-import { motion } from 'framer-motion';
+import { LazyMotion, domAnimation, m } from 'framer-motion';
 import { Canvas, useFrame } from '@react-three/fiber';
 import { useRef, Suspense, useMemo } from 'react';
 import { Float, MeshDistortMaterial, Points, PointMaterial } from '@react-three/drei';
@@ -65,63 +65,65 @@ const About = () => {
   const prefersReducedMotion = useReducedMotion();
 
   return (
-    <section
-      id="about"
-      aria-labelledby="about-heading"
-      className="min-h-[80vh] md:min-h-[75vh] py-16 flex items-center justify-center relative overflow-hidden bg-transparent"
-    >
-      <div className="w-full max-w-6xl mx-auto px-6 md:px-12 lg:px-16 flex flex-col lg:flex-row items-center gap-4 sm:gap-6 md:gap-12 lg:gap-16">
+    <LazyMotion features={domAnimation}>
+      <section
+        id="about"
+        aria-labelledby="about-heading"
+        className="min-h-[80vh] md:min-h-[75vh] py-16 flex items-center justify-center relative overflow-hidden bg-transparent"
+      >
+        <div className="w-full max-w-6xl mx-auto px-6 md:px-12 lg:px-16 flex flex-col lg:flex-row items-center gap-4 sm:gap-6 md:gap-12 lg:gap-16">
 
-        {/* Text */}
-        <div className="w-full lg:w-1/2 text-center lg:text-left z-10">
-          <motion.div
-            {...(prefersReducedMotion ? {} : { initial: { opacity: 0, x: -30 }, whileInView: { opacity: 1, x: 0 }, viewport: { once: true } })}
-            transition={{ duration: 0.8 }}
-          >
-            <h2 id="about-heading" className="text-xs sm:text-sm font-semibold uppercase tracking-[0.2em] text-indigo-400 mb-2 sm:mb-4">
-              Expertise
-            </h2>
-            <h3 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-bold text-white mb-4 sm:mb-8 leading-[1.1] tracking-tight z-20 relative">
-              I code with passion <br className="hidden lg:block" />
-              <span className="text-indigo-400 drop-shadow-md">&amp; deliver excellence.</span>
-            </h3>
-            <p className="text-gray-400 text-base sm:text-lg md:text-xl leading-relaxed mb-6 sm:mb-10 max-w-2xl mx-auto lg:mx-0 font-light">
-              I am Mishal, a full-stack web developer. I build responsive, scalable, and modern web applications that combine clean design with efficient backend functionality.
-            </p>
-            <div className="grid grid-cols-2 gap-4 sm:gap-8 pt-4 sm:pt-8 border-t border-white/5 uppercase tracking-[0.1em] text-[10px] md:text-xs text-gray-400 font-bold">
-              <div className="flex flex-col">
-                <span className="text-indigo-400 mb-2">My Approach</span>
-                <span>User-Centric Design</span>
-              </div>
-              <div className="flex flex-col">
-                <span className="text-indigo-400 mb-2">Philosophy</span>
-                <span>Clean &amp; Efficient Code</span>
-              </div>
-            </div>
-          </motion.div>
-        </div>
-
-        {/* 3-D visual — aria-hidden, paused when reduced motion */}
-        <div
-          className="w-full lg:w-1/2 flex justify-center items-center relative h-[250px] sm:h-[300px] md:h-[450px] lg:h-[600px]"
-          aria-hidden="true"
-        >
-          <div className="w-full h-full absolute inset-0 cursor-crosshair lg:translate-x-8">
-            <Canvas
-              camera={{ position: [0, 0, 10], fov: 45 }}
-              gl={{ antialias: true, powerPreference: 'high-performance' }}
+          {/* Text */}
+          <div className="w-full lg:w-1/2 text-center lg:text-left z-10">
+            <m.div
+              {...(prefersReducedMotion ? {} : { initial: { opacity: 0, x: -30 }, whileInView: { opacity: 1, x: 0 }, viewport: { once: true } })}
+              transition={{ duration: 0.8 }}
             >
-              <Suspense fallback={null}>
-                <ambientLight intensity={0.4} />
-                <pointLight position={[10, 10, 10]} intensity={1.5} color="#6366f1" />
-                <AbstractTechVisual paused={prefersReducedMotion} />
-              </Suspense>
-            </Canvas>
+              <h2 id="about-heading" className="text-xs sm:text-sm font-semibold uppercase tracking-[0.2em] text-indigo-400 mb-2 sm:mb-4">
+                Expertise
+              </h2>
+              <h3 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-bold text-white mb-4 sm:mb-8 leading-[1.1] tracking-tight z-20 relative">
+                I code with passion <br className="hidden lg:block" />
+                <span className="text-indigo-400 drop-shadow-md">&amp; deliver excellence.</span>
+              </h3>
+              <p className="text-gray-400 text-base sm:text-lg md:text-xl leading-relaxed mb-6 sm:mb-10 max-w-2xl mx-auto lg:mx-0 font-light">
+                I am Mishal, a full-stack web developer. I build responsive, scalable, and modern web applications that combine clean design with efficient backend functionality.
+              </p>
+              <div className="grid grid-cols-2 gap-4 sm:gap-8 pt-4 sm:pt-8 border-t border-white/5 uppercase tracking-[0.1em] text-[10px] md:text-xs text-gray-400 font-bold">
+                <div className="flex flex-col">
+                  <span className="text-indigo-400 mb-2">My Approach</span>
+                  <span>User-Centric Design</span>
+                </div>
+                <div className="flex flex-col">
+                  <span className="text-indigo-400 mb-2">Philosophy</span>
+                  <span>Clean &amp; Efficient Code</span>
+                </div>
+              </div>
+            </m.div>
           </div>
-          <div className="absolute -z-10 w-full h-full bg-indigo-600/5 rounded-full blur-[120px] top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2" />
+
+          {/* 3-D visual — aria-hidden, paused when reduced motion */}
+          <div
+            className="w-full lg:w-1/2 flex justify-center items-center relative h-[250px] sm:h-[300px] md:h-[450px] lg:h-[600px]"
+            aria-hidden="true"
+          >
+            <div className="w-full h-full absolute inset-0 cursor-crosshair lg:translate-x-8">
+              <Canvas
+                camera={{ position: [0, 0, 10], fov: 45 }}
+                gl={{ antialias: true, powerPreference: 'high-performance' }}
+              >
+                <Suspense fallback={null}>
+                  <ambientLight intensity={0.4} />
+                  <pointLight position={[10, 10, 10]} intensity={1.5} color="#6366f1" />
+                  <AbstractTechVisual paused={prefersReducedMotion} />
+                </Suspense>
+              </Canvas>
+            </div>
+            <div className="absolute -z-10 w-full h-full bg-indigo-600/5 rounded-full blur-[120px] top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2" />
+          </div>
         </div>
-      </div>
-    </section>
+      </section>
+    </LazyMotion>
   );
 };
 

@@ -1,8 +1,11 @@
 'use client';
 
 import { useEffect, useRef, useState } from 'react';
-import { motion, useSpring, useMotionValue } from 'framer-motion';
+import { LazyMotion, domAnimation, m, useSpring, useMotionValue } from 'framer-motion';
 import { useReducedMotion } from '@/app/hooks/useReducedMotion';
+
+// Static — defined outside component to avoid re-creation on every render
+const SPRING_OPTIONS = { damping: 25, stiffness: 400, mass: 0.5 };
 
 export default function CustomCursor() {
   const cursorX = useMotionValue(-100);
@@ -12,9 +15,8 @@ export default function CustomCursor() {
   const [isTouch, setIsTouch]       = useState(false);
   const prefersReducedMotion        = useReducedMotion();
 
-  const springOptions = { damping: 25, stiffness: 400, mass: 0.5 };
-  const smoothX = useSpring(cursorX, springOptions);
-  const smoothY = useSpring(cursorY, springOptions);
+  const smoothX = useSpring(cursorX, SPRING_OPTIONS);
+  const smoothY = useSpring(cursorY, SPRING_OPTIONS);
 
   useEffect(() => {
     // Hide cursor on touch devices — they have no pointer
@@ -57,21 +59,23 @@ export default function CustomCursor() {
   if (isTouch || prefersReducedMotion) return null;
 
   return (
-    <motion.div
-      aria-hidden="true"
-      style={{
-        translateX: smoothX,
-        translateY: smoothY,
-        x: '-50%',
-        y: '-50%',
-      }}
-      animate={{
-        scale:           isClicking ? 0.8 : isHovering ? 1.5 : 1,
-        backgroundColor: isHovering ? 'rgba(99, 102, 241, 0.1)' : 'rgba(99, 102, 241, 0)',
-      }}
-      className="fixed top-0 left-0 w-8 h-8 rounded-full pointer-events-none z-[9999] hidden md:flex items-center justify-center border border-indigo-400/30"
-    >
-      <div className="w-1.5 h-1.5 bg-indigo-400 rounded-full shadow-[0_0_5px_rgba(129,140,248,0.8)]" />
-    </motion.div>
+    <LazyMotion features={domAnimation}>
+      <m.div
+        aria-hidden="true"
+        style={{
+          translateX: smoothX,
+          translateY: smoothY,
+          x: '-50%',
+          y: '-50%',
+        }}
+        animate={{
+          scale:           isClicking ? 0.8 : isHovering ? 1.5 : 1,
+          backgroundColor: isHovering ? 'rgba(99, 102, 241, 0.1)' : 'rgba(99, 102, 241, 0)',
+        }}
+        className="fixed top-0 left-0 w-8 h-8 rounded-full pointer-events-none z-[9999] hidden md:flex items-center justify-center border border-indigo-400/30"
+      >
+        <div className="w-1.5 h-1.5 bg-indigo-400 rounded-full shadow-[0_0_5px_rgba(129,140,248,0.8)]" />
+      </m.div>
+    </LazyMotion>
   );
 }

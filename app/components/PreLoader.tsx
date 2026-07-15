@@ -163,7 +163,7 @@ export default function PreLoader() {
           {/* Letters */}
           <div className="flex items-baseline">
             {NAME.split("").map((char, i) => (
-              <div key={i} className="pl-letter-wrap">
+              <div key={`letter-${char}-${i}`} className="pl-letter-wrap">
                 <span
                   className={`pl-letter pl-letter-${i} text-[clamp(3.5rem,13vw,8.5rem)] font-black tracking-[-0.03em] text-white`}
                 >

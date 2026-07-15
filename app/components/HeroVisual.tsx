@@ -1,6 +1,6 @@
 'use client';
 
-import { motion } from 'framer-motion';
+import { LazyMotion, domAnimation, m } from 'framer-motion';
 import { Canvas, useFrame } from '@react-three/fiber';
 import { useRef, Suspense, useState, useMemo } from 'react';
 import { Float, Sphere, RoundedBox, MeshDistortMaterial } from '@react-three/drei';
@@ -111,22 +111,24 @@ const GirlyCartoonCharacter = () => {
 
 export default function HeroVisual() {
   return (
-    <div className="w-full h-[250px] sm:h-[300px] md:h-[450px] lg:h-[550px] relative pointer-events-none mb-0 flex-shrink-0">
-      <Canvas 
-        camera={{ position: [0, 0, 10], fov: 45 }} 
-        gl={{ 
-            antialias: true, 
-            powerPreference: "high-performance",
-            alpha: true
-        }} 
-      >
-        <Suspense fallback={null}>
-          <ambientLight intensity={0.9} />
-          <spotLight position={[10, 10, 10]} angle={0.2} penumbra={1} intensity={2} />
-          <pointLight position={[-10, 5, 10]} color="#fb7185" intensity={1.2} />
-          <GirlyCartoonCharacter />
-        </Suspense>
-      </Canvas>
-    </div>
+    <LazyMotion features={domAnimation}>
+      <div className="w-full h-[250px] sm:h-[300px] md:h-[450px] lg:h-[550px] relative pointer-events-none mb-0 flex-shrink-0">
+        <Canvas 
+          camera={{ position: [0, 0, 10], fov: 45 }} 
+          gl={{ 
+              antialias: true, 
+              powerPreference: "high-performance",
+              alpha: true
+          }} 
+        >
+          <Suspense fallback={null}>
+            <ambientLight intensity={0.9} />
+            <spotLight position={[10, 10, 10]} angle={0.2} penumbra={1} intensity={2} />
+            <pointLight position={[-10, 5, 10]} color="#fb7185" intensity={1.2} />
+            <GirlyCartoonCharacter />
+          </Suspense>
+        </Canvas>
+      </div>
+    </LazyMotion>
   );
 }
