@@ -21,16 +21,16 @@ const projects = [
     featured: true,
   },
   {
-    title: "Portfolio Website",
-    category: "Personal Branding",
-    year: "2024",
+    title: "Task Manager",
+    category: "Full-Stack SaaS App",
+    year: "2025",
     description:
-      "An animated personal portfolio showcasing projects, skills and contact. Built with React and Framer Motion for fluid page transitions and micro-interactions.",
-    image: "/projects/portfolio.png",
-    link: "https://my-life-career.vercel.app/",
-    github: "https://github.com/Mishal04",
-    tags: ["React", "Framer Motion", "CSS3", "Vercel"],
-    accent: "#6366f1",
+      "TaskFlow Pro — a beautifully designed task management platform with dashboards, analytics, priority tagging, custom categories, and real-time activity tracking. Built for high-performance individuals and teams.",
+    image: "/projects/task-manager.png",
+    link: "https://github.com/Mishal04/Task-Manager",
+    github: "https://github.com/Mishal04/Task-Manager",
+    tags: ["React", "Node.js", "MongoDB", "Tailwind CSS"],
+    accent: "#a855f7",
     number: "02",
     featured: true,
   },
@@ -56,8 +56,8 @@ type Filter = typeof FILTERS[number];
 
 const FILTER_INDICES: Record<Filter, number[]> = {
   "All":        [0, 1, 2],
-  "Full-Stack": [0],
-  "Frontend":   [1, 2],
+  "Full-Stack": [0, 1],
+  "Frontend":   [2],
 };
 
 export default function Projects() {
