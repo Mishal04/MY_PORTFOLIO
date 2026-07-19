@@ -2,7 +2,6 @@ import type { Metadata, Viewport } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
 import ClientShell from "./components/ClientShell";
-import ClientOnly from "./components/ClientOnly";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -48,10 +47,8 @@ export default function RootLayout({
       className={`${geistSans.variable} ${geistMono.variable} antialiased`}
     >
       <body className="bg-[#0a0a0a] text-white overflow-x-hidden" suppressHydrationWarning>
-        <ClientOnly>
-          <ClientShell />
-          {children}
-        </ClientOnly>
+        <ClientShell />
+        {children}
       </body>
     </html>
   );
