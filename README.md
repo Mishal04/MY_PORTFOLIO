@@ -1,36 +1,178 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+<div align="center">
 
-## Getting Started
+# 🌟 MY PORTFOLIO
 
-First, run the development server:
+### A modern, interactive developer portfolio built with Next.js, TypeScript & Framer Motion.
+
+<p>
+  <a href="YOUR_LIVE_URL">
+    <img src="https://img.shields.io/badge/Live_Demo-Visit-DB61A2?style=for-the-badge&logo=vercel&logoColor=white"/>
+  </a>
+  <a href="https://github.com/Mishal04/MY_PORTFOLIO">
+    <img src="https://img.shields.io/badge/GitHub-Repository-181717?style=for-the-badge&logo=github"/>
+  </a>
+</p>
+
+</div>
+
+---
+
+# 📖 About
+
+This is my personal developer portfolio designed to showcase my skills, projects, technical experience, and professional journey as a **Full Stack Developer**.
+
+The portfolio features a modern UI with smooth animations, responsive layouts, GitHub integration, project showcases, and a contact form to provide an engaging user experience across all devices.
+
+---
+
+# ✨ Features
+
+- 🎨 Modern & Minimal UI
+- 📱 Fully Responsive Design
+- ⚡ Built with Next.js App Router
+- ✨ Smooth Animations using Framer Motion & GSAP
+- 👩‍💻 Projects Showcase
+- 💼 Experience Timeline
+- 🛠 Skills Section
+- 📊 GitHub Stats Integration
+- 📄 Resume Download
+- 📬 Contact Form API
+- 🌙 Performance Optimized
+
+---
+
+# 🛠 Tech Stack
+
+### Frontend
+
+- Next.js
+- React
+- TypeScript
+- CSS3
+- Framer Motion
+- GSAP
+
+### 3D & Animation
+
+- Three.js
+- React Three Fiber
+- Drei
+
+### Forms & Validation
+
+- React Hook Form
+- Zod
+
+### Deployment
+
+- Vercel
+
+---
+
+# 📂 Project Structure
+
+```text
+app/
+ ├── components/
+ ├── about/
+ ├── projects/
+ ├── skills/
+ ├── experience/
+ ├── contact/
+ ├── resume/
+ └── api/
+
+public/
+ ├── projects/
+ └── resume.pdf
+```
+
+---
+
+# 📸 Screenshots
+
+## 🏠 Home
+
+> Add homepage screenshot here
+
+## 💼 Projects
+
+> Add projects section screenshot here
+
+## 📱 Skills
+
+> Add skills section screenshot here
+
+## 📬 Contact
+
+> Add contact section screenshot here
+
+---
+
+# 🚀 Getting Started
+
+## Clone Repository
+
+```bash
+git clone https://github.com/Mishal04/MY_PORTFOLIO.git
+```
+
+## Install Dependencies
+
+```bash
+npm install
+```
+
+## Start Development Server
 
 ```bash
 npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+Open:
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+```
+http://localhost:3000
+```
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+---
 
-## Learn More
+# 🌐 Live Demo
 
-To learn more about Next.js, take a look at the following resources:
+🔗 **Add your Vercel URL here**
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+---
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+# 🎯 Future Improvements
 
-## Deploy on Vercel
+- Dark / Light Theme Toggle
+- Blog Section
+- Visitor Analytics
+- Multi-language Support
+- Project Filtering
+- CMS Integration
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+---
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+# 👩‍💻 Author
+
+## Mishal Ashfaq
+
+- 💼 Full Stack Developer
+- 🌐 Portfolio: YOUR_PORTFOLIO_URL
+- 💻 GitHub: https://github.com/Mishal04
+- 💼 LinkedIn: https://www.linkedin.com/in/mishal-ashfaq-503237332/
+
+---
+
+# ⭐ Support
+
+If you like this project, consider giving it a ⭐ on GitHub.
+
+---
+
+<div align="center">
+
+Made with ❤️ by **Mishal Ashfaq**
+
+</div>
