@@ -77,11 +77,6 @@ The portfolio is designed with a modern space-inspired UI, smooth animations and
 
 <img src="./assets/screenshots/contact.png" width="100%"/>
 
----
-
-## 🌟 Full Preview
-
-<img src="./assets/screenshots/preview.png" width="100%"/>
 
 ---
 
