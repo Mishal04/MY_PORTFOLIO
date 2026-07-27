@@ -1,16 +1,30 @@
 <div align="center">
 
-# 🌟 MY PORTFOLIO
+# ✨ Mishal Ashfaq Portfolio
 
-### A modern, interactive developer portfolio built with Next.js, TypeScript & Framer Motion.
+### Full Stack Developer | MERN Stack | Next.js
 
 <p>
-  <a href="YOUR_LIVE_URL">
-    <img src="https://img.shields.io/badge/Live_Demo-Visit-DB61A2?style=for-the-badge&logo=vercel&logoColor=white"/>
-  </a>
-  <a href="https://github.com/Mishal04/MY_PORTFOLIO">
-    <img src="https://img.shields.io/badge/GitHub-Repository-181717?style=for-the-badge&logo=github"/>
-  </a>
+A modern, responsive, and interactive developer portfolio built with Next.js to showcase my projects, skills, experience, and professional journey.
+</p>
+
+<p align="center">
+<img src="./assets/preview.png" width="100%" alt="Portfolio Preview"/>
+</p>
+
+<p align="center">
+<a href="https://my-portfolio-srff.vercel.app/">
+<img src="https://img.shields.io/badge/🌐 Live Demo-6C63FF?style=for-the-badge" />
+</a>
+
+<a href="https://github.com/Mishal04">
+<img src="https://img.shields.io/badge/GitHub-181717?style=for-the-badge&logo=github" />
+</a>
+
+<a href="https://www.linkedin.com/in/mishal-ashfaq-503237332/">
+<img src="https://img.shields.io/badge/LinkedIn-0A66C2?style=for-the-badge&logo=linkedin" />
+</a>
+
 </p>
 
 </div>
@@ -19,25 +33,23 @@
 
 # 📖 About
 
-This is my personal developer portfolio designed to showcase my skills, projects, technical experience, and professional journey as a **Full Stack Developer**.
-
-The portfolio features a modern UI with smooth animations, responsive layouts, GitHub integration, project showcases, and a contact form to provide an engaging user experience across all devices.
+This portfolio represents my journey as a Full Stack Developer. It showcases my technical expertise, featured projects, work experience, GitHub activity, and provides an easy way for recruiters and clients to connect with me.
 
 ---
 
-# ✨ Features
+# 🚀 Features
 
-- 🎨 Modern & Minimal UI
-- 📱 Fully Responsive Design
-- ⚡ Built with Next.js App Router
-- ✨ Smooth Animations using Framer Motion & GSAP
-- 👩‍💻 Projects Showcase
+- ✨ Modern & Clean UI
+- 🌙 Dark Theme
+- 📱 Fully Responsive
+- ⚡ Fast Performance
+- 🎭 Smooth Animations
+- 📂 Featured Projects
 - 💼 Experience Timeline
-- 🛠 Skills Section
-- 📊 GitHub Stats Integration
-- 📄 Resume Download
-- 📬 Contact Form API
-- 🌙 Performance Optimized
+- 🛠 Technical Skills
+- 📊 GitHub Activity
+- 📩 Functional Contact Form
+- 🔗 Social Media Integration
 
 ---
 
@@ -46,132 +58,126 @@ The portfolio features a modern UI with smooth animations, responsive layouts, G
 ### Frontend
 
 - Next.js
-- React
+- React.js
 - TypeScript
-- CSS3
+- Tailwind CSS
 - Framer Motion
-- GSAP
 
-### 3D & Animation
+### Backend
 
-- Three.js
-- React Three Fiber
-- Drei
+- Node.js
+- Express.js
 
-### Forms & Validation
+### Database
 
-- React Hook Form
-- Zod
+- MongoDB
+- Firebase
+- Supabase
 
 ### Deployment
 
 - Vercel
-
----
-
-# 📂 Project Structure
-
-```text
-app/
- ├── components/
- ├── about/
- ├── projects/
- ├── skills/
- ├── experience/
- ├── contact/
- ├── resume/
- └── api/
-
-public/
- ├── projects/
- └── resume.pdf
-```
+- GitHub
 
 ---
 
 # 📸 Screenshots
 
-## 🏠 Home
+## 🏠 Home Page
 
-> Add homepage screenshot here
-
-## 💼 Projects
-
-> Add projects section screenshot here
-
-## 📱 Skills
-
-> Add skills section screenshot here
-
-## 📬 Contact
-
-> Add contact section screenshot here
+<p align="center">
+<img src="./assets/home.png" width="100%">
+</p>
 
 ---
 
-# 🚀 Getting Started
+## 💼 Featured Projects
 
-## Clone Repository
+<p align="center">
+<img src="./assets/projects.png" width="100%">
+</p>
+
+---
+
+## 📩 Contact Section
+
+<p align="center">
+<img src="./assets/contact.png" width="100%">
+</p>
+
+---
+
+# 📂 Featured Projects
+
+🍔 Food Express
+
+🔐 Password Manager
+
+🏠 Real Estate Platform
+
+✅ Task Manager
+
+💻 Personal Portfolio
+
+---
+
+# ⚙️ Getting Started
+
+Clone the repository
 
 ```bash
 git clone https://github.com/Mishal04/MY_PORTFOLIO.git
 ```
 
-## Install Dependencies
+Go to project folder
+
+```bash
+cd MY_PORTFOLIO
+```
+
+Install dependencies
 
 ```bash
 npm install
 ```
 
-## Start Development Server
+Run development server
 
 ```bash
 npm run dev
-```
-
-Open:
-
-```
-http://localhost:3000
 ```
 
 ---
 
 # 🌐 Live Demo
 
-🔗 **Add your Vercel URL here**
+### 🔗 https://my-portfolio-srff.vercel.app/
 
 ---
 
-# 🎯 Future Improvements
+# 📬 Connect With Me
 
-- Dark / Light Theme Toggle
-- Blog Section
-- Visitor Analytics
-- Multi-language Support
-- Project Filtering
-- CMS Integration
+<p align="left">
 
----
+<a href="mailto:exoticmishaal9@gmail.com">
+<img src="https://img.shields.io/badge/Email-EA4335?style=for-the-badge&logo=gmail&logoColor=white"/>
+</a>
 
-# 👩‍💻 Author
+<a href="https://www.linkedin.com/in/mishal-ashfaq-503237332/">
+<img src="https://img.shields.io/badge/LinkedIn-0A66C2?style=for-the-badge&logo=linkedin"/>
+</a>
 
-## Mishal Ashfaq
+<a href="https://github.com/Mishal04">
+<img src="https://img.shields.io/badge/GitHub-181717?style=for-the-badge&logo=github"/>
+</a>
 
-- 💼 Full Stack Developer
-- 🌐 Portfolio: YOUR_PORTFOLIO_URL
-- 💻 GitHub: https://github.com/Mishal04
-- 💼 LinkedIn: https://www.linkedin.com/in/mishal-ashfaq-503237332/
-
----
-
-# ⭐ Support
-
-If you like this project, consider giving it a ⭐ on GitHub.
+</p>
 
 ---
 
 <div align="center">
+
+## ⭐ If you like this project, consider giving it a star!
 
 Made with ❤️ by **Mishal Ashfaq**
 
