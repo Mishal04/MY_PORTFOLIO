@@ -1,184 +1,164 @@
-<div align="center">
+<h1 align="center">🌌 My Portfolio</h1>
 
-# ✨ Mishal Ashfaq Portfolio
-
-### Full Stack Developer | MERN Stack | Next.js
-
-<p>
-A modern, responsive, and interactive developer portfolio built with Next.js to showcase my projects, skills, experience, and professional journey.
+<p align="center">
+  A modern, responsive and animated personal portfolio built with Next.js.
 </p>
 
 <p align="center">
-<img src="./assets/preview.png" width="100%" alt="Portfolio Preview"/>
+  <a href="https://my-portfolio-srff.vercel.app/" target="_blank">
+    <img src="https://img.shields.io/badge/Live-Demo-7C3AED?style=for-the-badge&logo=vercel&logoColor=white"/>
+  </a>
+  <a href="https://github.com/Mishal04/MY_PORTFOLIO">
+    <img src="https://img.shields.io/badge/Source-Code-181717?style=for-the-badge&logo=github&logoColor=white"/>
+  </a>
 </p>
 
-<p align="center">
-<a href="https://my-portfolio-srff.vercel.app/">
-<img src="https://img.shields.io/badge/🌐 Live Demo-6C63FF?style=for-the-badge" />
-</a>
+---
 
-<a href="https://github.com/Mishal04">
-<img src="https://img.shields.io/badge/GitHub-181717?style=for-the-badge&logo=github" />
-</a>
+# 🌐 Live Website
 
-<a href="https://www.linkedin.com/in/mishal-ashfaq-503237332/">
-<img src="https://img.shields.io/badge/LinkedIn-0A66C2?style=for-the-badge&logo=linkedin" />
-</a>
-
-</p>
-
-</div>
+### 🔗 https://my-portfolio-srff.vercel.app/
 
 ---
 
 # 📖 About
 
-This portfolio represents my journey as a Full Stack Developer. It showcases my technical expertise, featured projects, work experience, GitHub activity, and provides an easy way for recruiters and clients to connect with me.
+This is my personal developer portfolio showcasing my skills, projects, experience and technical journey.
+
+The portfolio is designed with a modern space-inspired UI, smooth animations and fully responsive layouts to deliver an engaging user experience.
 
 ---
 
-# 🚀 Features
+# ✨ Features
 
-- ✨ Modern & Clean UI
-- 🌙 Dark Theme
+- 🌌 Modern Space UI
+- ⚡ Built with Next.js
 - 📱 Fully Responsive
-- ⚡ Fast Performance
-- 🎭 Smooth Animations
-- 📂 Featured Projects
-- 💼 Experience Timeline
+- 🎨 Beautiful Animations
+- 💼 Featured Projects
+- 👩 About Me Section
 - 🛠 Technical Skills
-- 📊 GitHub Activity
-- 📩 Functional Contact Form
-- 🔗 Social Media Integration
+- 📄 Resume Download
+- 📬 Contact Form
+- 🌙 Dark Theme
 
 ---
 
 # 🛠 Tech Stack
-
-### Frontend
 
 - Next.js
 - React.js
 - TypeScript
 - Tailwind CSS
 - Framer Motion
-
-### Backend
-
-- Node.js
-- Express.js
-
-### Database
-
-- MongoDB
+- GSAP
+- Three.js
 - Firebase
-- Supabase
-
-### Deployment
-
+- EmailJS
 - Vercel
-- GitHub
 
 ---
 
 # 📸 Screenshots
 
-## 🏠 Home Page
+## 🏠 Home
 
-<p align="center">
-<img src="./assets/home.png" width="100%">
-</p>
+<img src="./assets/screenshots/home.png" width="100%"/>
 
 ---
 
-## 💼 Featured Projects
+## 🚀 Projects
 
-<p align="center">
-<img src="./assets/projects.png" width="100%">
-</p>
+<img src="./assets/screenshots/projects.png" width="100%"/>
 
 ---
 
-## 📩 Contact Section
+## 📩 Contact
 
-<p align="center">
-<img src="./assets/contact.png" width="100%">
-</p>
+<img src="./assets/screenshots/contact.png" width="100%"/>
 
 ---
 
-# 📂 Featured Projects
+## 🌟 Full Preview
 
-🍔 Food Express
-
-🔐 Password Manager
-
-🏠 Real Estate Platform
-
-✅ Task Manager
-
-💻 Personal Portfolio
+<img src="./assets/screenshots/preview.png" width="100%"/>
 
 ---
 
-# ⚙️ Getting Started
-
-Clone the repository
+# 🚀 Installation
 
 ```bash
 git clone https://github.com/Mishal04/MY_PORTFOLIO.git
-```
 
-Go to project folder
-
-```bash
 cd MY_PORTFOLIO
-```
 
-Install dependencies
-
-```bash
 npm install
-```
 
-Run development server
-
-```bash
 npm run dev
 ```
 
 ---
 
-# 🌐 Live Demo
+# 📂 Folder Structure
 
-### 🔗 https://my-portfolio-srff.vercel.app/
-
----
-
-# 📬 Connect With Me
-
-<p align="left">
-
-<a href="mailto:exoticmishaal9@gmail.com">
-<img src="https://img.shields.io/badge/Email-EA4335?style=for-the-badge&logo=gmail&logoColor=white"/>
-</a>
-
-<a href="https://www.linkedin.com/in/mishal-ashfaq-503237332/">
-<img src="https://img.shields.io/badge/LinkedIn-0A66C2?style=for-the-badge&logo=linkedin"/>
-</a>
-
-<a href="https://github.com/Mishal04">
-<img src="https://img.shields.io/badge/GitHub-181717?style=for-the-badge&logo=github"/>
-</a>
-
-</p>
+```
+MY_PORTFOLIO
+│
+├── app
+├── components
+├── assets
+│   └── screenshots
+├── public
+├── styles
+├── package.json
+└── README.md
+```
 
 ---
 
-<div align="center">
+# 👩 Developer
 
-## ⭐ If you like this project, consider giving it a star!
+### Mishal Ashfaq
 
-Made with ❤️ by **Mishal Ashfaq**
+Full Stack (MERN) Developer
 
-</div>
+- React.js
+- Next.js
+- Node.js
+- Express.js
+- MongoDB
+- Firebase
+
+---
+
+# 📫 Contact
+
+Email
+
+```
+exoticmishaal9@gmail.com
+```
+
+Portfolio
+
+```
+https://my-portfolio-srff.vercel.app/
+```
+
+LinkedIn
+
+```
+https://linkedin.com/in/mishal-ashfaq-503237332
+```
+
+GitHub
+
+```
+https://github.com/Mishal04
+```
+
+---
+
+# ⭐ Support
+
+If you like this project, don't forget to ⭐ the repository.
