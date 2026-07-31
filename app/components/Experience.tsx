@@ -8,21 +8,45 @@ import { useReducedMotion } from "@/app/hooks/useReducedMotion";
 const experiences = [
   {
     type: "work",
-    role: "MERN Stack & WordPress Developer",
-    company: "Apexora",
+    role: "Full Stack & WordPress Developer",
+    company: "Apexora 360",
     location: "Kohinoor Plaza, Faisalabad",
     period: "2024 — Present",
     status: "current",
     description:
-      "Working as a MERN Stack and WordPress developer intern, contributing to real-world client projects. Building full-stack features with MongoDB, Express, React and Node.js alongside WordPress-based client sites.",
+      "Intern turned ongoing client developer at Apexora 360. Delivered WordPress projects for multiple live clients and continue contributing to the HomeFound Real Estate Canada platform.",
     highlights: [
-      "Developing full-stack features using the MERN stack",
-      "Building and customising WordPress sites for clients",
-      "Collaborating with senior devs in an agile workflow",
-      "Shipping production-ready, responsive UIs with React & Tailwind",
+      "Tronex Trade — responsive pages, landing pages, UI fixes, performance",
+      "StoicaPro — Elementor customisation, responsive layouts, plugin config",
+      "HomeFound Real Estate CA — ongoing WordPress & Elementor development",
+      "Fixing UI/responsive issues and optimising Core Web Vitals",
+      "Collaborating with the team to deliver client-requested features",
+    ],
+    tags: ["WordPress", "Elementor", "HTML", "CSS", "JavaScript", "Responsive Design", "UI/UX"],
+    color: "#6366f1",
+    icon: FaBriefcase,
+    clientProject: {
+      name: "HomeFound Real Estate Canada",
+      url: "https://homefoundrealestate.ca",
+    },
+  },
+  {
+    type: "work",
+    role: "MERN Stack & WordPress Developer",
+    company: "Apexora",
+    location: "Kohinoor Plaza, Faisalabad",
+    period: "2024",
+    status: "completed",
+    description:
+      "Completed a frontend developer internship building real-world client projects. Built full-stack features with the MERN stack and delivered WordPress-based client sites.",
+    highlights: [
+      "Developed full-stack features using MongoDB, Express, React & Node.js",
+      "Built and customised WordPress sites for clients",
+      "Collaborated with senior devs in an agile workflow",
+      "Shipped production-ready, responsive UIs with React & Tailwind",
     ],
     tags: ["MongoDB", "Express", "React", "Node.js", "WordPress", "Tailwind CSS", "Git"],
-    color: "#6366f1",
+    color: "#818cf8",
     icon: FaBriefcase,
   },
   {
@@ -35,12 +59,12 @@ const experiences = [
     description:
       "Independently designing and shipping full-stack web applications — from concept to deployment. Each project sharpens a different part of the stack.",
     highlights: [
-      "Built Food Express — a full-stack delivery platform with Firebase",
+      "Built Food Express — a full-stack delivery platform",
       "Crafted an animated personal portfolio with Three.js & Framer Motion",
-      "Developed an event registration system with form validation",
+      "Built a Real Estate platform with property search and filtering",
       "Continuously exploring new frameworks and tools",
     ],
-    tags: ["Next.js", "Node.js", "MongoDB", "Firebase", "Framer Motion", "Three.js"],
+    tags: ["Next.js", "Node.js", "MongoDB", "Framer Motion", "Three.js"],
     color: "#22d3ee",
     icon: FaCode,
   },
@@ -196,6 +220,26 @@ export default function Experience() {
                         <p className="text-gray-400 text-xs md:text-sm leading-relaxed mb-4">
                           {exp.description}
                         </p>
+
+                        {/* Client project link — shown when present */}
+                        {"clientProject" in exp && exp.clientProject && (
+                          <a
+                            href={(exp.clientProject as { name: string; url: string }).url}
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            className="inline-flex items-center gap-2 mb-4 px-3 py-1.5 rounded-xl bg-emerald-500/10 border border-emerald-500/20 text-emerald-400 text-[11px] font-semibold hover:bg-emerald-500/20 transition-all duration-300 group/link w-fit"
+                            aria-label={`Visit ${(exp.clientProject as { name: string; url: string }).name}`}
+                          >
+                            <span className="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-pulse shrink-0" aria-hidden="true" />
+                            Currently working on:{" "}
+                            <span className="underline underline-offset-2">
+                              {(exp.clientProject as { name: string; url: string }).name}
+                            </span>
+                            <svg className="w-3 h-3 group-hover/link:translate-x-0.5 transition-transform duration-300" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+                              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14" />
+                            </svg>
+                          </a>
+                        )}
 
                         <ul className="flex flex-col gap-1.5 mb-4">
                           {exp.highlights.map((point) => (

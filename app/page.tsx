@@ -5,6 +5,7 @@ import HeroText from "./components/HeroText";
 import About from "./components/About";
 import AboutDetails from "./components/AboutDetails";
 import Projects from "./components/Projects";
+import ClientProjects from "./components/ClientProjects";
 import Skills from "./components/Skills";
 import Contact from "./components/Contact";
 import TechMarquee from "./components/TechMarquee";
@@ -43,8 +44,11 @@ export default function Home() {
         {/* ── Experience ───────────────────────────────── */}
         <Experience />
 
-        {/* ── Projects ─────────────────────────────────── */}
+        {/* ── Personal Projects ─────────────────────── */}
         <Projects />
+
+        {/* ── Client Projects ───────────────────────── */}
+        <ClientProjects />
 
         {/* ── Skills ───────────────────────────────────── */}
         <Skills />

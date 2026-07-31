@@ -18,21 +18,19 @@ const projects = [
     tags: ["React", "Tailwind CSS", "Firebase", "Vercel"],
     accent: "#f97316",
     number: "01",
-    featured: true,
   },
   {
     title: "Task Manager",
     category: "Full-Stack SaaS App",
     year: "2025",
     description:
-      "TaskFlow Pro — a beautifully designed task management platform with dashboards, analytics, priority tagging, custom categories, and real-time activity tracking. Built for high-performance individuals and teams.",
+      "TaskFlow Pro — a beautifully designed task management platform with dashboards, analytics, priority tagging, custom categories, and real-time activity tracking.",
     image: "/projects/task-manager.png",
     link: "https://github.com/Mishal04/Task-Manager",
     github: "https://github.com/Mishal04/Task-Manager",
     tags: ["React", "Node.js", "MongoDB", "Tailwind CSS"],
     accent: "#a855f7",
     number: "02",
-    featured: true,
   },
   {
     title: "Real Estate Platform",
@@ -46,11 +44,9 @@ const projects = [
     tags: ["React", "Tailwind CSS", "Vercel"],
     accent: "#22d3ee",
     number: "03",
-    featured: false,
   },
 ];
 
-// Static — defined outside component to avoid re-creation on every render
 const FILTERS = ["All", "Full-Stack", "Frontend"] as const;
 type Filter = typeof FILTERS[number];
 
@@ -91,15 +87,13 @@ export default function Projects() {
             className="mb-10 md:mb-14 flex flex-col items-center text-center w-full max-w-3xl"
           >
             <span className="text-xs font-bold text-indigo-400 uppercase tracking-[0.3em] mb-3 block">
-              My Work
+              Personal Work
             </span>
             <h2 id="projects-heading" className="text-3xl md:text-5xl lg:text-6xl font-extrabold text-white mb-4 md:mb-5 tracking-tight">
-              Featured <span className="text-indigo-400">Projects</span>
+              Personal <span className="text-indigo-400">Projects</span>
             </h2>
             <p className="text-gray-400 text-sm md:text-base leading-relaxed max-w-xl mb-8">
-              A selection of things I have built — from delivery platforms to
-              interactive portfolios. Each crafted with attention to detail and
-              real-world usability.
+              Side projects and self-initiated builds — each one exploring a different problem, stack, or idea.
             </p>
 
             {/* Filter tabs */}

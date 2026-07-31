@@ -6,12 +6,13 @@ import Link from "next/link";
 import { useReducedMotion } from "@/app/hooks/useReducedMotion";
 
 const navLinks = [
-  { label: "About",      href: "/about"      },
-  { label: "Experience", href: "/experience" },
-  { label: "Projects",   href: "/projects"   },
-  { label: "Skills",     href: "/skills"     },
-  { label: "Resume",     href: "/resume"     },
-  { label: "Contact",    href: "/contact"    },
+  { label: "About",           href: "/about"           },
+  { label: "Experience",      href: "/experience"      },
+  { label: "Projects",        href: "/projects"        },
+  { label: "Client Projects", href: "/client-projects" },
+  { label: "Skills",          href: "/skills"          },
+  { label: "Resume",          href: "/resume"          },
+  { label: "Contact",         href: "/contact"         },
 ];
 
 const socials = [

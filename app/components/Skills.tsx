@@ -6,6 +6,7 @@ import {
   SiTailwindcss, SiHtml5, SiCss,
   SiNodedotjs, SiExpress, SiMongodb, SiFirebase, SiPostgresql,
   SiGit, SiGithub, SiVercel, SiFramer,
+  SiWordpress, SiElementor,
 } from 'react-icons/si';
 import { TbApi } from 'react-icons/tb';
 import { MdSpeed } from 'react-icons/md';
@@ -43,15 +44,27 @@ const skillGroups = [
     ],
   },
   {
+    category: "CMS & Web",
+    number: "04",
+    color: "#10b981",
+    description: "Building and customising production-ready websites with WordPress and Elementor.",
+    skills: [
+      { name: "WordPress",  icon: SiWordpress,  color: "#21759B" },
+      { name: "Elementor",  icon: SiElementor,  color: "#92003B" },
+      { name: "HTML5",      icon: SiHtml5,      color: "#E34F26" },
+      { name: "CSS3",       icon: SiCss,        color: "#1572B6" },
+    ],
+  },
+  {
     category: "Tools & DevOps",
-    number: "03",
+    number: "05",
     color: "#f472b6",
     description: "Shipping fast with modern tooling, version control and deployment.",
     skills: [
-      { name: "Git",        icon: SiGit,    color: "#F05032" },
-      { name: "GitHub",     icon: SiGithub, color: "#ffffff" },
-      { name: "Vercel",     icon: SiVercel, color: "#ffffff" },
-      { name: "Performance",icon: MdSpeed,  color: "#34d399" },
+      { name: "Git",         icon: SiGit,    color: "#F05032" },
+      { name: "GitHub",      icon: SiGithub, color: "#ffffff" },
+      { name: "Vercel",      icon: SiVercel, color: "#ffffff" },
+      { name: "Performance", icon: MdSpeed,  color: "#34d399" },
     ],
   },
 ];

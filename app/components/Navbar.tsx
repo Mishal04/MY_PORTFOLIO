@@ -7,13 +7,14 @@ import { usePathname } from "next/navigation";
 import { useReducedMotion } from "@/app/hooks/useReducedMotion";
 
 const navLinks = [
-  { label: "Home",       href: "/"           },
-  { label: "About",      href: "/about"      },
-  { label: "Experience", href: "/experience" },
-  { label: "Projects",   href: "/projects"   },
-  { label: "Skills",     href: "/skills"     },
-  { label: "Resume",     href: "/resume"     },
-  { label: "Contact",    href: "/contact"    },
+  { label: "Home",            href: "/"                },
+  { label: "About",           href: "/about"           },
+  { label: "Experience",      href: "/experience"      },
+  { label: "Projects",        href: "/projects"        },
+  { label: "Client Projects", href: "/client-projects" },
+  { label: "Skills",          href: "/skills"          },
+  { label: "Resume",          href: "/resume"          },
+  { label: "Contact",         href: "/contact"         },
 ];
 
 export default function Navbar() {
