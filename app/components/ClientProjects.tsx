@@ -2,8 +2,70 @@
 
 import { useRef, useState, useCallback } from "react";
 import { LazyMotion, domAnimation, m } from "framer-motion";
-import Image from "next/image";
 import { useReducedMotion } from "@/app/hooks/useReducedMotion";
+import { FaExternalLinkAlt, FaBuilding } from "react-icons/fa";
+
+/* ─── Inline SVG icon helper ────────────────────────────────────────────── */
+function SvgIcon({ path, size, color }: { path: string | string[]; size: number; color: string }) {
+  const paths = Array.isArray(path) ? path : [path];
+  return (
+    <svg width={size} height={size} viewBox="0 0 24 24" fill="none" stroke={color}
+      strokeWidth={1.5} strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
+      {paths.map((d, i) => <path key={i} d={d} />)}
+    </svg>
+  );
+}
+
+/* ─── Purpose-based icons for client projects ───────────────────────────── */
+type IconDef = { path: string | string[]; color: string; size: number; x: string; y: string; delay: number };
+
+const CLIENT_ICONS: Record<string, IconDef[]> = {
+  // HomeFound Real Estate → house, map pin, search, key, building
+  homefound: [
+    { path: "M3 9l9-7 9 7v11a2 2 0 01-2 2H5a2 2 0 01-2-2zM9 22V12h6v10", color: "#10b981", size: 30, x: "50%", y: "42%", delay: 0 },
+    { path: "M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7zm0 9.5c-1.38 0-2.5-1.12-2.5-2.5S10.62 6.5 12 6.5s2.5 1.12 2.5 2.5S13.38 11.5 12 11.5z", color: "#34d399", size: 22, x: "25%", y: "30%", delay: 0.4 },
+    { path: "M11 17.25a6.25 6.25 0 110-12.5 6.25 6.25 0 010 12.5zM22 22l-5-5", color: "#6ee7b7", size: 20, x: "75%", y: "30%", delay: 0.8 },
+    { path: "M21 2l-2 2m-7.61 7.61a5.5 5.5 0 11-7.778 7.778 5.5 5.5 0 017.777-7.777zm0 0L15.5 7.5m0 0l3 3L22 7l-3-3m-3.5 3.5L19 4", color: "#a7f3d0", size: 18, x: "30%", y: "68%", delay: 1.2 },
+    { path: "M6 22V12H2l10-10 10 10h-4v10H6zM10 22V17h4v5", color: "#34d399", size: 18, x: "72%", y: "68%", delay: 1.6 },
+  ],
+  // Tronex Trade → bar chart, trending up, globe, shield, zap
+  tronex: [
+    { path: "M18 20V10M12 20V4M6 20v-6", color: "#6366f1", size: 30, x: "50%", y: "42%", delay: 0 },
+    { path: "M23 6l-9.5 9.5-5-5L1 18M23 6h-6M23 6v6", color: "#818cf8", size: 22, x: "26%", y: "30%", delay: 0.3 },
+    { path: "M12 22C6.477 22 2 17.523 2 12S6.477 2 12 2s10 4.477 10 10-4.477 10-10 10zm-2.29-2.333A17.9 17.9 0 018.027 12c0-2.874.67-5.59 1.876-8M6.279 17.245A17.921 17.921 0 014 12c0-2.184.393-4.277 1.108-6.218M15 4.08A12.049 12.049 0 0020 12a11.83 11.83 0 01-1.698 6.152", color: "#a5b4fc", size: 20, x: "74%", y: "30%", delay: 0.6 },
+    { path: "M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z", color: "#c7d2fe", size: 18, x: "50%", y: "70%", delay: 0.9 },
+  ],
+  // StoicaPro brand → eye, layout, pen, sparkles, layers
+  stoicapro: [
+    { path: "M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8zM12 15a3 3 0 100-6 3 3 0 000 6z", color: "#a78bfa", size: 30, x: "50%", y: "42%", delay: 0 },
+    { path: "M19 3H5a2 2 0 00-2 2v14a2 2 0 002 2h14a2 2 0 002-2V5a2 2 0 00-2-2zM3 9h18M9 21V9", color: "#c4b5fd", size: 22, x: "26%", y: "30%", delay: 0.4 },
+    { path: "M17 3a2.828 2.828 0 114 4L7.5 20.5 2 22l1.5-5.5L17 3z", color: "#ddd6fe", size: 20, x: "74%", y: "30%", delay: 0.8 },
+    { path: "M12 3l1.912 5.813a1 1 0 00.949.687h6.112l-4.946 3.597a1 1 0 00-.364 1.118L17.575 20 12.63 16.4a1 1 0 00-1.26 0L6.425 20l1.91-5.785a1 1 0 00-.363-1.118L2.027 9.5H8.14a1 1 0 00.949-.687L12 3z", color: "#ede9fe", size: 18, x: "50%", y: "70%", delay: 1.2 },
+  ],
+};
+
+function ClientIconCanvas({ id, accent, accentRgb, rm }: { id: string; accent: string; accentRgb: string; rm: boolean }) {
+  const icons = CLIENT_ICONS[id] ?? [];
+  return (
+    <div className="relative w-full h-full overflow-hidden bg-[#0d0d14]" aria-hidden="true">
+      <div className="absolute inset-0" style={{
+        backgroundImage: `linear-gradient(rgba(${accentRgb},0.055) 1px, transparent 1px), linear-gradient(90deg, rgba(${accentRgb},0.055) 1px, transparent 1px)`,
+        backgroundSize: "28px 28px",
+      }} />
+      <div className="absolute inset-0" style={{ background: `radial-gradient(ellipse at 50% 50%, rgba(${accentRgb},0.10) 0%, transparent 65%)` }} />
+      {icons.map(({ path, color, size, x, y, delay }, i) => (
+        <m.div key={i} className="absolute -translate-x-1/2 -translate-y-1/2" style={{ left: x, top: y }}
+          animate={rm ? {} : { y: [0, -7, 0] }}
+          transition={rm ? {} : { duration: 3.5 + i * 0.4, delay, repeat: Infinity, ease: "easeInOut" }}>
+          <div className="flex items-center justify-center rounded-xl bg-white/[0.04] border border-white/[0.07] backdrop-blur-sm"
+            style={{ width: size + 18, height: size + 18, boxShadow: `0 0 16px ${color}30` }}>
+            <SvgIcon path={path} size={size} color={color} />
+          </div>
+        </m.div>
+      ))}
+    </div>
+  );
+}
 
 /* ─── Data ──────────────────────────────────────────────────────────────── */
 const CLIENT_PROJECTS = [
@@ -149,32 +211,21 @@ function ClientCard({
         )}
 
         <div className="relative z-10 flex flex-col lg:flex-row">
-          {/* Image panel */}
-          <div className="relative lg:w-[45%] overflow-hidden bg-[#0d0d12]" style={{ minHeight: "220px" }}>
-            <Image
-              src={project.image}
-              alt={project.name}
-              fill
-              sizes="(max-width: 1024px) 100vw, 45vw"
-              className="object-cover opacity-50 group-hover:opacity-75 transition-all duration-700 group-hover:scale-[1.04]"
-            />
-            {/* Gradient overlay */}
-            <div className="absolute inset-0 bg-gradient-to-r from-transparent via-transparent to-[#0B0B0F] hidden lg:block" />
-            <div className="absolute inset-0 bg-gradient-to-t from-[#0B0B0F] to-transparent lg:hidden" />
-
-            {/* Status badge over image */}
-            <div className="absolute top-4 left-4">
+          {/* Icon canvas panel */}
+          <div className="relative lg:w-[45%] overflow-hidden" style={{ minHeight: "220px" }}>
+            <ClientIconCanvas id={project.id} accent={project.accent} accentRgb={project.accentRgb} rm={rm} />
+            <div className="absolute inset-0 bg-gradient-to-r from-transparent via-transparent to-[#0B0B0F] hidden lg:block pointer-events-none" />
+            <div className="absolute inset-0 bg-gradient-to-t from-[#0B0B0F] to-transparent lg:hidden pointer-events-none" />
+            {/* Status badge */}
+            <div className="absolute top-4 left-4 z-10">
               <span className={`inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-[10px] font-bold uppercase tracking-wider border backdrop-blur-md ${sc.bg} ${sc.border} ${sc.text}`}>
                 <span className={`w-1.5 h-1.5 rounded-full shrink-0 ${sc.dot}`} aria-hidden="true" />
                 {project.statusLabel}
               </span>
             </div>
-
             {/* Year */}
-            <div className="absolute top-4 right-4">
-              <span className="text-[10px] font-mono text-gray-500 bg-black/40 backdrop-blur-sm px-2 py-0.5 rounded-md">
-                {project.year}
-              </span>
+            <div className="absolute top-4 right-4 z-10">
+              <span className="text-[10px] font-mono text-gray-500 bg-black/40 backdrop-blur-sm px-2 py-0.5 rounded-md">{project.year}</span>
             </div>
           </div>
 

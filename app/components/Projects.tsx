@@ -2,8 +2,74 @@
 
 import { useRef, useState, useCallback } from "react";
 import { LazyMotion, domAnimation, m, AnimatePresence } from "framer-motion";
-import Image from "next/image";
 import { useReducedMotion } from "@/app/hooks/useReducedMotion";
+
+/* ─── Inline SVG icon helper ────────────────────────────────────────────── */
+function SvgIcon({ path, size, color }: { path: string | string[]; size: number; color: string }) {
+  const paths = Array.isArray(path) ? path : [path];
+  return (
+    <svg width={size} height={size} viewBox="0 0 24 24" fill="none" stroke={color}
+      strokeWidth={1.5} strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
+      {paths.map((d, i) => <path key={i} d={d} />)}
+    </svg>
+  );
+}
+
+/* ─── Purpose-based icon definitions per project ────────────────────────── */
+// Icons chosen for what the project *does*, not the tech stack
+type IconDef = { path: string | string[]; color: string; size: number; x: string; y: string; delay: number };
+
+const PROJECT_ICONS: Record<string, IconDef[]> = {
+  // Food delivery → bag, pin, star, cart, mobile
+  "food-express": [
+    { path: "M6 2 3 6v14a2 2 0 002 2h14a2 2 0 002-2V6l-3-4zM3 6h18M16 10a4 4 0 01-8 0", color: "#f97316", size: 28, x: "50%", y: "42%", delay: 0 },
+    { path: "M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7zm0 9.5c-1.38 0-2.5-1.12-2.5-2.5S10.62 6.5 12 6.5s2.5 1.12 2.5 2.5S13.38 11.5 12 11.5z", color: "#fb923c", size: 22, x: "25%", y: "32%", delay: 0.4 },
+    { path: "M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z", color: "#fdba74", size: 20, x: "76%", y: "30%", delay: 0.8 },
+    { path: "M9 22C9.55 22 10 21.55 10 21s-.45-1-1-1-1 .45-1 1 .45 1 1 1zm12 0c.55 0 1-.45 1-1s-.45-1-1-1-1 .45-1 1 .45 1 1 1zM1 1h4l2.68 13.39a2 2 0 001.99 1.61h9.72a2 2 0 001.99-1.61L23 6H6", color: "#fed7aa", size: 20, x: "30%", y: "66%", delay: 1.2 },
+    { path: "M12 18H12.01M8 21h8a2 2 0 002-2V5a2 2 0 00-2-2H8a2 2 0 00-2 2v14a2 2 0 002 2z", color: "#fb923c", size: 18, x: "72%", y: "66%", delay: 1.6 },
+  ],
+  // Task manager → check, bar chart, tag, calendar, bell
+  "task-manager": [
+    { path: "M9 11l3 3L22 4M21 12v7a2 2 0 01-2 2H5a2 2 0 01-2-2V5a2 2 0 012-2h11", color: "#a855f7", size: 28, x: "50%", y: "42%", delay: 0 },
+    { path: "M18 20V10M12 20V4M6 20v-6", color: "#c084fc", size: 22, x: "25%", y: "30%", delay: 0.3 },
+    { path: "M20.59 13.41l-7.17 7.17a2 2 0 01-2.83 0L2 12V2h10l8.59 8.59a2 2 0 010 2.82zM7 7h.01", color: "#d8b4fe", size: 20, x: "76%", y: "30%", delay: 0.6 },
+    { path: "M8 2v4M16 2v4M3 10h18M5 4h14a2 2 0 012 2v14a2 2 0 01-2 2H5a2 2 0 01-2-2V6a2 2 0 012-2z", color: "#e9d5ff", size: 20, x: "28%", y: "66%", delay: 0.9 },
+    { path: "M18 8A6 6 0 006 8c0 7-3 9-3 9h18s-3-2-3-9M13.73 21a2 2 0 01-3.46 0", color: "#c084fc", size: 18, x: "74%", y: "66%", delay: 1.2 },
+  ],
+  // Real estate → building, map pin, search, home, key
+  "real-estate": [
+    { path: "M3 9l9-7 9 7v11a2 2 0 01-2 2H5a2 2 0 01-2-2zM9 22V12h6v10", color: "#22d3ee", size: 28, x: "50%", y: "42%", delay: 0 },
+    { path: "M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7zm0 9.5c-1.38 0-2.5-1.12-2.5-2.5S10.62 6.5 12 6.5s2.5 1.12 2.5 2.5S13.38 11.5 12 11.5z", color: "#67e8f9", size: 22, x: "26%", y: "30%", delay: 0.4 },
+    { path: "M11 17.25a6.25 6.25 0 110-12.5 6.25 6.25 0 010 12.5zM22 22l-5-5", color: "#a5f3fc", size: 20, x: "74%", y: "30%", delay: 0.8 },
+    { path: "M21 10H3M21 6H3M21 14H3M21 18H3", color: "#67e8f9", size: 18, x: "50%", y: "68%", delay: 1.2 },
+  ],
+};
+
+function IconCanvas({ id, accent, accentRgb, rm }: { id: string; accent: string; accentRgb: string; rm: boolean }) {
+  const icons = PROJECT_ICONS[id] ?? [];
+  return (
+    <div className="relative w-full h-full overflow-hidden bg-[#0d0d14]" aria-hidden="true" style={{ minHeight: "inherit" }}>
+      {/* Blueprint grid */}
+      <div className="absolute inset-0" style={{
+        backgroundImage: `linear-gradient(rgba(${accentRgb},0.055) 1px, transparent 1px), linear-gradient(90deg, rgba(${accentRgb},0.055) 1px, transparent 1px)`,
+        backgroundSize: "32px 32px",
+      }} />
+      {/* Centre radial glow */}
+      <div className="absolute inset-0" style={{ background: `radial-gradient(ellipse at 50% 50%, rgba(${accentRgb},0.10) 0%, transparent 65%)` }} />
+      {/* Floating icons */}
+      {icons.map(({ path, color, size, x, y, delay }, i) => (
+        <m.div key={i} className="absolute -translate-x-1/2 -translate-y-1/2" style={{ left: x, top: y }}
+          animate={rm ? {} : { y: [0, -8, 0] }}
+          transition={rm ? {} : { duration: 3.5 + i * 0.4, delay, repeat: Infinity, ease: "easeInOut" }}>
+          <div className="flex items-center justify-center rounded-xl bg-white/[0.04] border border-white/[0.07] backdrop-blur-sm"
+            style={{ width: size + 20, height: size + 20, boxShadow: `0 0 18px ${color}30` }}>
+            <SvgIcon path={path} size={size} color={color} />
+          </div>
+        </m.div>
+      ))}
+    </div>
+  );
+}
 
 /* ─── Data ─────────────────────────────────────────────────────────────── */
 const PERSONAL_PROJECTS = [
@@ -109,18 +175,17 @@ function FeaturedCard({
         <div className="absolute top-0 left-0 right-0 h-[2px] z-20" style={{ background: `linear-gradient(90deg, transparent, ${project.accent}, transparent)` }} aria-hidden="true" />
 
         <div className="relative z-10 flex flex-col lg:flex-row min-h-[320px]">
-          {/* Image */}
-          <div className="relative w-full lg:w-[55%] overflow-hidden bg-[#0d0d12]" style={{ minHeight: "260px" }}>
-            <Image src={project.image} alt={project.title} fill sizes="(max-width:1024px) 100vw, 55vw"
-              className="object-cover opacity-55 group-hover:opacity-80 transition-all duration-700 group-hover:scale-[1.04]" />
-            <div className="absolute inset-0 bg-gradient-to-r from-transparent to-[#0B0B0F] hidden lg:block" aria-hidden="true" />
-            <div className="absolute inset-0 bg-gradient-to-t from-[#0B0B0F] to-transparent lg:hidden" aria-hidden="true" />
+          {/* Icon canvas */}
+          <div className="relative w-full lg:w-[55%]" style={{ minHeight: "260px" }}>
+            <IconCanvas id={project.id} accent={project.accent} accentRgb={project.accentRgb} rm={rm} />
+            <div className="absolute inset-0 bg-gradient-to-r from-transparent to-[#0B0B0F] hidden lg:block pointer-events-none" aria-hidden="true" />
+            <div className="absolute inset-0 bg-gradient-to-t from-[#0B0B0F] to-transparent lg:hidden pointer-events-none" aria-hidden="true" />
             {/* Featured badge */}
-            <div className="absolute top-4 left-4 flex items-center gap-1.5 px-3 py-1 rounded-full bg-black/60 backdrop-blur-md border border-white/10 text-[10px] font-bold text-white uppercase tracking-widest">
+            <div className="absolute top-4 left-4 flex items-center gap-1.5 px-3 py-1 rounded-full bg-black/60 backdrop-blur-md border border-white/10 text-[10px] font-bold text-white uppercase tracking-widest z-10">
               <span className="w-1.5 h-1.5 rounded-full bg-indigo-400 animate-pulse" aria-hidden="true" />
               Featured
             </div>
-            <div className="absolute top-4 right-4">
+            <div className="absolute top-4 right-4 z-10">
               <span className="text-[10px] font-mono text-gray-500 bg-black/50 backdrop-blur-sm px-2 py-0.5 rounded-md">{project.year}</span>
             </div>
           </div>
@@ -214,17 +279,16 @@ function GridCard({
           aria-hidden="true"
         />
 
-        {/* Image */}
-        <div className="relative overflow-hidden bg-[#0d0d12]" style={{ aspectRatio: "16/9" }}>
-          <Image src={project.image} alt={project.title} fill sizes="(max-width:768px) 100vw, 50vw"
-            className="object-cover opacity-50 group-hover:opacity-75 transition-all duration-700 group-hover:scale-[1.04]" />
-          <div className="absolute inset-0 bg-gradient-to-t from-[#0B0B0F] via-[#0B0B0F]/40 to-transparent" aria-hidden="true" />
+        {/* Icon canvas */}
+        <div className="relative overflow-hidden" style={{ aspectRatio: "16/9" }}>
+          <IconCanvas id={project.id} accent={project.accent} accentRgb={project.accentRgb} rm={rm} />
+          <div className="absolute inset-0 bg-gradient-to-t from-[#0B0B0F] via-[#0B0B0F]/20 to-transparent pointer-events-none" aria-hidden="true" />
           {/* Year top-right */}
-          <div className="absolute top-3 right-3">
+          <div className="absolute top-3 right-3 z-10">
             <span className="text-[10px] font-mono text-gray-600 bg-black/50 backdrop-blur-sm px-2 py-0.5 rounded-md">{project.year}</span>
           </div>
           {/* Hover live badge */}
-          <div className="absolute top-3 left-3 opacity-0 group-hover:opacity-100 -translate-y-1 group-hover:translate-y-0 transition-all duration-300">
+          <div className="absolute top-3 left-3 z-10 opacity-0 group-hover:opacity-100 -translate-y-1 group-hover:translate-y-0 transition-all duration-300">
             <div className="flex items-center gap-1.5 px-2.5 py-1 rounded-full bg-black/70 backdrop-blur-md border border-white/10 text-white text-[10px] font-semibold">
               <svg className="w-2.5 h-2.5" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14" />
