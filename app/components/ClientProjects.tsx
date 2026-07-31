@@ -5,64 +5,93 @@ import { LazyMotion, domAnimation, m } from "framer-motion";
 import { useReducedMotion } from "@/app/hooks/useReducedMotion";
 import { FaExternalLinkAlt, FaBuilding } from "react-icons/fa";
 
-/* ─── Inline SVG icon helper ────────────────────────────────────────────── */
-function SvgIcon({ path, size, color }: { path: string | string[]; size: number; color: string }) {
+/* ─── SVG icon helper ───────────────────────────────────────────────────── */
+function SvgIcon({ path, size, color, strokeWidth = 1.4 }: {
+  path: string | string[]; size: number; color: string; strokeWidth?: number;
+}) {
   const paths = Array.isArray(path) ? path : [path];
   return (
-    <svg width={size} height={size} viewBox="0 0 24 24" fill="none" stroke={color}
-      strokeWidth={1.5} strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
+    <svg width={size} height={size} viewBox="0 0 24 24" fill="none"
+      stroke={color} strokeWidth={strokeWidth} strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
       {paths.map((d, i) => <path key={i} d={d} />)}
     </svg>
   );
 }
 
-/* ─── Purpose-based icons for client projects ───────────────────────────── */
-type IconDef = { path: string | string[]; color: string; size: number; x: string; y: string; delay: number };
+/* ─── Icon definitions — one large hero + small supporting ─────────────── */
+type IconDef = { path: string | string[]; size: number };
 
-const CLIENT_ICONS: Record<string, IconDef[]> = {
-  // HomeFound Real Estate → house, map pin, search, key, building
-  homefound: [
-    { path: "M3 9l9-7 9 7v11a2 2 0 01-2 2H5a2 2 0 01-2-2zM9 22V12h6v10", color: "#10b981", size: 30, x: "50%", y: "42%", delay: 0 },
-    { path: "M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7zm0 9.5c-1.38 0-2.5-1.12-2.5-2.5S10.62 6.5 12 6.5s2.5 1.12 2.5 2.5S13.38 11.5 12 11.5z", color: "#34d399", size: 22, x: "25%", y: "30%", delay: 0.4 },
-    { path: "M11 17.25a6.25 6.25 0 110-12.5 6.25 6.25 0 010 12.5zM22 22l-5-5", color: "#6ee7b7", size: 20, x: "75%", y: "30%", delay: 0.8 },
-    { path: "M21 2l-2 2m-7.61 7.61a5.5 5.5 0 11-7.778 7.778 5.5 5.5 0 017.777-7.777zm0 0L15.5 7.5m0 0l3 3L22 7l-3-3m-3.5 3.5L19 4", color: "#a7f3d0", size: 18, x: "30%", y: "68%", delay: 1.2 },
-    { path: "M6 22V12H2l10-10 10 10h-4v10H6zM10 22V17h4v5", color: "#34d399", size: 18, x: "72%", y: "68%", delay: 1.6 },
-  ],
-  // Tronex Trade → bar chart, trending up, globe, shield, zap
-  tronex: [
-    { path: "M18 20V10M12 20V4M6 20v-6", color: "#6366f1", size: 30, x: "50%", y: "42%", delay: 0 },
-    { path: "M23 6l-9.5 9.5-5-5L1 18M23 6h-6M23 6v6", color: "#818cf8", size: 22, x: "26%", y: "30%", delay: 0.3 },
-    { path: "M12 22C6.477 22 2 17.523 2 12S6.477 2 12 2s10 4.477 10 10-4.477 10-10 10zm-2.29-2.333A17.9 17.9 0 018.027 12c0-2.874.67-5.59 1.876-8M6.279 17.245A17.921 17.921 0 014 12c0-2.184.393-4.277 1.108-6.218M15 4.08A12.049 12.049 0 0020 12a11.83 11.83 0 01-1.698 6.152", color: "#a5b4fc", size: 20, x: "74%", y: "30%", delay: 0.6 },
-    { path: "M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z", color: "#c7d2fe", size: 18, x: "50%", y: "70%", delay: 0.9 },
-  ],
-  // StoicaPro brand → eye, layout, pen, sparkles, layers
-  stoicapro: [
-    { path: "M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8zM12 15a3 3 0 100-6 3 3 0 000 6z", color: "#a78bfa", size: 30, x: "50%", y: "42%", delay: 0 },
-    { path: "M19 3H5a2 2 0 00-2 2v14a2 2 0 002 2h14a2 2 0 002-2V5a2 2 0 00-2-2zM3 9h18M9 21V9", color: "#c4b5fd", size: 22, x: "26%", y: "30%", delay: 0.4 },
-    { path: "M17 3a2.828 2.828 0 114 4L7.5 20.5 2 22l1.5-5.5L17 3z", color: "#ddd6fe", size: 20, x: "74%", y: "30%", delay: 0.8 },
-    { path: "M12 3l1.912 5.813a1 1 0 00.949.687h6.112l-4.946 3.597a1 1 0 00-.364 1.118L17.575 20 12.63 16.4a1 1 0 00-1.26 0L6.425 20l1.91-5.785a1 1 0 00-.363-1.118L2.027 9.5H8.14a1 1 0 00.949-.687L12 3z", color: "#ede9fe", size: 18, x: "50%", y: "70%", delay: 1.2 },
-  ],
+const CLIENT_ICON_DEFS: Record<string, { hero: IconDef; accent: string; accentRgb: string; supporting: IconDef[] }> = {
+  homefound: {
+    accent: "#10b981", accentRgb: "16,185,129",
+    hero: { path: "M3 9l9-7 9 7v11a2 2 0 01-2 2H5a2 2 0 01-2-2zM9 22V12h6v10", size: 52 },
+    supporting: [
+      { path: "M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7zm0 9.5a2.5 2.5 0 110-5 2.5 2.5 0 010 5z", size: 20 },
+      { path: "M11 17.25a6.25 6.25 0 110-12.5 6.25 6.25 0 010 12.5zM22 22l-5-5", size: 18 },
+      { path: "M21 2l-2 2m-7.61 7.61a5.5 5.5 0 11-7.778 7.778 5.5 5.5 0 017.777-7.777zm0 0L15.5 7.5m0 0l3 3L22 7l-3-3m-3.5 3.5L19 4", size: 16 },
+    ],
+  },
+  tronex: {
+    accent: "#6366f1", accentRgb: "99,102,241",
+    hero: { path: "M18 20V10M12 20V4M6 20v-6", size: 52 },
+    supporting: [
+      { path: "M23 6l-9.5 9.5-5-5L1 18M23 6h-6M23 6v6", size: 20 },
+      { path: "M12 22C6.477 22 2 17.523 2 12S6.477 2 12 2s10 4.477 10 10-4.477 10-10 10zm0-14v4l2 2", size: 18 },
+      { path: "M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z", size: 16 },
+    ],
+  },
+  stoicapro: {
+    accent: "#a78bfa", accentRgb: "167,139,250",
+    hero: { path: "M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8zM12 15a3 3 0 100-6 3 3 0 000 6z", size: 52 },
+    supporting: [
+      { path: "M19 3H5a2 2 0 00-2 2v14a2 2 0 002 2h14a2 2 0 002-2V5a2 2 0 00-2-2zM3 9h18M9 21V9", size: 20 },
+      { path: "M17 3a2.828 2.828 0 114 4L7.5 20.5 2 22l1.5-5.5L17 3z", size: 18 },
+      { path: "M12 3l1.912 5.813a1 1 0 00.949.687h6.112l-4.946 3.597a1 1 0 00-.364 1.118L17.575 20 12.63 16.4a1 1 0 00-1.26 0L6.425 20l1.91-5.785a1 1 0 00-.363-1.118L2.027 9.5H8.14a1 1 0 00.949-.687L12 3z", size: 16 },
+    ],
+  },
 };
 
-function ClientIconCanvas({ id, accent, accentRgb, rm }: { id: string; accent: string; accentRgb: string; rm: boolean }) {
-  const icons = CLIENT_ICONS[id] ?? [];
+const SUP_POSITIONS = [
+  { top: "13%", left: "13%" },
+  { top: "13%", right: "13%" },
+  { bottom: "20%", left: "13%" },
+];
+
+function ClientIconCanvas({ id, rm }: { id: string; rm: boolean }) {
+  const def = CLIENT_ICON_DEFS[id];
+  if (!def) return <div className="w-full h-full bg-[#0e0e1a]" aria-hidden="true" />;
+  const { hero, accent, accentRgb, supporting } = def;
+
   return (
-    <div className="relative w-full h-full overflow-hidden bg-[#0d0d14]" aria-hidden="true">
-      <div className="absolute inset-0" style={{
-        backgroundImage: `linear-gradient(rgba(${accentRgb},0.055) 1px, transparent 1px), linear-gradient(90deg, rgba(${accentRgb},0.055) 1px, transparent 1px)`,
-        backgroundSize: "28px 28px",
-      }} />
-      <div className="absolute inset-0" style={{ background: `radial-gradient(ellipse at 50% 50%, rgba(${accentRgb},0.10) 0%, transparent 65%)` }} />
-      {icons.map(({ path, color, size, x, y, delay }, i) => (
-        <m.div key={i} className="absolute -translate-x-1/2 -translate-y-1/2" style={{ left: x, top: y }}
-          animate={rm ? {} : { y: [0, -7, 0] }}
-          transition={rm ? {} : { duration: 3.5 + i * 0.4, delay, repeat: Infinity, ease: "easeInOut" }}>
-          <div className="flex items-center justify-center rounded-xl bg-white/[0.04] border border-white/[0.07] backdrop-blur-sm"
-            style={{ width: size + 18, height: size + 18, boxShadow: `0 0 16px ${color}30` }}>
-            <SvgIcon path={path} size={size} color={color} />
-          </div>
-        </m.div>
+    <div className="relative w-full h-full bg-[#0e0e1a] overflow-hidden" aria-hidden="true">
+      {Array.from({ length: 12 }).map((_, i) => (
+        <div key={i} className="absolute left-0 right-0 h-px"
+          style={{ top: `${8 + i * 8}%`, background: `rgba(${accentRgb},${i % 3 === 0 ? 0.10 : 0.045})` }} />
       ))}
+      {Array.from({ length: 8 }).map((_, i) => (
+        <div key={i} className="absolute top-0 bottom-0 w-px"
+          style={{ left: `${12 + i * 11}%`, background: `rgba(${accentRgb},0.04)` }} />
+      ))}
+      <div className="absolute inset-0"
+        style={{ background: `radial-gradient(ellipse at 50% 45%, rgba(${accentRgb},0.13) 0%, transparent 60%)` }} />
+      {supporting.map((s, i) => {
+        const pos = SUP_POSITIONS[i] ?? { top: "20%", left: "20%" };
+        return (
+          <m.div key={i} className="absolute" style={pos as React.CSSProperties}
+            animate={rm ? {} : { y: [0, -5, 0] }}
+            transition={rm ? {} : { duration: 3 + i * 0.6, delay: 0.3 + i * 0.4, repeat: Infinity, ease: "easeInOut" }}>
+            <SvgIcon path={s.path} size={s.size} color={accent} strokeWidth={1.3} />
+          </m.div>
+        );
+      })}
+      <m.div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2"
+        animate={rm ? {} : { y: [0, -6, 0] }}
+        transition={rm ? {} : { duration: 4, repeat: Infinity, ease: "easeInOut" }}>
+        <div className="flex items-center justify-center rounded-2xl bg-white/[0.05] border border-white/[0.09] backdrop-blur-sm"
+          style={{ width: hero.size + 28, height: hero.size + 28, boxShadow: `0 0 32px ${accent}35` }}>
+          <SvgIcon path={hero.path} size={hero.size} color={accent} strokeWidth={1.4} />
+        </div>
+      </m.div>
     </div>
   );
 }
@@ -71,230 +100,139 @@ function ClientIconCanvas({ id, accent, accentRgb, rm }: { id: string; accent: s
 const CLIENT_PROJECTS = [
   {
     id: "homefound",
-    name: "HomeFound Real Estate Canada",
-    tagline: "International Real Estate Platform",
+    name: "HomeFound Real Estate",
+    category: "Real Estate Platform",
     company: "Apexora 360",
     website: "https://homefound.ca/",
-    role: "Frontend / WordPress Developer",
+    role: "Frontend / WordPress Dev",
     status: "active" as const,
     statusLabel: "Live · Ongoing",
     year: "2025",
-    description:
-      "Contributing to an international real estate platform serving Canadian clients. Building responsive WordPress pages, Elementor layouts, implementing UI improvements, optimising Core Web Vitals, and delivering client-requested features.",
-    contributions: [
-      "Responsive WordPress page development",
-      "Elementor layouts & pixel-perfect builds",
-      "UI bug fixes across all breakpoints",
-      "Core Web Vitals & performance tuning",
-      "Client feature implementation",
-      "Team collaboration & code review",
-    ],
-    image: "/projects/portfolio.png",
-    tags: ["WordPress", "Elementor", "HTML", "CSS", "JavaScript", "Responsive"],
-    accent: "#10b981",
-    accentRgb: "16,185,129",
+    description: "International real estate platform serving Canadian clients — WordPress pages, Elementor layouts, UI fixes, performance tuning.",
+    tags: ["WordPress", "Elementor", "HTML", "CSS", "JS"],
   },
   {
     id: "tronex",
     name: "Tronex Trade",
-    tagline: "Trading Platform — WordPress",
+    category: "Trading Platform",
     company: "Apexora 360",
     website: "https://tronex.trade/",
     role: "Frontend Developer Intern",
     status: "delivered" as const,
     statusLabel: "Delivered",
     year: "2024",
-    description:
-      "Built and optimised the frontend of Tronex Trade — a trading platform. Developed responsive landing pages, resolved UI bugs, improved mobile responsiveness, and enhanced load performance.",
-    contributions: [
-      "Landing page development",
-      "Mobile responsiveness",
-      "UI bug fixes",
-      "Performance optimisation",
-      "Client design changes",
-    ],
-    image: "/projects/food-express.png",
+    description: "Trading platform frontend — responsive landing pages, UI bug fixes, performance optimisation, mobile responsiveness.",
     tags: ["WordPress", "HTML", "CSS", "JavaScript"],
-    accent: "#6366f1",
-    accentRgb: "99,102,241",
   },
   {
     id: "stoicapro",
     name: "StoicaPro",
-    tagline: "Brand Website — Elementor",
+    category: "Brand Website",
     company: "Apexora 360",
     website: "https://stoicapro.com/",
     role: "Frontend Developer Intern",
     status: "delivered" as const,
     statusLabel: "Delivered",
     year: "2024",
-    description:
-      "WordPress development and Elementor customisation for StoicaPro. Built responsive layouts, configured plugins, optimised performance, and collaborated with the team for on-time delivery.",
-    contributions: [
-      "WordPress theme customisation",
-      "Elementor page builder layouts",
-      "Responsive layout implementation",
-      "Plugin config & integration",
-      "Performance optimisation",
-    ],
-    image: "/projects/task-manager.png",
+    description: "Brand website — Elementor customisation, responsive layouts, plugin config, team collaboration, on-time delivery.",
     tags: ["WordPress", "Elementor", "HTML", "CSS"],
-    accent: "#a78bfa",
-    accentRgb: "167,139,250",
   },
 ] as const;
 
-const STATUS_CONFIG = {
-  active:    { bg: "bg-emerald-500/10",  border: "border-emerald-500/30", text: "text-emerald-400", dot: "bg-emerald-400 animate-pulse" },
-  delivered: { bg: "bg-indigo-500/10",   border: "border-indigo-500/20",  text: "text-indigo-400",  dot: "bg-indigo-400" },
+const STATUS_STYLE = {
+  active:    { bg: "bg-emerald-500/10", border: "border-emerald-500/30", text: "text-emerald-400", dot: "bg-emerald-400 animate-pulse" },
+  delivered: { bg: "bg-indigo-500/10",  border: "border-indigo-500/20",  text: "text-indigo-400",  dot: "bg-indigo-400" },
 };
 
-/* ─── Card component ────────────────────────────────────────────────────── */
-function ClientCard({
-  project,
-  index,
-  rm,
-}: {
-  project: typeof CLIENT_PROJECTS[number];
-  index: number;
-  rm: boolean;
+/* ─── Card ──────────────────────────────────────────────────────────────── */
+function ClientCard({ project, index, rm }: {
+  project: typeof CLIENT_PROJECTS[number]; index: number; rm: boolean;
 }) {
-  const cardRef = useRef<HTMLDivElement>(null);
-  const [glow, setGlow] = useState({ x: 50, y: 50, opacity: 0 });
-  const sc = STATUS_CONFIG[project.status];
+  const ref = useRef<HTMLDivElement>(null);
+  const [glow, setGlow] = useState({ x: 50, y: 50, op: 0 });
+  const def = CLIENT_ICON_DEFS[project.id];
+  const sc = STATUS_STYLE[project.status];
 
-  const handleMouseMove = useCallback((e: React.MouseEvent<HTMLDivElement>) => {
-    if (rm || !cardRef.current) return;
-    const rect = cardRef.current.getBoundingClientRect();
-    const x = ((e.clientX - rect.left) / rect.width) * 100;
-    const y = ((e.clientY - rect.top) / rect.height) * 100;
-    setGlow({ x, y, opacity: 1 });
+  const onMove = useCallback((e: React.MouseEvent<HTMLDivElement>) => {
+    if (rm || !ref.current) return;
+    const r = ref.current.getBoundingClientRect();
+    setGlow({ x: ((e.clientX - r.left) / r.width) * 100, y: ((e.clientY - r.top) / r.height) * 100, op: 1 });
   }, [rm]);
-
-  const handleMouseLeave = useCallback(() => {
-    setGlow((g) => ({ ...g, opacity: 0 }));
-  }, []);
+  const onLeave = useCallback(() => setGlow(g => ({ ...g, op: 0 })), []);
 
   return (
     <m.div
-      initial={rm ? false : { opacity: 0, y: 40 }}
+      initial={rm ? false : { opacity: 0, y: 32 }}
       whileInView={rm ? undefined : { opacity: 1, y: 0 }}
-      viewport={{ once: true, margin: "-60px" }}
-      transition={{ duration: 0.7, delay: index * 0.1, ease: [0.22, 1, 0.36, 1] }}
+      viewport={{ once: true, margin: "-50px" }}
+      transition={{ duration: 0.6, delay: index * 0.08, ease: [0.22, 1, 0.36, 1] }}
     >
-      <div
-        ref={cardRef}
-        onMouseMove={handleMouseMove}
-        onMouseLeave={handleMouseLeave}
-        className="group relative rounded-[20px] md:rounded-[24px] overflow-hidden border border-white/[0.08] bg-[#0B0B0F] transition-all duration-500 hover:border-white/20 card-grain"
-        style={{
-          boxShadow: `0 4px 40px rgba(0,0,0,0.6), inset 0 1px 0 rgba(255,255,255,0.04)`,
-        }}
-      >
-        {/* Mouse-tracking spotlight */}
-        <div
-          className="absolute inset-0 pointer-events-none z-10 transition-opacity duration-300 rounded-[inherit]"
-          style={{
-            opacity: glow.opacity,
-            background: `radial-gradient(300px circle at ${glow.x}% ${glow.y}%, rgba(${project.accentRgb},0.08), transparent 60%)`,
-          }}
-          aria-hidden="true"
-        />
+      <div ref={ref} onMouseMove={onMove} onMouseLeave={onLeave}
+        className="group relative flex flex-col rounded-[18px] overflow-hidden border border-white/[0.08] bg-[#0e0e1a] hover:border-white/[0.18] transition-all duration-500 card-grain"
+        style={{ boxShadow: "0 2px 24px rgba(0,0,0,0.55), inset 0 1px 0 rgba(255,255,255,0.04)" }}>
 
-        {/* Active top-line glow */}
+        {/* Spotlight */}
+        <div className="absolute inset-0 pointer-events-none z-10 rounded-[inherit] transition-opacity duration-400"
+          style={{ opacity: glow.op, background: `radial-gradient(280px circle at ${glow.x}% ${glow.y}%, rgba(${def?.accentRgb ?? "99,102,241"},0.09), transparent 60%)` }}
+          aria-hidden="true" />
+
+        {/* Active top glow line */}
         {project.status === "active" && (
-          <div
-            className="absolute top-0 left-0 right-0 h-[2px] z-20"
-            style={{ background: `linear-gradient(90deg, transparent 0%, rgb(${project.accentRgb}) 50%, transparent 100%)` }}
-            aria-hidden="true"
-          />
+          <div className="absolute top-0 left-0 right-0 h-[1.5px] z-20"
+            style={{ background: `linear-gradient(90deg, transparent, ${def?.accent}, transparent)` }}
+            aria-hidden="true" />
         )}
 
-        <div className="relative z-10 flex flex-col lg:flex-row">
-          {/* Icon canvas panel */}
-          <div className="relative lg:w-[45%] overflow-hidden" style={{ minHeight: "220px" }}>
-            <ClientIconCanvas id={project.id} accent={project.accent} accentRgb={project.accentRgb} rm={rm} />
-            <div className="absolute inset-0 bg-gradient-to-r from-transparent via-transparent to-[#0B0B0F] hidden lg:block pointer-events-none" />
-            <div className="absolute inset-0 bg-gradient-to-t from-[#0B0B0F] to-transparent lg:hidden pointer-events-none" />
-            {/* Status badge */}
-            <div className="absolute top-4 left-4 z-10">
-              <span className={`inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-[10px] font-bold uppercase tracking-wider border backdrop-blur-md ${sc.bg} ${sc.border} ${sc.text}`}>
-                <span className={`w-1.5 h-1.5 rounded-full shrink-0 ${sc.dot}`} aria-hidden="true" />
-                {project.statusLabel}
-              </span>
-            </div>
-            {/* Year */}
-            <div className="absolute top-4 right-4 z-10">
-              <span className="text-[10px] font-mono text-gray-500 bg-black/40 backdrop-blur-sm px-2 py-0.5 rounded-md">{project.year}</span>
-            </div>
+        {/* Icon area */}
+        <div className="relative w-full" style={{ height: "200px" }}>
+          <ClientIconCanvas id={project.id} rm={rm} />
+          <div className="absolute inset-x-0 bottom-0 h-10 pointer-events-none"
+            style={{ background: "linear-gradient(to bottom, transparent, #0e0e1a)" }}
+            aria-hidden="true" />
+          {/* Status + year */}
+          <div className="absolute top-3 left-3 z-10">
+            <span className={`inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-full text-[9px] font-bold uppercase tracking-wider border backdrop-blur-md ${sc.bg} ${sc.border} ${sc.text}`}>
+              <span className={`w-1.5 h-1.5 rounded-full shrink-0 ${sc.dot}`} aria-hidden="true" />
+              {project.statusLabel}
+            </span>
           </div>
+          <div className="absolute top-3 right-3 z-10">
+            <span className="text-[9px] font-mono text-gray-600 bg-black/40 backdrop-blur-sm px-2 py-0.5 rounded-md">{project.year}</span>
+          </div>
+        </div>
 
-          {/* Content panel */}
-          <div className="flex-1 p-6 md:p-8 flex flex-col justify-between gap-5">
-
-            {/* Top */}
-            <div className="flex flex-col gap-3">
-              <div className="flex items-center gap-2 text-[10px] font-bold uppercase tracking-[0.2em]" style={{ color: project.accent }}>
-                <span>{project.company}</span>
-                <span className="text-white/20" aria-hidden="true">·</span>
-                <span className="text-gray-500 normal-case font-medium tracking-wide">{project.role}</span>
-              </div>
-
-              <h3 className="text-xl md:text-2xl font-extrabold text-white leading-tight tracking-tight group-hover:text-white/90 transition-colors duration-300">
-                {project.name}
-              </h3>
-
-              <p className="text-[11px] font-semibold text-gray-600 uppercase tracking-[0.15em]">
-                {project.tagline}
-              </p>
-
-              <p className="text-gray-400 text-sm leading-relaxed">
-                {project.description}
-              </p>
-            </div>
-
-            {/* Contributions */}
-            <div>
-              <p className="text-[9px] font-bold text-gray-600 uppercase tracking-[0.2em] mb-2.5">Contributions</p>
-              <ul className="grid grid-cols-1 sm:grid-cols-2 gap-x-4 gap-y-1.5">
-                {project.contributions.map((c) => (
-                  <li key={c} className="flex items-center gap-2 text-[11px] text-gray-500">
-                    <span className="w-1 h-1 rounded-full shrink-0" style={{ background: project.accent }} aria-hidden="true" />
-                    {c}
-                  </li>
-                ))}
-              </ul>
-            </div>
-
-            {/* Tags + button */}
-            <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 pt-4 border-t border-white/[0.06]">
-              <div className="flex flex-wrap gap-1.5">
-                {project.tags.map((tag) => (
-                  <span
-                    key={tag}
-                    className="px-2.5 py-0.5 text-[10px] font-semibold rounded-full border border-white/[0.07] bg-white/[0.03] text-gray-500 group-hover:border-white/[0.12] group-hover:text-gray-400 transition-all duration-300"
-                  >
-                    {tag}
-                  </span>
-                ))}
-              </div>
-
-              <a
-                href={project.website}
-                target="_blank"
-                rel="noopener noreferrer"
-                aria-label={`Visit ${project.name}`}
-                className="inline-flex items-center gap-2 px-5 py-2 rounded-full text-xs font-bold border border-white/10 bg-white/[0.04] hover:bg-white/[0.08] text-gray-300 hover:text-white transition-all duration-300 hover:border-white/20 whitespace-nowrap group/btn shrink-0"
-              >
-                <svg className="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14" />
-                </svg>
-                Visit Website
-                <svg className="w-3 h-3 group-hover/btn:translate-x-0.5 transition-transform duration-300" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
-                </svg>
-              </a>
-            </div>
+        {/* Text */}
+        <div className="flex flex-col gap-3 px-5 pb-5 pt-3">
+          <div className="flex items-start justify-between gap-2">
+            <h3 className="text-white font-black text-base leading-tight tracking-tight uppercase group-hover:text-white/90 transition-colors duration-300">
+              {project.name}
+            </h3>
+            <span className="text-[9px] font-bold uppercase tracking-[0.12em] text-gray-500 whitespace-nowrap mt-0.5 shrink-0">
+              {project.category}
+            </span>
+          </div>
+          <div className="flex items-center gap-1.5 text-[10px] text-gray-600">
+            <FaBuilding size={9} aria-hidden="true" />
+            <span>{project.company}</span>
+            <span aria-hidden="true">·</span>
+            <span>{project.role}</span>
+          </div>
+          <p className="text-gray-500 text-xs leading-relaxed line-clamp-2">{project.description}</p>
+          <div className="flex flex-wrap gap-1.5">
+            {project.tags.map(t => (
+              <span key={t} className="text-[9px] font-semibold uppercase tracking-wider text-gray-600 hover:text-gray-400 transition-colors duration-200 cursor-default">{t}</span>
+            ))}
+          </div>
+          <div className="pt-1 border-t border-white/[0.05]">
+            <a href={project.website} target="_blank" rel="noopener noreferrer"
+              aria-label={`Visit ${project.name}`}
+              className="inline-flex items-center gap-2 px-4 py-2 rounded-xl text-[11px] font-bold border border-white/10 bg-white/[0.04] hover:bg-white/[0.08] text-gray-300 hover:text-white hover:border-white/20 transition-all duration-300 w-full justify-center group/btn">
+              <FaExternalLinkAlt size={10} aria-hidden="true" />
+              Visit Website
+              <svg className="w-3 h-3 group-hover/btn:translate-x-0.5 transition-transform duration-300" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
+              </svg>
+            </a>
           </div>
         </div>
       </div>
@@ -308,67 +246,49 @@ export default function ClientProjects() {
 
   return (
     <LazyMotion features={domAnimation}>
-      <section
-        id="client-projects"
-        aria-labelledby="client-projects-heading"
-        className="relative z-10 py-20 md:py-28 w-full overflow-hidden"
-      >
-        {/* Background atmosphere */}
+      <section id="client-projects" aria-labelledby="client-projects-heading"
+        className="relative z-10 py-20 md:py-24 w-full overflow-hidden">
+
         <div className="absolute inset-0 pointer-events-none" aria-hidden="true">
-          <div className="absolute top-0 right-0 w-[50rem] h-[50rem] rounded-full bg-emerald-500/[0.03] blur-[120px]" />
-          <div className="absolute bottom-0 left-0 w-[50rem] h-[50rem] rounded-full bg-indigo-600/[0.04] blur-[120px]" />
-          <div className="absolute inset-0 bg-[url('data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSI2MCIgaGVpZ2h0PSI2MCI+PGNpcmNsZSBjeD0iMSIgY3k9IjEiIHI9IjEiIGZpbGw9InJnYmEoMjU1LDI1NSwyNTUsMC4wMikiLz48L3N2Zz4=')] opacity-40" />
+          <div className="absolute top-0 right-1/4 w-[40rem] h-[40rem] rounded-full bg-emerald-500/[0.03] blur-[120px]" />
+          <div className="absolute bottom-0 left-1/4 w-[35rem] h-[35rem] rounded-full bg-indigo-600/[0.03] blur-[120px]" />
         </div>
 
-        <div className="relative z-10 w-full max-w-6xl mx-auto px-6 md:px-12 lg:px-16 flex flex-col gap-12 md:gap-16">
+        <div className="relative z-10 w-full max-w-6xl mx-auto px-6 md:px-12 lg:px-16 flex flex-col gap-10 md:gap-12">
 
           {/* Header */}
-          <m.div
-            initial={rm ? false : { opacity: 0, y: 30 }}
-            whileInView={rm ? undefined : { opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            transition={{ duration: 0.6 }}
-            className="flex flex-col gap-3"
-          >
+          <m.div initial={rm ? false : { opacity: 0, y: 24 }} whileInView={rm ? undefined : { opacity: 1, y: 0 }}
+            viewport={{ once: true }} transition={{ duration: 0.55 }}
+            className="flex flex-col gap-2">
             <div className="flex items-center gap-3">
-              <div className="w-8 h-px bg-emerald-500/60" aria-hidden="true" />
-              <span className="text-[10px] font-bold text-emerald-400 uppercase tracking-[0.35em]">
-                Professional Work
-              </span>
+              <div className="w-6 h-px bg-emerald-500/60" aria-hidden="true" />
+              <span className="text-[10px] font-bold text-emerald-400 uppercase tracking-[0.3em]">Professional Work</span>
             </div>
-            <h2 id="client-projects-heading" className="text-4xl md:text-6xl font-black text-white tracking-tight leading-[1.0]">
-              Client<br />
-              <span className="text-transparent bg-clip-text bg-gradient-to-r from-emerald-400 to-cyan-400">
-                Projects
-              </span>
+            <h2 id="client-projects-heading" className="text-3xl md:text-5xl font-black text-white tracking-tight">
+              Client <span className="text-transparent bg-clip-text bg-gradient-to-r from-emerald-400 to-cyan-400">Projects</span>
             </h2>
-            <p className="text-gray-500 text-sm md:text-base max-w-md leading-relaxed mt-1">
+            <p className="text-gray-500 text-sm max-w-md leading-relaxed mt-1">
               Real-world products delivered for international clients through Apexora 360.
             </p>
           </m.div>
 
-          {/* Cards */}
-          <div className="flex flex-col gap-5 md:gap-6">
-            {CLIENT_PROJECTS.map((project, i) => (
-              <ClientCard key={project.id} project={project} index={i} rm={rm} />
+          {/* Grid */}
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 md:gap-5">
+            {CLIENT_PROJECTS.map((p, i) => (
+              <ClientCard key={p.id} project={p} index={i} rm={rm} />
             ))}
           </div>
 
-          {/* Footer tag */}
-          <m.div
-            initial={rm ? false : { opacity: 0 }}
-            whileInView={rm ? undefined : { opacity: 1 }}
-            viewport={{ once: true }}
-            transition={{ duration: 0.5, delay: 0.3 }}
-            className="flex items-center gap-3 pt-2"
-          >
+          {/* Footer */}
+          <m.div initial={rm ? false : { opacity: 0 }} whileInView={rm ? undefined : { opacity: 1 }}
+            viewport={{ once: true }} transition={{ duration: 0.5, delay: 0.2 }}
+            className="flex items-center gap-3">
             <div className="h-px flex-1 bg-white/[0.05]" aria-hidden="true" />
-            <span className="text-[10px] text-gray-700 font-mono tracking-widest uppercase">
+            <span className="text-[9px] text-gray-700 font-mono tracking-widest uppercase">
               All client work via Apexora 360 · Kohinoor Plaza, Faisalabad
             </span>
             <div className="h-px flex-1 bg-white/[0.05]" aria-hidden="true" />
           </m.div>
-
         </div>
       </section>
     </LazyMotion>
