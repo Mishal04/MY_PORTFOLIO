@@ -59,6 +59,43 @@ html.lenis body {
   background: rgba(99, 102, 241, 0.3);
 }
 
+/* ── Premium card grain texture ────────────────────────────────────────── */
+/*
+   SVG feTurbulence generates a real noise pattern — no image file needed.
+   The result is a base64-encoded SVG used as a CSS background-image.
+   mix-blend-mode: overlay lets it tint lightly without washing out colors.
+   opacity is kept at 0.05 so it is only visible on close inspection.
+*/
+.card-grain {
+  position: relative;
+  isolation: isolate;
+}
+
+.card-grain::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  pointer-events: none;
+  z-index: 20;
+  opacity: 0.05;
+  mix-blend-mode: overlay;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='200' height='200'%3E%3Cfilter id='grain'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.75' numOctaves='4' stitchTiles='stitch'/%3E%3CfeColorMatrix type='saturate' values='0'/%3E%3C/filter%3E%3Crect width='200' height='200' filter='url(%23grain)' opacity='1'/%3E%3C/svg%3E");
+  background-size: 160px 160px;
+  background-repeat: repeat;
+}
+
+/* Slightly increase grain visibility on hover */
+.card-grain:hover::before {
+  opacity: 0.06;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .card-grain::before {
+    opacity: 0.04;
+  }
+}
+
 /* ── Marquee animation ──────────────────────────────────────────────────── */
 @keyframes marquee {
   0%   { transform: translateX(0); }

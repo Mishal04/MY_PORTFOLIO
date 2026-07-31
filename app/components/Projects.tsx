@@ -96,7 +96,7 @@ function FeaturedCard({
         ref={ref}
         onMouseMove={onMove}
         onMouseLeave={onLeave}
-        className="group relative rounded-[24px] overflow-hidden border border-white/[0.08] bg-[#0B0B0F] transition-all duration-500 hover:border-white/20"
+        className="group relative rounded-[24px] overflow-hidden border border-white/[0.08] bg-[#0B0B0F] transition-all duration-500 hover:border-white/20 card-grain"
         style={{ boxShadow: "0 8px 60px rgba(0,0,0,0.7), inset 0 1px 0 rgba(255,255,255,0.04)" }}
       >
         {/* Spotlight */}
@@ -204,7 +204,7 @@ function GridCard({
         ref={ref}
         onMouseMove={onMove}
         onMouseLeave={onLeave}
-        className="group relative flex flex-col h-full rounded-[20px] overflow-hidden border border-white/[0.07] bg-[#0B0B0F] hover:border-white/20 transition-all duration-500"
+        className="group relative flex flex-col h-full rounded-[20px] overflow-hidden border border-white/[0.07] bg-[#0B0B0F] hover:border-white/20 transition-all duration-500 card-grain"
         style={{ boxShadow: "0 4px 30px rgba(0,0,0,0.6), inset 0 1px 0 rgba(255,255,255,0.03)" }}
       >
         {/* Spotlight */}
