@@ -67,7 +67,7 @@ The portfolio is designed with a modern space-inspired UI, smooth animations and
 
 ---
 
-## 🚀 Projects
+## 🚀 Projectsss
 
 <img src="./assets/screenshots/projects.png" width="100%"/>
 
