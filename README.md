@@ -23,7 +23,7 @@
 
 # 📖 About
 
-This is my personal developer portfolio showcasing my skills, projects, experience and technical journey.
+This is my personal developer portfolio showcasing my skills, projects, experience and technical journeyyy.
 
 The portfolio is designed with a modern space-inspired UI, smooth animations and fully responsive layouts to deliver an engaging user experience.
 
