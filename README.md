@@ -46,7 +46,7 @@ The portfolio is designed with a modern space-inspired UI, smooth animations and
 
 ---
 
-# 🛠 Tech Stack
+# 🛠 Tech Stacks
 
 - Next.js
 - React.js
