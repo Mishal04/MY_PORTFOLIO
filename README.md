@@ -2,7 +2,7 @@
 
 
 <p align="center">
-  A modern, responsive and animated personal portfolio built with Next.js.
+  A modern, responsive and animated personal portfolio built with Next js.
 </p>
 
 <p align="center">
