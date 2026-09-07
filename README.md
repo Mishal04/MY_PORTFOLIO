@@ -4,7 +4,7 @@
   A modern, responsive and animated personal portfolioo built with Next js. 
 </p>
 
-<p align="center">
+<p align="center"> 
   <a href="https://my-portfolio-srff.vercel.app/" target="_blank">
     <img src="https://img.shields.io/badge/Live-Demo-7C3AED?style=for-the-badge&logo=vercel&logoColor=white"/>
   </a>
