@@ -1,7 +1,7 @@
 <h1 align="center">🌌 My Portfolio</h1>
  
 <p align="center">
-  A modern, responsive and animated personal portfolioo built with Next js. 
+  A modern, responsive and animated personal portfolioo built with Next js.  
 </p>
 
 <p align="center"> 
