@@ -58,7 +58,7 @@ The portfolio is designed with a modern space-inspired UI, smooth animations and
 - EmailJS
 - Vercel
 
-----
+---
 
 # 📸 Screenshots
 
