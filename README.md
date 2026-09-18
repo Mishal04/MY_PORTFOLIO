@@ -15,7 +15,7 @@
 
 ---
 
-# 🌐 Livee Website
+# 🌐 Live Website
 
 ### 🔗 https://my-portfolio-srff.vercel.app/
 
