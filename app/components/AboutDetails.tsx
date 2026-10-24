@@ -39,7 +39,7 @@ export default function AboutDetails() {
               <div className="absolute bottom-7 left-0 right-0 flex justify-center gap-4 sm:gap-6 z-10">
                 <a href="https://www.linkedin.com/in/mishal-ashfaq-503237332/" target="_blank" rel="noopener noreferrer" aria-label="LinkedIn" className="w-12 h-12 flex items-center justify-center rounded-full bg-white/5 backdrop-blur-md border border-white/10 text-white/70 hover:text-indigo-400 hover:bg-white/10 transition-all hover:scale-110 transform"><FaLinkedin size={20} /></a>
                 <a href="https://www.instagram.com/_.mishal1/" target="_blank" rel="noopener noreferrer" aria-label="Instagram" className="w-12 h-12 flex items-center justify-center rounded-full bg-white/5 backdrop-blur-md border border-white/10 text-white/70 hover:text-purple-400 hover:bg-white/10 transition-all hover:scale-110 transform"><FaInstagram size={20} /></a>
-                <a href="mailto:exoticmishaal9@gmail.com" aria-label="Email" className="w-12 h-12 flex items-center justify-center rounded-full bg-white/5 backdrop-blur-md border border-white/10 text-white/70 hover:text-pink-400 hover:bg-white/10 transition-all hover:scale-110 transform"><FaEnvelope size={20} /></a>
+                <a href="mailto:mishalashfaq40@gmail.com" aria-label="Email" className="w-12 h-12 flex items-center justify-center rounded-full bg-white/5 backdrop-blur-md border border-white/10 text-white/70 hover:text-pink-400 hover:bg-white/10 transition-all hover:scale-110 transform"><FaEnvelope size={20} /></a>
               </div>
             </div>
           </m.div>
@@ -56,7 +56,7 @@ export default function AboutDetails() {
               <h1 className="text-3xl md:text-4xl font-bold text-transparent bg-clip-text bg-gradient-to-r from-white via-indigo-200 to-indigo-500 mb-3 tracking-tight">Mishal Ashfaq</h1>
               
               <p className="text-gray-400 text-sm md:text-base leading-relaxed mb-5 font-light">
-                I am a passionate creative developer and designer with a relentless mindset for innovation. I blend technical expertise with artistic vision to craft immersive, beautiful, and highly functional digital experiences.
+                Computer Science student and Full-Stack Developer experienced in building responsive web applications using React, Next.js, Node.js, Express.js, and MongoDB. Developed 20+ projects through freelance work, professional experience, and personal development.
               </p>
 
               <div className="grid grid-cols-1 md:grid-cols-2 gap-3 mb-4">
@@ -69,14 +69,15 @@ export default function AboutDetails() {
                   <div className="relative border-l border-white/10 pl-3 space-y-3">
                     <div className="relative">
                       <div className="absolute -left-[17px] top-1 w-1.5 h-1.5 bg-indigo-500 rounded-full shadow-[0_0_10px_rgba(99,102,241,0.8)]" />
-                      <p className="text-indigo-300 text-[10px] font-bold mb-0.5">Present (6th Semester)</p>
+                      <p className="text-indigo-300 text-[10px] font-bold mb-0.5">7th Semester | GPA: 3.55/4.00</p>
                       <h5 className="text-white font-medium text-xs">BS Computer Science</h5>
-                      <p className="text-gray-400 text-[10px] mt-0.5">GC University FSD</p>
+                      <p className="text-gray-400 text-[10px] mt-0.5">GC University FSD · 2023–2027</p>
                     </div>
                     <div className="relative">
                       <div className="absolute -left-[17px] top-1 w-1.5 h-1.5 bg-white/20 rounded-full" />
-                      <p className="text-indigo-300 text-[10px] font-bold mb-0.5">2018 - 2020</p>
-                      <h5 className="text-white font-medium text-xs">Pre-Engineering</h5>
+                      <p className="text-indigo-300 text-[10px] font-bold mb-0.5">2024 – 2025</p>
+                      <h5 className="text-white font-medium text-xs">Saylani Mass IT Training</h5>
+                      <p className="text-gray-400 text-[10px] mt-0.5">Web Development</p>
                     </div>
                   </div>
                 </div>
@@ -90,15 +91,15 @@ export default function AboutDetails() {
                   <div className="relative border-l border-white/10 pl-3 space-y-3">
                     <div className="relative">
                       <div className="absolute -left-[17px] top-1 w-1.5 h-1.5 bg-purple-500 rounded-full shadow-[0_0_10px_rgba(168,85,247,0.8)]" />
-                      <p className="text-purple-300 text-[10px] font-bold mb-0.5">1 Year Program</p>
-                      <h5 className="text-white font-medium text-xs">Saylani Mass IT Training</h5>
-                      <p className="text-gray-400 text-[10px] mt-0.5">Web Development Course</p>
+                      <p className="text-purple-300 text-[10px] font-bold mb-0.5">Oct 2026 – Present</p>
+                      <h5 className="text-white font-medium text-xs">AFZ Prestige Services</h5>
+                      <p className="text-gray-400 text-[10px] mt-0.5">MERN Stack Developer (Remote)</p>
                     </div>
                     <div className="relative">
-                      <div className="absolute -left-[17px] top-1 w-1.5 h-1.5 bg-white/20 rounded-full" />
-                      <p className="text-purple-300 text-[10px] font-bold mb-0.5">Ongoing</p>
-                      <h5 className="text-white font-medium text-xs">Independent Projects</h5>
-                      <p className="text-gray-400 text-[10px] mt-0.5">Building custom web apps</p>
+                      <div className="absolute -left-[17px] top-1 w-1.5 h-1.5 bg-emerald-400 rounded-full shadow-[0_0_10px_rgba(52,211,153,0.8)]" />
+                      <p className="text-emerald-300 text-[10px] font-bold mb-0.5">May 2026 – Present</p>
+                      <h5 className="text-white font-medium text-xs">Apexora 360</h5>
+                      <p className="text-gray-400 text-[10px] mt-0.5">Full Stack Developer (On-site)</p>
                     </div>
                   </div>
                 </div>

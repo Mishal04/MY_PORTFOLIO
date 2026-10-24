@@ -114,3 +114,34 @@ html.lenis body {
     pointer-events: none !important;
   }
 }
+
+/* ── Print styles for CV ────────────────────────────────────────── */
+@media print {
+  body {
+    background: #ffffff !important;
+    color: #111827 !important;
+    -webkit-print-color-adjust: exact !important;
+    print-color-adjust: exact !important;
+  }
+
+  nav, footer, .no-print {
+    display: none !important;
+  }
+
+  .print-clean {
+    background: #ffffff !important;
+    color: #111827 !important;
+    box-shadow: none !important;
+    border: none !important;
+    padding: 0 !important;
+    margin: 0 !important;
+    width: 100% !important;
+    max-width: 100% !important;
+  }
+
+  .print-page-break {
+    page-break-before: always;
+    break-before: page;
+  }
+}
+

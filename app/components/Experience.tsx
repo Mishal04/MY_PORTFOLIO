@@ -5,25 +5,46 @@ import { FaBriefcase, FaCode, FaMapMarkerAlt } from "react-icons/fa";
 import { HiSparkles } from "react-icons/hi";
 import { useReducedMotion } from "@/app/hooks/useReducedMotion";
 
+const BLUE = "#3b82f6";
+
 const experiences = [
   {
     type: "work",
-    role: "Full Stack & WordPress Developer",
-    company: "Apexora 360",
-    location: "Kohinoor Plaza, Faisalabad",
-    period: "2024 — Present",
+    role: "MERN Stack Developer",
+    company: "AFZ Prestige Corporate Services",
+    location: "Remote",
+    period: "Oct 2026 — Present",
     status: "current",
     description:
-      "Intern turned ongoing client developer at Apexora 360. Delivered WordPress projects for multiple live clients and continue contributing to the HomeFound Real Estate Canada platform.",
+      "Develop and maintain full-stack web applications, including CRM systems and SaaS dashboards, using MongoDB, Express.js, React.js, and Node.js. Build responsive user interfaces, integrate backend APIs, manage databases, and implement dashboard features for data management and business workflows.",
     highlights: [
-      "Tronex Trade — responsive pages, landing pages, UI fixes, performance",
-      "StoicaPro — Elementor customisation, responsive layouts, plugin config",
-      "HomeFound Real Estate CA — ongoing WordPress & Elementor development",
-      "Fixing UI/responsive issues and optimising Core Web Vitals",
-      "Collaborating with the team to deliver client-requested features",
+      "Engineered full-stack CRM systems and enterprise SaaS dashboards",
+      "Built responsive, accessible interfaces using React.js, Next.js, and modern CSS",
+      "Designed and integrated performant REST APIs with Node.js and Express",
+      "Managed MongoDB database schemas, data validation, and query optimization",
+      "Implemented comprehensive dashboard analytics and automated business workflows",
     ],
-    tags: ["WordPress", "Elementor", "HTML", "CSS", "JavaScript", "Responsive Design", "UI/UX"],
-    color: "#6366f1",
+    tags: ["MongoDB", "Express.js", "React.js", "Node.js", "REST APIs", "SaaS", "CRM"],
+    color: BLUE,
+    icon: FaBriefcase,
+  },
+  {
+    type: "work",
+    role: "Full Stack Developer",
+    company: "Apexora 360",
+    location: "Kohinoor Plaza, Faisalabad",
+    period: "May 2026 — Present",
+    status: "current",
+    description:
+      "Contribute to website development and maintenance, focusing on improving website functionality, responsive layouts, and user experience. Collaborate with the team to implement updates, resolve UI issues, and maintain website performance using WordPress and modern web technologies.",
+    highlights: [
+      "Contribute to ongoing development of HomeFound Real Estate Canada platform",
+      "Delivered responsive landing pages and UI fixes for Tronex Trade and StoicaPro",
+      "Optimised Core Web Vitals, page speed metrics, and responsive mobile layouts",
+      "Collaborate cross-functionally with team members to resolve bugs and ship features",
+    ],
+    tags: ["WordPress", "Elementor", "HTML5", "CSS3", "JavaScript", "Responsive Design", "UI/UX"],
+    color: BLUE,
     icon: FaBriefcase,
     clientProject: {
       name: "HomeFound Real Estate Canada",
@@ -31,68 +52,48 @@ const experiences = [
     },
   },
   {
-    type: "work",
-    role: "MERN Stack & WordPress Developer",
-    company: "Apexora",
-    location: "Kohinoor Plaza, Faisalabad",
-    period: "2024",
+    type: "education",
+    role: "Web Development Certification",
+    company: "Saylani Mass IT Training",
+    location: "Faisalabad",
+    period: "2024 — 2025",
     status: "completed",
     description:
-      "Completed a frontend developer internship building real-world client projects. Built full-stack features with the MERN stack and delivered WordPress-based client sites.",
+      "Completed structured training in professional web development covering modern JavaScript, React ecosystem, and full-stack architecture.",
     highlights: [
-      "Developed full-stack features using MongoDB, Express, React & Node.js",
-      "Built and customised WordPress sites for clients",
-      "Collaborated with senior devs in an agile workflow",
-      "Shipped production-ready, responsive UIs with React & Tailwind",
+      "Mastered frontend fundamentals: HTML5, CSS3, ES6+ JavaScript, responsive design",
+      "Built component-driven applications with React and state management",
+      "Hands-on full-stack development with Node.js, Express, and MongoDB",
     ],
-    tags: ["MongoDB", "Express", "React", "Node.js", "WordPress", "Tailwind CSS", "Git"],
-    color: "#818cf8",
-    icon: FaBriefcase,
+    tags: ["HTML5", "CSS3", "JavaScript", "React", "Node.js", "MongoDB"],
+    color: BLUE,
+    icon: HiSparkles,
   },
   {
     type: "self",
     role: "Full-Stack Developer",
-    company: "Self Projects",
+    company: "Independent Projects",
     location: "Remote / Personal",
     period: "2023 — Present",
     status: "ongoing",
     description:
-      "Independently designing and shipping full-stack web applications — from concept to deployment. Each project sharpens a different part of the stack.",
+      "Developed 20+ web applications and completed over 1,500+ hours of coding practice. Built full-stack delivery apps, task management systems, referral networks, and interactive web tools.",
     highlights: [
-      "Built Food Express — a full-stack delivery platform",
-      "Crafted an animated personal portfolio with Three.js & Framer Motion",
-      "Built a Real Estate platform with property search and filtering",
-      "Continuously exploring new frameworks and tools",
+      "Developed Food Express App — full-stack delivery platform with React & Firebase",
+      "Built Task Management System — auth, task priority, creation, and MongoDB backend",
+      "Created SolvexTrade & Baquu Platform — referral workflows and modern frontend",
+      "Built Password-Web — secure generator with customizable strength algorithms",
     ],
-    tags: ["Next.js", "Node.js", "MongoDB", "Framer Motion", "Three.js"],
-    color: "#22d3ee",
+    tags: ["Next.js", "React.js", "Node.js", "MongoDB", "Firebase", "Tailwind CSS"],
+    color: BLUE,
     icon: FaCode,
-  },
-  {
-    type: "education",
-    role: "Web Development Training",
-    company: "Saylani Mass IT Training",
-    location: "Faisalabad",
-    period: "2023 — 2024",
-    status: "completed",
-    description:
-      "Completed a structured 1-year web development program covering the full stack — from fundamentals to modern frameworks and deployment.",
-    highlights: [
-      "Mastered HTML, CSS, JavaScript fundamentals",
-      "Learned React and component-based architecture",
-      "Built and deployed multiple practice projects",
-      "Studied Node.js, Express and MongoDB basics",
-    ],
-    tags: ["HTML", "CSS", "JavaScript", "React", "Node.js"],
-    color: "#a78bfa",
-    icon: HiSparkles,
   },
 ];
 
 const statusConfig = {
-  current:   { label: "Current",   dot: "bg-emerald-400", text: "text-emerald-400",  ring: "border-emerald-400/30 bg-emerald-400/10" },
-  ongoing:   { label: "Ongoing",   dot: "bg-indigo-400",  text: "text-indigo-400",   ring: "border-indigo-400/30 bg-indigo-400/10"  },
-  completed: { label: "Completed", dot: "bg-gray-500",    text: "text-gray-400",     ring: "border-white/10 bg-white/5"             },
+  current:   { label: "Current",   dot: "bg-blue-400",  text: "text-blue-400",  ring: "border-blue-400/30 bg-blue-400/10"  },
+  ongoing:   { label: "Ongoing",   dot: "bg-blue-400",  text: "text-blue-400",  ring: "border-blue-400/30 bg-blue-400/10"  },
+  completed: { label: "Completed", dot: "bg-blue-400",  text: "text-blue-300",  ring: "border-blue-400/20 bg-blue-400/5"   },
 };
 
 export default function Experience() {
@@ -227,10 +228,10 @@ export default function Experience() {
                             href={(exp.clientProject as { name: string; url: string }).url}
                             target="_blank"
                             rel="noopener noreferrer"
-                            className="inline-flex items-center gap-2 mb-4 px-3 py-1.5 rounded-xl bg-emerald-500/10 border border-emerald-500/20 text-emerald-400 text-[11px] font-semibold hover:bg-emerald-500/20 transition-all duration-300 group/link w-fit"
+                            className="inline-flex items-center gap-2 mb-4 px-3 py-1.5 rounded-xl bg-blue-500/10 border border-blue-500/20 text-blue-400 text-[11px] font-semibold hover:bg-blue-500/20 transition-all duration-300 group/link w-fit"
                             aria-label={`Visit ${(exp.clientProject as { name: string; url: string }).name}`}
                           >
-                            <span className="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-pulse shrink-0" aria-hidden="true" />
+                            <span className="w-1.5 h-1.5 rounded-full bg-blue-400 animate-pulse shrink-0" aria-hidden="true" />
                             Currently working on:{" "}
                             <span className="underline underline-offset-2">
                               {(exp.clientProject as { name: string; url: string }).name}

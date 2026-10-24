@@ -166,9 +166,10 @@ function ClientCard({ project, index, rm }: {
       whileInView={rm ? undefined : { opacity: 1, y: 0 }}
       viewport={{ once: true, margin: "-50px" }}
       transition={{ duration: 0.6, delay: index * 0.08, ease: [0.22, 1, 0.36, 1] }}
+      className="h-full"
     >
       <div ref={ref} onMouseMove={onMove} onMouseLeave={onLeave}
-        className="group relative flex flex-col rounded-[18px] overflow-hidden border border-white/[0.08] bg-[#0e0e1a] hover:border-white/[0.18] transition-all duration-500 card-grain"
+        className="group relative flex flex-col h-full rounded-[18px] overflow-hidden border border-white/[0.08] bg-[#0e0e1a] hover:border-white/[0.18] transition-all duration-500 card-grain"
         style={{ boxShadow: "0 2px 24px rgba(0,0,0,0.55), inset 0 1px 0 rgba(255,255,255,0.04)" }}>
 
         {/* Spotlight */}
@@ -184,7 +185,7 @@ function ClientCard({ project, index, rm }: {
         )}
 
         {/* Icon area */}
-        <div className="relative w-full" style={{ height: "200px" }}>
+        <div className="relative w-full shrink-0" style={{ height: "200px" }}>
           <ClientIconCanvas id={project.id} rm={rm} />
           <div className="absolute inset-x-0 bottom-0 h-10 pointer-events-none"
             style={{ background: "linear-gradient(to bottom, transparent, #0e0e1a)" }}
@@ -202,31 +203,33 @@ function ClientCard({ project, index, rm }: {
         </div>
 
         {/* Text */}
-        <div className="flex flex-col gap-3 px-5 pb-5 pt-3">
-          <div className="flex items-start justify-between gap-2">
-            <h3 className="text-white font-black text-base leading-tight tracking-tight uppercase group-hover:text-white/90 transition-colors duration-300">
-              {project.name}
-            </h3>
-            <span className="text-[9px] font-bold uppercase tracking-[0.12em] text-gray-500 whitespace-nowrap mt-0.5 shrink-0">
-              {project.category}
-            </span>
+        <div className="flex-1 flex flex-col justify-between p-5 pt-3">
+          <div className="flex flex-col gap-2.5">
+            <div className="flex items-start justify-between gap-2 min-h-[2.5rem]">
+              <h3 className="text-white font-black text-base leading-tight tracking-tight uppercase group-hover:text-white/90 transition-colors duration-300">
+                {project.name}
+              </h3>
+              <span className="text-[9px] font-bold uppercase tracking-[0.12em] text-gray-500 whitespace-nowrap mt-0.5 shrink-0">
+                {project.category}
+              </span>
+            </div>
+            <div className="flex items-center gap-1.5 text-[10px] text-gray-600">
+              <FaBuilding size={9} aria-hidden="true" />
+              <span>{project.company}</span>
+              <span aria-hidden="true">·</span>
+              <span>{project.role}</span>
+            </div>
+            <p className="text-gray-400 text-xs leading-relaxed line-clamp-2 h-[2.5rem]">{project.description}</p>
+            <div className="flex flex-wrap items-center gap-1.5 min-h-[1.75rem]">
+              {project.tags.map(t => (
+                <span key={t} className="text-[9px] font-semibold uppercase tracking-wider text-gray-400 bg-white/[0.03] border border-white/[0.06] px-2 py-0.5 rounded-md hover:text-white hover:border-white/20 transition-colors duration-200 cursor-default">{t}</span>
+              ))}
+            </div>
           </div>
-          <div className="flex items-center gap-1.5 text-[10px] text-gray-600">
-            <FaBuilding size={9} aria-hidden="true" />
-            <span>{project.company}</span>
-            <span aria-hidden="true">·</span>
-            <span>{project.role}</span>
-          </div>
-          <p className="text-gray-500 text-xs leading-relaxed line-clamp-2">{project.description}</p>
-          <div className="flex flex-wrap gap-1.5">
-            {project.tags.map(t => (
-              <span key={t} className="text-[9px] font-semibold uppercase tracking-wider text-gray-600 hover:text-gray-400 transition-colors duration-200 cursor-default">{t}</span>
-            ))}
-          </div>
-          <div className="pt-1 border-t border-white/[0.05]">
+          <div className="pt-3 mt-4 border-t border-white/[0.06]">
             <a href={project.website} target="_blank" rel="noopener noreferrer"
               aria-label={`Visit ${project.name}`}
-              className="inline-flex items-center gap-2 px-4 py-2 rounded-xl text-[11px] font-bold border border-white/10 bg-white/[0.04] hover:bg-white/[0.08] text-gray-300 hover:text-white hover:border-white/20 transition-all duration-300 w-full justify-center group/btn">
+              className="inline-flex items-center gap-2 px-4 py-2.5 rounded-xl text-[11px] font-bold border border-white/10 bg-white/[0.04] hover:bg-white/[0.08] text-gray-300 hover:text-white hover:border-white/20 transition-all duration-300 w-full justify-center group/btn">
               <FaExternalLinkAlt size={10} aria-hidden="true" />
               Visit Website
               <svg className="w-3 h-3 group-hover/btn:translate-x-0.5 transition-transform duration-300" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
@@ -273,7 +276,7 @@ export default function ClientProjects() {
           </m.div>
 
           {/* Grid */}
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 md:gap-5">
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 md:gap-5 auto-rows-fr">
             {CLIENT_PROJECTS.map((p, i) => (
               <ClientCard key={p.id} project={p} index={i} rm={rm} />
             ))}
