@@ -35,32 +35,18 @@ export async function POST(req: Request) {
       );
     }
 
-    // Create transporter
+    // Create transporter with Gmail-specific settings
     const transporter = nodemailer.createTransport({
-      host: process.env.SMTP_HOST || "smtp.gmail.com",
-      port: parseInt(process.env.SMTP_PORT || "587"),
-      secure: process.env.SMTP_PORT === "465",
+      service: "gmail",
       auth: {
         user: process.env.SMTP_USER,
         pass: process.env.SMTP_PASS,
       },
     });
 
-    // Verify transporter connection
-    try {
-      await transporter.verify();
-      console.log("[Contact form] SMTP connection verified");
-    } catch (verifyError) {
-      console.error("[Contact form] SMTP verification failed:", verifyError);
-      return NextResponse.json(
-        { error: "Email service connection failed. Please try again later." },
-        { status: 500 }
-      );
-    }
-
     // Email to yourself (notification)
     const adminMailOptions = {
-      from: process.env.CONTACT_EMAIL_FROM,
+      from: process.env.SMTP_USER,
       to: process.env.CONTACT_EMAIL_TO,
       subject: `New Contact Form Submission from ${name}`,
       html: `
@@ -83,7 +69,7 @@ export async function POST(req: Request) {
 
     // Email to sender (confirmation)
     const senderMailOptions = {
-      from: process.env.CONTACT_EMAIL_FROM,
+      from: process.env.SMTP_USER,
       to: email,
       subject: "Thank you for contacting me!",
       html: `
@@ -104,21 +90,17 @@ export async function POST(req: Request) {
       `,
     };
 
-    // Send both emails
-    try {
-      await transporter.sendMail(adminMailOptions);
-      console.log("[Contact form] Admin email sent to:", process.env.CONTACT_EMAIL_TO);
-    } catch (adminError) {
-      console.error("[Contact form] Failed to send admin email:", adminError);
-      throw adminError;
-    }
+    // Send admin email
+    await transporter.sendMail(adminMailOptions);
+    console.log("[Contact form] Admin email sent to:", process.env.CONTACT_EMAIL_TO);
 
+    // Send confirmation email to sender
     try {
       await transporter.sendMail(senderMailOptions);
       console.log("[Contact form] Confirmation email sent to:", email);
     } catch (senderError) {
       console.error("[Contact form] Failed to send confirmation email:", senderError);
-      // Don't throw - user message was received even if confirmation fails
+      // Don't fail - user message was received
     }
 
     console.info("[Contact form] Submission successful from:", email);
@@ -129,6 +111,9 @@ export async function POST(req: Request) {
     );
   } catch (error) {
     console.error("[Contact form error]", error);
+    const errorMessage = error instanceof Error ? error.message : "Unknown error";
+    console.error("[Contact form error details]", errorMessage);
+    
     return NextResponse.json(
       { error: "Failed to send email. Please try again later." },
       { status: 500 }
