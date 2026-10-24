@@ -26,16 +26,37 @@ export async function POST(req: Request) {
       );
     }
 
+    // Check if env variables are set
+    if (!process.env.SMTP_USER || !process.env.SMTP_PASS) {
+      console.error("[Contact form] Missing SMTP credentials");
+      return NextResponse.json(
+        { error: "Email service not configured properly." },
+        { status: 500 }
+      );
+    }
+
     // Create transporter
     const transporter = nodemailer.createTransport({
-      host: process.env.SMTP_HOST,
+      host: process.env.SMTP_HOST || "smtp.gmail.com",
       port: parseInt(process.env.SMTP_PORT || "587"),
-      secure: process.env.SMTP_PORT === "465", // true for 465, false for other ports
+      secure: process.env.SMTP_PORT === "465",
       auth: {
         user: process.env.SMTP_USER,
         pass: process.env.SMTP_PASS,
       },
     });
+
+    // Verify transporter connection
+    try {
+      await transporter.verify();
+      console.log("[Contact form] SMTP connection verified");
+    } catch (verifyError) {
+      console.error("[Contact form] SMTP verification failed:", verifyError);
+      return NextResponse.json(
+        { error: "Email service connection failed. Please try again later." },
+        { status: 500 }
+      );
+    }
 
     // Email to yourself (notification)
     const adminMailOptions = {
@@ -84,10 +105,23 @@ export async function POST(req: Request) {
     };
 
     // Send both emails
-    await transporter.sendMail(adminMailOptions);
-    await transporter.sendMail(senderMailOptions);
+    try {
+      await transporter.sendMail(adminMailOptions);
+      console.log("[Contact form] Admin email sent to:", process.env.CONTACT_EMAIL_TO);
+    } catch (adminError) {
+      console.error("[Contact form] Failed to send admin email:", adminError);
+      throw adminError;
+    }
 
-    console.info("[Contact form submission sent]", { name, email });
+    try {
+      await transporter.sendMail(senderMailOptions);
+      console.log("[Contact form] Confirmation email sent to:", email);
+    } catch (senderError) {
+      console.error("[Contact form] Failed to send confirmation email:", senderError);
+      // Don't throw - user message was received even if confirmation fails
+    }
+
+    console.info("[Contact form] Submission successful from:", email);
 
     return NextResponse.json(
       { success: true, message: "Email sent successfully!" },
