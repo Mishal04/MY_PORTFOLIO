@@ -268,7 +268,7 @@ export default function ClientProjects() {
               <span className="text-[10px] font-bold text-blue-400 uppercase tracking-[0.3em]">Professional Work</span>
             </div>
             <h2 id="client-projects-heading" className="text-3xl md:text-5xl font-black text-white tracking-tight">
-              Client <span className="text-transparent bg-clip-text bg-gradient-to-r from-blue-400 to-blue-600">Projects</span>
+              Client <span className="text-transparent bg-clip-text bg-gradient-to-r from-blue-300 via-blue-400 to-purple-500">Projects</span>
             </h2>
             <p className="text-gray-500 text-sm max-w-md leading-relaxed mt-1">
               Real-world products delivered for international clients through Apexora 360.
