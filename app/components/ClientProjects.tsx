@@ -23,7 +23,7 @@ type IconDef = { path: string | string[]; size: number };
 
 const CLIENT_ICON_DEFS: Record<string, { hero: IconDef; accent: string; accentRgb: string; supporting: IconDef[] }> = {
   homefound: {
-    accent: "#10b981", accentRgb: "16,185,129",
+    accent: "#3b82f6", accentRgb: "59,130,246",
     hero: { path: "M3 9l9-7 9 7v11a2 2 0 01-2 2H5a2 2 0 01-2-2zM9 22V12h6v10", size: 52 },
     supporting: [
       { path: "M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7zm0 9.5a2.5 2.5 0 110-5 2.5 2.5 0 010 5z", size: 20 },
@@ -32,7 +32,7 @@ const CLIENT_ICON_DEFS: Record<string, { hero: IconDef; accent: string; accentRg
     ],
   },
   tronex: {
-    accent: "#6366f1", accentRgb: "99,102,241",
+    accent: "#3b82f6", accentRgb: "59,130,246",
     hero: { path: "M18 20V10M12 20V4M6 20v-6", size: 52 },
     supporting: [
       { path: "M23 6l-9.5 9.5-5-5L1 18M23 6h-6M23 6v6", size: 20 },
@@ -41,7 +41,7 @@ const CLIENT_ICON_DEFS: Record<string, { hero: IconDef; accent: string; accentRg
     ],
   },
   stoicapro: {
-    accent: "#a78bfa", accentRgb: "167,139,250",
+    accent: "#3b82f6", accentRgb: "59,130,246",
     hero: { path: "M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8zM12 15a3 3 0 100-6 3 3 0 000 6z", size: 52 },
     supporting: [
       { path: "M19 3H5a2 2 0 00-2 2v14a2 2 0 002 2h14a2 2 0 002-2V5a2 2 0 00-2-2zM3 9h18M9 21V9", size: 20 },
@@ -105,8 +105,8 @@ const CLIENT_PROJECTS = [
     company: "Apexora 360",
     website: "https://homefound.ca/",
     role: "Frontend / WordPress Dev",
-    status: "active" as const,
-    statusLabel: "Live · Ongoing",
+    status: "delivered" as const,
+    statusLabel: "Completed",
     year: "2025",
     description: "International real estate platform serving Canadian clients — WordPress pages, Elementor layouts, UI fixes, performance tuning.",
     tags: ["WordPress", "Elementor", "HTML", "CSS", "JS"],
@@ -253,8 +253,8 @@ export default function ClientProjects() {
         className="relative z-10 py-20 md:py-24 w-full overflow-hidden">
 
         <div className="absolute inset-0 pointer-events-none" aria-hidden="true">
-          <div className="absolute top-0 right-1/4 w-[40rem] h-[40rem] rounded-full bg-emerald-500/[0.03] blur-[120px]" />
-          <div className="absolute bottom-0 left-1/4 w-[35rem] h-[35rem] rounded-full bg-indigo-600/[0.03] blur-[120px]" />
+          <div className="absolute top-0 right-1/4 w-[40rem] h-[40rem] rounded-full bg-blue-500/[0.03] blur-[120px]" />
+          <div className="absolute bottom-0 left-1/4 w-[35rem] h-[35rem] rounded-full bg-blue-600/[0.03] blur-[120px]" />
         </div>
 
         <div className="relative z-10 w-full max-w-6xl mx-auto px-6 md:px-12 lg:px-16 flex flex-col gap-10 md:gap-12">
@@ -264,8 +264,8 @@ export default function ClientProjects() {
             viewport={{ once: true }} transition={{ duration: 0.55 }}
             className="flex flex-col gap-2">
             <div className="flex items-center gap-3">
-              <div className="w-6 h-px bg-emerald-500/60" aria-hidden="true" />
-              <span className="text-[10px] font-bold text-emerald-400 uppercase tracking-[0.3em]">Professional Work</span>
+              <div className="w-6 h-px bg-blue-500/60" aria-hidden="true" />
+              <span className="text-[10px] font-bold text-blue-400 uppercase tracking-[0.3em]">Professional Work</span>
             </div>
             <h2 id="client-projects-heading" className="text-3xl md:text-5xl font-black text-white tracking-tight">
               Client <span className="text-transparent bg-clip-text bg-gradient-to-r from-blue-400 to-blue-600">Projects</span>
