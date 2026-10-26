@@ -102,7 +102,7 @@ const Contact = () => {
                   <FaLinkedin size={18} aria-hidden="true" />
                 </a>
                 <a
-                  href="https://www.instagram.com/_.mishal1/"
+                  href="https://www.instagram.com/_.mishal7/"
                   target="_blank"
                   rel="noopener noreferrer"
                   aria-label="Follow on Instagram"

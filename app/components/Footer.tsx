@@ -30,7 +30,7 @@ const socials = [
   },
   {
     label: "Instagram",
-    href: "https://www.instagram.com/_.mishal1/",
+    href: "https://www.instagram.com/_.mishal7/",
     icon: FaInstagram,
     hover: "hover:text-pink-400 hover:bg-pink-400/10",
   },
